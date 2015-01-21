@@ -155,7 +155,8 @@ PlayerSettings:
   psp2PackagedResourcesPath: 
   flashStrippingLevel: 2
   spritePackerPolicy: 
-  scriptingDefineSymbols: {}
+  scriptingDefineSymbols:
+    1: 
   metroPackageName: Detective-Doodle
   metroPackageLogo: 
   metroPackageLogo140: 

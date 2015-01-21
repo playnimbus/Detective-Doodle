@@ -1,27 +1,33 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class playerController : MonoBehaviour {
+public class playerController : MonoBehaviour
+{
 
     public GameObject playerCursor;
     public float playerSpeed;
 
-	// Use this for initialization
-	void Start () {
-	
-	}
-	
-	// Update is called once per frame
-	void Update () {
+    // Use this for initialization
+    void Start()
+    {
 
-	}
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        if (networkView.isMine)
+        {
+            Vector3 direction = playerCursor.transform.position - gameObject.transform.position;
+            playerCursor.transform.position = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, 10));
+            rigidbody2D.velocity = direction * playerSpeed;
+        }
+    }
 
     public void Movement(int direction)
     {
         //Touch and move in anydirection
-        //Vector3 direction = playerCursor.transform.position - gameObject.transform.position;
-        //playerCursor.transform.position = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, 10));
-        //rigidbody2D.velocity = direction * speed;
+
 
         //Movement with GUI_D-Pad
         //up
@@ -30,7 +36,7 @@ public class playerController : MonoBehaviour {
             rigidbody2D.velocity = transform.up * playerSpeed;
         }
         //upright
-        else if(direction == 2)
+        else if (direction == 2)
         {
             rigidbody2D.velocity = (transform.up + transform.right) * playerSpeed;
         }
