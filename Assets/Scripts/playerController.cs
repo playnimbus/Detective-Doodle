@@ -43,10 +43,21 @@ public class playerController : MonoBehaviour
                 {
                     Vector3 normalizedCastPosition = hit.point - hit.transform.position;
                     Vector3 forceToAdd = new Vector3(((hit.point.x - hit.transform.position.x) * playerSpeed), 0, ((hit.point.z - hit.transform.position.z) * playerSpeed));
-                    gameObject.rigidbody.AddForce(forceToAdd);
+                    //gameObject.rigidbody.AddForce(forceToAdd);
+                    gameObject.rigidbody.velocity = forceToAdd;
                     transform.LookAt(gameObject.transform.position + forceToAdd);
                 }
             }
+            else
+            {
+                gameObject.rigidbody.velocity = Vector2.zero;
+
+            }
+        }
+        else
+        {
+            gameObject.rigidbody.velocity = Vector2.zero;
+
         }
     }
 
