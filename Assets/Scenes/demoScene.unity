@@ -3079,7 +3079,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 85ce41a3d66ca6e4ca17d8ea21d75d41, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dampTime: .150000006
+  dampTime: 0
   playerToFollow: {fileID: 2112117425}
 --- !u!1 &1233824338
 GameObject:
