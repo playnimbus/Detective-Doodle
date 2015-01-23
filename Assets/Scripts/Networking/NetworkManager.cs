@@ -3,17 +3,16 @@ using System.Collections;
 
 public class NetworkManager : Photon.MonoBehaviour {
 
-    public GameObject Bystander;
+    public GameObject bystanderPlayer;
     public GameObject Murderer;
     public GameObject Vigilante;
 
     private const string roomName = "RoomName";
-    private RoomInfo[] roomsList;
 
 	// Use this for initialization
 	void Start () {
        PhotonNetwork.ConnectUsingSettings(".1");
-       //Bystander = (GameObject)Instantiate(Resources.Load("Bystander"));
+       
        //Bystander.name = "Bystander";
 	}
 	
@@ -43,11 +42,6 @@ public class NetworkManager : Photon.MonoBehaviour {
         }
     }
 
-    void OnRecievedRoomListUpdate()
-    {
-        roomsList = PhotonNetwork.GetRoomList();
-    }
-
     void OnPhotonJoinRoomFailed()
     {
         Debug.Log("Failed to Connect to Room");
@@ -57,11 +51,12 @@ public class NetworkManager : Photon.MonoBehaviour {
     {
         Debug.Log("Connected to Room");
         GameObject tempPlayer =  PhotonNetwork.Instantiate("bystanderPlayer", new Vector3(12, -16, 50), Quaternion.identity, 0);
-        GameObject tempCamera =  PhotonNetwork.Instantiate("bystanderCamera", new Vector3(12, -3.72F, 50), Quaternion.identity, 0);
+        //GameObject tempCamera =  PhotonNetwork.Instantiate("bystanderCamera", new Vector3(12, -3.72F, 50), Quaternion.identity, 0);
+        GameObject bystanderCamera = (GameObject)Instantiate(Resources.Load("bystanderCamera"));
 
-        tempCamera.transform.Rotate(new Vector3(90, 0, 0));
+        //bystanderCamera.transform.Rotate(new Vector3(90, 0, 0));
 
-        tempPlayer.GetComponent<playerController>().playerCamera = tempCamera.GetComponent<Camera>();
-        tempCamera.GetComponent<CameraFollow>().playerToFollow = tempPlayer.transform;
+        tempPlayer.GetComponent<playerController>().playerCamera = bystanderCamera.GetComponent<Camera>();
+        bystanderCamera.GetComponent<CameraFollow>().playerToFollow = tempPlayer.transform;
     }
 }

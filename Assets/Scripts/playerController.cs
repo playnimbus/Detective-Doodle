@@ -11,6 +11,12 @@ public class playerController : Photon.MonoBehaviour
     float meleeTimer = 0;
     float meleeUpTime = 0.2f;
 
+    private float lastSynchronizationTime = 0f;
+    private float syncDelay = 0f;
+    private float syncTime = 0f;
+    private Vector3 syncStartPosition = Vector3.zero;
+    private Vector3 syncEndPosition = Vector3.zero;
+
     // Update is called once per frame
     void Update()
     {
@@ -27,6 +33,14 @@ public class playerController : Photon.MonoBehaviour
                     meleeTimer = 0;
                 }
             }
+        }
+    }
+
+    void FixedUpdate()
+    {
+        if (!photonView.isMine)
+        {
+            SyncedMovement();
         }
     }
 
@@ -68,58 +82,23 @@ public class playerController : Photon.MonoBehaviour
     void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {
         if (stream.isWriting)
+        {
             stream.SendNext(rigidbody.position);
+        }
         else
-            rigidbody.position = (Vector3)stream.ReceiveNext();
+        {
+            syncEndPosition = (Vector3)stream.ReceiveNext();
+            syncStartPosition = rigidbody.position;
+
+            syncTime = 0f;
+            syncDelay = Time.time - lastSynchronizationTime;
+            lastSynchronizationTime = Time.time;
+        }
     }
 
-    public void Movement(int direction)
+    private void SyncedMovement()
     {
-        //Touch and move in anydirection
-        //up
-        if (direction == 1)
-        {
-            rigidbody.velocity = transform.forward * playerSpeed;
-        }
-        //upright
-        else if (direction == 2)
-        {
-            rigidbody.velocity = (transform.forward + transform.right) * playerSpeed;
-        }
-        //right
-        else if (direction == 3)
-        {
-            rigidbody.velocity = transform.right * playerSpeed;
-        }
-        //downright
-        else if (direction == 4)
-        {
-            rigidbody.velocity = (-transform.forward + transform.right) * playerSpeed;
-        }
-        //down
-        else if (direction == 5)
-        {
-            rigidbody.velocity = -transform.forward * playerSpeed;
-        }
-        //downleft
-        else if (direction == 6)
-        {
-            rigidbody.velocity = (-transform.forward + -transform.right) * playerSpeed;
-        }
-        //left
-        else if (direction == 7)
-        {
-            rigidbody.velocity = -transform.right * playerSpeed;
-        }
-        //upleft
-        else if (direction == 8)
-        {
-            rigidbody.velocity = (transform.forward + -transform.right) * playerSpeed;
-        }
-        //stop
-        else if (direction == 0)
-        {
-            rigidbody.velocity = Vector3.zero;
-        }
+        syncTime += Time.deltaTime;
+        transform.position = Vector3.Lerp(syncStartPosition, syncEndPosition, syncTime / syncDelay);
     }
 }

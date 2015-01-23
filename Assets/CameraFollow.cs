@@ -10,21 +10,20 @@ public class CameraFollow : Photon.MonoBehaviour {
 
     void Start()
     {
+
     }
 
-	void Update () {
+    void Update()
+    {
 
         //gameObject.transform.position = playerToFollow.transform.position + cameraOffset;
-        if (photonView.isMine)
+        if (playerToFollow)
         {
-            if (playerToFollow)
-            {
-                Vector3 point = camera.WorldToViewportPoint(playerToFollow.position);
-                Vector3 delta = playerToFollow.position - camera.ViewportToWorldPoint(new Vector3(0.5f, 0.5f, point.z));
-                Vector3 destination = transform.position + delta;
+            Vector3 point = camera.WorldToViewportPoint(playerToFollow.position);
+            Vector3 delta = playerToFollow.position - camera.ViewportToWorldPoint(new Vector3(0.5f, 0.5f, point.z));
+            Vector3 destination = transform.position + delta;
 
-                transform.position = Vector3.SmoothDamp(transform.position, destination, ref velocity, dampTime);
-            }
+            transform.position = Vector3.SmoothDamp(transform.position, destination, ref velocity, dampTime);
         }
-	}
+    }
 }
