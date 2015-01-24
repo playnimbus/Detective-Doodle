@@ -6,6 +6,7 @@ public class playerController : Photon.MonoBehaviour
     public Camera playerCamera;
     public GameObject playerThumbpad;
     public Vector3 thumbOrigin;
+    public Vector3 swordOrigin;
     public float playerSpeed;
     public float attackRate;
     public float meleeTimer;
@@ -22,11 +23,17 @@ public class playerController : Photon.MonoBehaviour
     void Start()
     {
         thumbOrigin = playerThumbpad.transform.localPosition;
+        swordOrigin = meleeSword.transform.localPosition;
     }
 
     // Update is called once per frame
     void Update()
     {
+        meleeTimer += Time.deltaTime;
+        if ( attackRate < meleeTimer)
+        {
+            meleeSword.transform.localPosition = swordOrigin;
+        }
         if (photonView.isMine)
         {
             MovementAnalog(); 
@@ -43,12 +50,12 @@ public class playerController : Photon.MonoBehaviour
 
     public void SwingSword()
     {
-        meleeTimer += Time.deltaTime;
+        meleeTimer = 0;
         if (meleeTimer > attackRate)
         {
-            meleeSword.transform.position = swordSpawn.transform.position + transform.forward * 1.5F;
-            meleeTimer = 0;
+            meleeSword.transform.position = swordSpawn.transform.position + transform.forward * .75F;
         }
+        
     }
 
     public void MovementAnalog()
@@ -106,6 +113,13 @@ public class playerController : Photon.MonoBehaviour
             syncDelay = Time.time - lastSynchronizationTime;
             lastSynchronizationTime = Time.time;
         }
+    }
+
+    public void Attacked()
+    {
+        Destroy(playerCamera);
+        PhotonNetwork.Destroy(gameObject);
+        PhotonNetwork.Disconnect();
     }
 
     private void SyncedMovement()
