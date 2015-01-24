@@ -31,40 +31,48 @@ public class playerController : Photon.MonoBehaviour
 
     // Update is called once per frame
     void Update()
-    {
-        meleeTimer += Time.deltaTime;
-        if (meleeTimer >= attackRate)
-        {
-            meleeSword.transform.position = new Vector3(0, 50, 0);
-        }
-        if (cluesObtained >= 3)
-        {
-            hasWeapon = true;
-        }
+    { 
+        meleeTimer += Time.deltaTime; 
+        if (meleeTimer >= 3) 
+        { 
+            meleeTimer = 3; 
+        } 
+        if (cluesObtained >= 3) 
+        { 
+            hasWeapon = true; 
+        } 
+ 
 
-        if (photonView.isMine)
-        {
-            MovementAnalog(); 
-        }
-    }
+        if (photonView.isMine) 
+        { 
+            MovementAnalog();  
+        } 
+    } 
+ 
 
-    void FixedUpdate()
-    {
-        if (!photonView.isMine)
-        {
-            SyncedMovement();
-        }
-    }
+    void FixedUpdate() 
+    { 
+        if (!photonView.isMine) 
+        { 
+            SyncedMovement(); 
+        } 
+    } 
+ 
 
-    public void SwingSword()
-    {
-        
-        if (meleeTimer > attackRate)
-        {
-            meleeSword.transform.position = swordSpawn.transform.position;
-            meleeTimer = 0;
-        }
-    }
+    public void SwingSword() 
+    { 
+          
+        if (meleeTimer > attackRate) 
+        { 
+            meleeSword.transform.position = swordSpawn.transform.position; 
+            meleeTimer = 0; 
+        } 
+        else 
+        { 
+            meleeSword.transform.position = new Vector3(0,50,0); 
+        } 
+    } 
+
 
     public void Attacked()
     {
@@ -150,10 +158,12 @@ public class playerController : Photon.MonoBehaviour
         {
             Debug.Log(gameObject.name + "Such a sad day to stop living");
             
-            PhotonNetwork.Disconnect();
-            PhotonNetwork.NetworkStatisticsReset();
-            PhotonNetwork.Destroy(gameObject);
-            PhotonNetwork.LeaveRoom();
+      //      PhotonNetwork.Disconnect();
+     //       PhotonNetwork.NetworkStatisticsReset();
+      //      PhotonNetwork.Destroy(gameObject);
+      //      PhotonNetwork.LeaveRoom();
+
+            GameObject.Destroy(gameObject);
         }
     }
 
