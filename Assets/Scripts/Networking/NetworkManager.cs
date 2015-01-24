@@ -19,8 +19,6 @@ public class NetworkManager : Photon.MonoBehaviour {
 	// Use this for initialization
 	void Start () {
        PhotonNetwork.ConnectUsingSettings(".1");
-       
-       //Bystander.name = "Bystander";
 	}
 	
 	// Update is called once per frame

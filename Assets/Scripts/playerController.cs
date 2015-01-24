@@ -28,17 +28,7 @@ public class playerController : Photon.MonoBehaviour
     {
         if (photonView.isMine)
         {
-            MovementAnalog();
-
-            if (meleeGO.activeInHierarchy == true)
-            {
-                meleeTimer += Time.deltaTime;
-                if (meleeTimer >= meleeUpTime)
-                {
-                    meleeGO.SetActive(false);
-                    meleeTimer = 0;
-                }
-            }
+            MovementAnalog(); 
         }
     }
 
@@ -52,7 +42,9 @@ public class playerController : Photon.MonoBehaviour
 
     public void SwingSword()
     {
-        meleeGO.SetActive(true);
+        GameObject clone = PhotonNetwork.Instantiate("Sword", gameObject.transform.position, Quaternion.identity, 0);
+        clone.rigidbody.velocity = transform.forward * 8;
+        //PhotonNetwork.Destroy(clone.gameObject, .45F);
     }
 
     public void MovementAnalog()
@@ -73,11 +65,11 @@ public class playerController : Photon.MonoBehaviour
                     gameObject.rigidbody.velocity = forceToAdd;
                     transform.LookAt(gameObject.transform.position + forceToAdd);
                 }
-
                 if (hit.transform.gameObject.name == "AttackButton")
                 {
                     SwingSword();
                 }
+                
             }
             else
             {
