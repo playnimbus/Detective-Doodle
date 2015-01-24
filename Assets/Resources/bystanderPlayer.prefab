@@ -46,8 +46,9 @@ GameObject:
   - 4: {fileID: 486202}
   - 212: {fileID: 21286200}
   - 65: {fileID: 6586200}
-  - 114: {fileID: 11486200}
   - 54: {fileID: 5486200}
+  - 114: {fileID: 11400876}
+  - 114: {fileID: 11486200}
   m_Layer: 0
   m_Name: Sword
   m_TagString: Untagged
@@ -169,11 +170,22 @@ BoxCollider:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 186202}
   m_Material: {fileID: 0}
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 2, y: 1.00000024, z: .200000048}
   m_Center: {x: 0, y: 1.90734863e-06, z: 0}
+--- !u!114 &11400876
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 186202}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fb0fa6caf0f3b55439ad9c8811b4a14e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &11437702
 MonoBehaviour:
   m_ObjectHideFlags: 1

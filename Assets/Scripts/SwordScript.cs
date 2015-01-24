@@ -3,12 +3,12 @@ using System.Collections;
 
 public class SwordScript : MonoBehaviour {
 
-    void OnTriggerEnter(Collider trg)
+    void OnCollisionEnter(Collision col)
     {
-        if (trg.collider.tag == "Player")
+        if (col.collider.tag == "Player")
         {
             Debug.Log("playerAttacked");
-            trg.collider.SendMessage("Attacked");
+            col.collider.SendMessage("Attacked");
         }
     }
 }

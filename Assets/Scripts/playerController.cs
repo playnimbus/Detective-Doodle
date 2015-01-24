@@ -61,7 +61,6 @@ public class playerController : Photon.MonoBehaviour
         
         if (meleeTimer > attackRate)
         {
-            
             meleeSword.transform.position = swordSpawn.transform.position;
             meleeTimer = 0;
         }
@@ -73,6 +72,7 @@ public class playerController : Photon.MonoBehaviour
 
     public void Attacked()
     {
+        Debug.Log("playerAttacked");
         PhotonNetwork.Destroy(gameObject);
         PhotonNetwork.Disconnect();
         PhotonNetwork.NetworkStatisticsReset();
@@ -147,9 +147,12 @@ public class playerController : Photon.MonoBehaviour
     {
         if (collision.collider.tag == "Clue")
         {
-            print("found 1 clue!");
-            GameObject.Destroy(collision.gameObject);
-            cluesObtained += 1;
+            if (!hasWeapon)
+            {
+                print("found 1 clue!");
+                GameObject.Destroy(collision.gameObject);
+                cluesObtained += 1;
+            }
         }
     }
 
