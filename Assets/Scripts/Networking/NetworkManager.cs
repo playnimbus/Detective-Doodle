@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.UI;
 
 public class NetworkManager : Photon.MonoBehaviour {
 
@@ -9,6 +10,7 @@ public class NetworkManager : Photon.MonoBehaviour {
 
     public GameObject connectBtn;
     public GameObject hostBtn;
+    public Button attackBtn;
 
     bool isHost = false;
 
@@ -58,11 +60,12 @@ public class NetworkManager : Photon.MonoBehaviour {
             GameObject tempPlayer = PhotonNetwork.Instantiate("bystanderPlayer", new Vector3(12, -16, 50), Quaternion.identity, 0);
             //GameObject tempCamera =  PhotonNetwork.Instantiate("bystanderCamera", new Vector3(12, -3.72F, 50), Quaternion.identity, 0);
             GameObject bystanderCamera = (GameObject)Instantiate(Resources.Load("bystanderCamera"));
-
-            //bystanderCamera.transform.Rotate(new Vector3(90, 0, 0));
+            bystanderCamera.transform.position = tempPlayer.transform.position + new Vector3(0, 20, 0);
 
             tempPlayer.GetComponent<playerController>().playerCamera = bystanderCamera.GetComponent<Camera>();
             bystanderCamera.GetComponent<CameraFollow>().playerToFollow = tempPlayer.transform;
+            tempPlayer.GetComponent<playerController>().playerThumbpad = bystanderCamera.GetComponent<CameraFollow>().playerThumbad;
+
         }
         else
         {

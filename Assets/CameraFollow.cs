@@ -3,6 +3,8 @@ using System.Collections;
 
 public class CameraFollow : Photon.MonoBehaviour {
 
+    public GameObject playerThumbad;
+
     public float dampTime = 0.15f;
     private Vector3 cameraOffset = new Vector3(0, 15, 0);
     private Vector3 velocity = Vector3.zero;
@@ -15,7 +17,7 @@ public class CameraFollow : Photon.MonoBehaviour {
 
     void Update()
     {
-
+        
         //gameObject.transform.position = playerToFollow.transform.position + cameraOffset;
         if (playerToFollow)
         {
