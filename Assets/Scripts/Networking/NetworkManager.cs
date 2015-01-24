@@ -7,6 +7,9 @@ public class NetworkManager : Photon.MonoBehaviour {
     public GameObject Murderer;
     public GameObject Vigilante;
 
+    public GameObject connectBtn;
+    public GameObject hostBtn;
+
     private const string roomName = "RoomName";
 
 	// Use this for initialization
@@ -27,19 +30,16 @@ public class NetworkManager : Photon.MonoBehaviour {
         {
             GUILayout.Label(PhotonNetwork.connectionStateDetailed.ToString());
         }
-        else if (PhotonNetwork.room == null)
-        {
-            //Create Room
-            if (GUI.Button(new Rect(100, 100, 250, 100), "Start Server"))
-            {
-                PhotonNetwork.CreateRoom("DoodleDetective");
-            }
-            //Join Room
-            else
-            {
-                PhotonNetwork.JoinRoom("DoodleDetective");
-            }
-        }
+    }
+
+    public void HostRoom()
+    {
+        PhotonNetwork.CreateRoom("DoodleDetective");
+    //    PhotonNetwork.JoinRoom("DoodleDetective");
+    }
+    public void ConnectRoom()
+    {
+        PhotonNetwork.JoinRoom("DoodleDetective");
     }
 
     void OnPhotonJoinRoomFailed()
@@ -58,5 +58,8 @@ public class NetworkManager : Photon.MonoBehaviour {
 
         tempPlayer.GetComponent<playerController>().playerCamera = bystanderCamera.GetComponent<Camera>();
         bystanderCamera.GetComponent<CameraFollow>().playerToFollow = tempPlayer.transform;
+
+        connectBtn.SetActive(false);
+        hostBtn.SetActive(false);
     }
 }
