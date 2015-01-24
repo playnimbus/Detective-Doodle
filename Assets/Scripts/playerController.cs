@@ -155,7 +155,7 @@ public class playerController : Photon.MonoBehaviour
             Debug.Log(gameObject.name + "Such a sad day to stop living");
             
             PhotonNetwork.Disconnect();
-            PhotonNetwork.NetworkStatisticsReset();
+ //           PhotonNetwork.NetworkStatisticsReset();
             PhotonNetwork.Destroy(gameObject);
             PhotonNetwork.LeaveRoom();
         }
