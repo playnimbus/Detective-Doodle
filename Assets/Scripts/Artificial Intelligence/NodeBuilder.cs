@@ -32,17 +32,26 @@ public class NodeBuilder : MonoBehaviour {
         {
             if (levelGeometry[i].transform.localScale.y < 1)
             {
-                levelGeometry[i].GetComponent<BoxCollider>().center = new Vector3(0, 2f, 0);
+                if (levelGeometry[i].GetComponent<BoxCollider>() != null)
+                {
+                    levelGeometry[i].GetComponent<BoxCollider>().center = new Vector3(0, 2f, 0);
+                }
             }
-            else if (levelGeometry[i].transform.localScale.y > 10)
+            else if (levelGeometry[i].transform.localScale.y > 9)
             {
-                levelGeometry[i].GetComponent<BoxCollider>().size = new Vector3(1f, 0.8f, 1f);
-                levelGeometry[i].GetComponent<BoxCollider>().center = new Vector3(0, 0.2f, 0);
+                if (levelGeometry[i].GetComponent<BoxCollider>() != null)
+                {
+                    levelGeometry[i].GetComponent<BoxCollider>().size = new Vector3(1f, 0.8f, 1f);
+                    levelGeometry[i].GetComponent<BoxCollider>().center = new Vector3(0, 0.2f, 0);
+                }
             }
             else
             {
-                levelGeometry[i].GetComponent<BoxCollider>().size = new Vector3(1f, 0.5f, 1f);
-                levelGeometry[i].GetComponent<BoxCollider>().center = new Vector3(0, 0.25f, 0);
+                if (levelGeometry[i].GetComponent<BoxCollider>() != null)
+                {
+                    levelGeometry[i].GetComponent<BoxCollider>().size = new Vector3(1f, 0.5f, 1f);
+                    levelGeometry[i].GetComponent<BoxCollider>().center = new Vector3(0, 0.25f, 0);
+                }
             }
         }
 
@@ -51,8 +60,11 @@ public class NodeBuilder : MonoBehaviour {
         //move colliders back into place
         for (int i = 0; i < levelGeometry.Length; i++)
         {
-            levelGeometry[i].GetComponent<BoxCollider>().size = new Vector3(1f, 1f, 1f);
-            levelGeometry[i].GetComponent<BoxCollider>().center = new Vector3(0, 0, 0);
+            if (levelGeometry[i].GetComponent<BoxCollider>() != null)
+            {
+                levelGeometry[i].GetComponent<BoxCollider>().size = new Vector3(1f, 1f, 1f);
+                levelGeometry[i].GetComponent<BoxCollider>().center = new Vector3(0, 0, 0);
+            }
         }        
     }
 

@@ -69,7 +69,7 @@ public class NetworkManager : Photon.MonoBehaviour {
         else
         {
             GameObject hostCamera = (GameObject)Instantiate(Resources.Load("HostCamera"));
-            hostCamera.transform.position = new Vector3(2.3f, 28.27f, 57.2f);
+            hostCamera.transform.position = new Vector3(2.5f, 32.87f, 57.2f);
         }
 
         connectBtn.SetActive(false);

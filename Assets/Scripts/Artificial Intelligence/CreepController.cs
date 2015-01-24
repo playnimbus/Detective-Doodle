@@ -56,11 +56,6 @@ public class CreepController : MonoBehaviour {
 
         nodeBuilder = GameObject.Find("NodeBuilder");
 
-        if (CameraController.playerActive == true)
-        {
-            Player = GameObject.Find("First Person Controller");
-        }
-
         /*
         foreach (AnimationState state in animation)
         {
@@ -92,31 +87,24 @@ public class CreepController : MonoBehaviour {
             case enemyStates.pursue: pursueStateUpdate(); break;
         }
 
-        if (CameraController.playerActive == true)
+        /*
+        if (enemyState == enemyStates.walkPath || enemyState == enemyStates.idle)
         {
-            if (Player == null)
+            if (Vector3.Distance(Player.transform.position, gameObject.transform.position) <= 15)
             {
-                Player = GameObject.Find("First Person Controller");
-            }
-
-            /*
-            if (enemyState == enemyStates.walkPath || enemyState == enemyStates.idle)
-            {
-                if (Vector3.Distance(Player.transform.position, gameObject.transform.position) <= 15)
+                RaycastHit hit;
+                Vector3 directionToPlayer = ((Player.transform.position - (new Vector3(0, Player.GetComponentInChildren<MeshRenderer>().bounds.size.y / 2, 0))) - gameObject.transform.position).normalized;
+                if (Physics.Raycast(gameObject.transform.position + (new Vector3(0, gameObject.GetComponentInChildren<SkinnedMeshRenderer>().bounds.size.y / 2, 0)), directionToPlayer, out hit))
                 {
-                    RaycastHit hit;
-                    Vector3 directionToPlayer = ((Player.transform.position - (new Vector3(0, Player.GetComponentInChildren<MeshRenderer>().bounds.size.y / 2, 0))) - gameObject.transform.position).normalized;
-                    if (Physics.Raycast(gameObject.transform.position + (new Vector3(0, gameObject.GetComponentInChildren<SkinnedMeshRenderer>().bounds.size.y / 2, 0)), directionToPlayer, out hit))
+                    if (hit.transform.tag == "Player")
                     {
-                        if (hit.transform.tag == "Player")
-                        {
-                            changeEnemyState(enemyStates.pursue);
-                        }
+                        changeEnemyState(enemyStates.pursue);
                     }
                 }
             }
-             * */
         }
+            * */
+        
 	}
 
     void changeEnemyState(enemyStates newState)
@@ -196,51 +184,44 @@ public class CreepController : MonoBehaviour {
             pursueWallTimer = 0;
         }
 
-        if (CameraController.playerActive == true)
+
+        alertMark.transform.LookAt(Player.transform.position);
+        gameObject.transform.LookAt(new Vector3(Player.transform.position.x, gameObject.transform.position.y, Player.transform.position.z));
+
+        Vector3 directionToDesitination = (Player.transform.position - gameObject.transform.position).normalized;
+        directionToDesitination = (directionToDesitination * walkSpeed) * Time.deltaTime;
+
+        gameObject.transform.position += new Vector3(directionToDesitination.x, 0, directionToDesitination.z);
+
+
+        if (Vector3.Distance(Player.transform.position, gameObject.transform.position) <= 15)
         {
-
-            alertMark.transform.LookAt(Player.transform.position);
-            gameObject.transform.LookAt(new Vector3(Player.transform.position.x, gameObject.transform.position.y, Player.transform.position.z));
-
-            Vector3 directionToDesitination = (Player.transform.position - gameObject.transform.position).normalized;
-            directionToDesitination = (directionToDesitination * walkSpeed) * Time.deltaTime;
-
-            gameObject.transform.position += new Vector3(directionToDesitination.x, 0, directionToDesitination.z);
-
-
-            if (Vector3.Distance(Player.transform.position, gameObject.transform.position) <= 15)
+            RaycastHit hit;
+            if (Physics.Raycast(gameObject.transform.position + (new Vector3(0, gameObject.GetComponentInChildren<SkinnedMeshRenderer>().bounds.size.y / 2, 0)), ((Player.transform.position - (new Vector3(0, Player.GetComponentInChildren<MeshRenderer>().bounds.size.y / 2, 0))) - gameObject.transform.position).normalized, out hit))
             {
-                RaycastHit hit;
-                if (Physics.Raycast(gameObject.transform.position + (new Vector3(0, gameObject.GetComponentInChildren<SkinnedMeshRenderer>().bounds.size.y / 2, 0)), ((Player.transform.position - (new Vector3(0, Player.GetComponentInChildren<MeshRenderer>().bounds.size.y / 2, 0))) - gameObject.transform.position).normalized, out hit))
+                if (hit.transform.tag == "Player")
                 {
-                    if (hit.transform.tag == "Player")
-                    {
-                        sightTimer = 0;
-                    }
-                    else if (hit.transform.tag == "LevelGeometry")
-                    {
-                        sightTimer += Time.deltaTime;
-
-                        if (Player.GetComponent<Player>().currentNode.status == Node.Status.closed)
-                        {
-                            destinationNodeDebug = Player.GetComponent<Player>().currentNode;
-                            print("Entity sent bad destination");
-                        }
-                        DestinationNode = Player.GetComponent<Player>().currentNode;
-                        changeEnemyState(enemyStates.walkPath);
-                    }
-                    else if (hit.transform.tag != "Player")
-                    {
-                        sightTimer += Time.deltaTime;
-                        if (sightTimer >= 2)
-                        {
-                            changeEnemyState(enemyStates.idle);
-                        }
-                    }
+                    sightTimer = 0;
                 }
-                else
+                else if (hit.transform.tag == "LevelGeometry")
                 {
-                    changeEnemyState(enemyStates.idle);
+                    sightTimer += Time.deltaTime;
+
+                    if (Player.GetComponent<Player>().currentNode.status == Node.Status.closed)
+                    {
+                        destinationNodeDebug = Player.GetComponent<Player>().currentNode;
+                        print("Entity sent bad destination");
+                    }
+                    DestinationNode = Player.GetComponent<Player>().currentNode;
+                    changeEnemyState(enemyStates.walkPath);
+                }
+                else if (hit.transform.tag != "Player")
+                {
+                    sightTimer += Time.deltaTime;
+                    if (sightTimer >= 2)
+                    {
+                        changeEnemyState(enemyStates.idle);
+                    }
                 }
             }
             else
@@ -252,6 +233,7 @@ public class CreepController : MonoBehaviour {
         {
             changeEnemyState(enemyStates.idle);
         }
+
         oldCurrentNode = currentNode.name;
     }
     void pursueStateExit()
