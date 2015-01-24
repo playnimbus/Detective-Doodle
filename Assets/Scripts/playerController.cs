@@ -46,7 +46,7 @@ public class playerController : Photon.MonoBehaviour
         meleeTimer += Time.deltaTime;
         if (meleeTimer > attackRate)
         {
-            meleeSword.transform.position = swordSpawn.transform.position + transform.forward * 1.5F;
+   //         meleeSword.transform.position = swordSpawn.transform.position + transform.forward * 1.5F;
             meleeTimer = 0;
         }
     }
@@ -112,5 +112,14 @@ public class playerController : Photon.MonoBehaviour
     {
         syncTime += Time.deltaTime;
         transform.position = Vector3.Lerp(syncStartPosition, syncEndPosition, syncTime / syncDelay);
+    }
+
+    void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.tag == "WeaponPiece")
+        {
+            print("collided with weapon");
+            GameObject.Destroy(collision.gameObject);
+        }
     }
 }
