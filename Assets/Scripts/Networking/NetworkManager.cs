@@ -28,6 +28,7 @@ public class NetworkManager : Photon.MonoBehaviour {
             {
                 PhotonNetwork.DestroyAll();
                 PhotonNetwork.LeaveRoom();
+                PhotonNetwork.NetworkStatisticsReset();
                 PhotonNetwork.LoadLevel(Application.loadedLevel);
             }
         }
@@ -39,8 +40,8 @@ public class NetworkManager : Photon.MonoBehaviour {
         {
             GUILayout.Label(PhotonNetwork.connectionStateDetailed.ToString());
         }
-        GUI.Label(new Rect(10, 10, 230, 70), PhotonNetwork.countOfPlayers + "/8");
-        GUI.Label(new Rect(10, 30, 230, 70), "Ping: " + PhotonNetwork.GetPing() + "");
+        GUI.Label(new Rect(10, 10, 230, 70), "Players Connected: " + PhotonNetwork.countOfPlayers);
+        GUI.Label(new Rect(10, 30, 230, 70), "Ping: " + PhotonNetwork.GetPing());
     }
 
     public void HostRoom()

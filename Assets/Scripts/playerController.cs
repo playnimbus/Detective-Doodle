@@ -9,6 +9,7 @@ public class playerController : Photon.MonoBehaviour
     public GameObject meleeSword;
     public GameObject swordSpawn;
 
+    public float cluesObtained;
     public float playerSpeed;
     public float attackRate;
     public float meleeTimer;
@@ -20,6 +21,8 @@ public class playerController : Photon.MonoBehaviour
 
     private Vector3 syncStartPosition = Vector3.zero;
     private Vector3 syncEndPosition = Vector3.zero;
+
+    private bool hasWeapon;
 
     void Start()
     {
@@ -34,6 +37,11 @@ public class playerController : Photon.MonoBehaviour
         {
             meleeTimer = 3;
         }
+        if (cluesObtained >= 3)
+        {
+            hasWeapon = true;
+        }
+
         if (photonView.isMine)
         {
             MovementAnalog(); 
@@ -63,6 +71,14 @@ public class playerController : Photon.MonoBehaviour
         }
     }
 
+    public void Attacked()
+    {
+        PhotonNetwork.Destroy(gameObject);
+        PhotonNetwork.Disconnect();
+        PhotonNetwork.NetworkStatisticsReset();
+        PhotonNetwork.LeaveRoom();
+    }
+
     public void MovementAnalog()
     {
         RaycastHit hit;
@@ -81,10 +97,13 @@ public class playerController : Photon.MonoBehaviour
 
                     playerThumbpad.transform.position = hit.point;
                 }
-                if (hit.transform.gameObject.name == "AttackButton")
+                if (hasWeapon)
                 {
-                    
-                    SwingSword();
+                    if (hit.transform.gameObject.name == "AttackButton")
+                    {
+
+                        SwingSword();
+                    }
                 }
             }
             else
@@ -126,10 +145,13 @@ public class playerController : Photon.MonoBehaviour
 
     void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.tag == "WeaponPiece")
+        if (collision.collider.tag == "Clue")
         {
-            print("collided with weapon");
+            print("found 1 clue!");
             GameObject.Destroy(collision.gameObject);
+            cluesObtained += 1;
         }
     }
+
+
 }
