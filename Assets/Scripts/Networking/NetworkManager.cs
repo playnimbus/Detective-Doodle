@@ -68,7 +68,7 @@ public class NetworkManager : Photon.MonoBehaviour {
             GameObject[] playerList = GameObject.FindGameObjectsWithTag("Player");
             GameObject tempPlayer = PhotonNetwork.Instantiate("bystanderPlayer", new Vector3(12, -16, 50), Quaternion.identity, 0);
             tempPlayer.name = "Player" + playerList.Length;
-            tempPlayer.GetComponentInChildren<SwordScript>().playerName = tempPlayer.name;
+            //tempPlayer.GetComponentInChildren<SwordScript>().playerName = tempPlayer.name;
 
             GameObject bystanderCamera = (GameObject)Instantiate(Resources.Load("bystanderCamera"));
 

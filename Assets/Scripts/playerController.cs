@@ -72,11 +72,7 @@ public class playerController : Photon.MonoBehaviour
 
     public void Attacked()
     {
-        Debug.Log(gameObject.name + "Such a sad day to stop living");
-        PhotonNetwork.Destroy(gameObject);
-        PhotonNetwork.Disconnect();
-        PhotonNetwork.NetworkStatisticsReset();
-        PhotonNetwork.LeaveRoom();
+        
     }
 
     public void MovementAnalog()
@@ -153,6 +149,15 @@ public class playerController : Photon.MonoBehaviour
                 GameObject.Destroy(collision.gameObject);
                 cluesObtained += 1;
             }
+        }
+        else if (collision.collider.tag == "Sword")
+        {
+            Debug.Log(gameObject.name + "Such a sad day to stop living");
+            
+            PhotonNetwork.Disconnect();
+            PhotonNetwork.NetworkStatisticsReset();
+            PhotonNetwork.Destroy(gameObject);
+            PhotonNetwork.LeaveRoom();
         }
     }
 
