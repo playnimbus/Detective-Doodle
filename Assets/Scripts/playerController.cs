@@ -4,18 +4,20 @@ using System.Collections;
 public class playerController : Photon.MonoBehaviour
 {
     public Camera playerCamera;
+
     public GameObject playerThumbpad;
-    public Vector3 thumbOrigin;
+    public GameObject meleeSword;
+    public GameObject swordSpawn;
+
     public float playerSpeed;
     public float attackRate;
     public float meleeTimer;
 
-    public GameObject meleeSword;
-    public GameObject swordSpawn;
-
     private float lastSynchronizationTime = 0f;
     private float syncDelay = 0f;
     private float syncTime = 0f;
+    private Vector3 thumbOrigin;
+
     private Vector3 syncStartPosition = Vector3.zero;
     private Vector3 syncEndPosition = Vector3.zero;
 
@@ -27,6 +29,11 @@ public class playerController : Photon.MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        meleeTimer += Time.deltaTime;
+        if (meleeTimer >= 3)
+        {
+            meleeTimer = 3;
+        }
         if (photonView.isMine)
         {
             MovementAnalog(); 
@@ -43,50 +50,53 @@ public class playerController : Photon.MonoBehaviour
 
     public void SwingSword()
     {
-        meleeTimer += Time.deltaTime;
+        
         if (meleeTimer > attackRate)
         {
-   //         meleeSword.transform.position = swordSpawn.transform.position + transform.forward * 1.5F;
+            Debug.Log("SwordSwung");
+            meleeSword.transform.position = swordSpawn.transform.position;
             meleeTimer = 0;
+        }
+        else
+        {
+            meleeSword.transform.position = new Vector3(0,50,0);
         }
     }
 
     public void MovementAnalog()
     {
-        if (Input.GetMouseButton(0))
+        RaycastHit hit;
+        Ray ray = playerCamera.ScreenPointToRay(Input.mousePosition);
+
+        if (Physics.Raycast(ray, out hit))
         {
-            RaycastHit hit;
-            Ray ray = playerCamera.ScreenPointToRay(Input.mousePosition);
-            if (Physics.Raycast(ray, out hit))
+            if (Input.GetMouseButton(0))
             {
                 if (hit.transform.gameObject.name == "AnalogBG")
                 {
                     Vector3 normalizedCastPosition = hit.point - hit.transform.position;
-                    
                     Vector3 forceToAdd = new Vector3(((hit.point.x - hit.transform.position.x) * playerSpeed), 0, ((hit.point.z - hit.transform.position.z) * playerSpeed));
-                    //gameObject.rigidbody.AddForce(forceToAdd);
-                    playerThumbpad.transform.position = hit.point;
                     gameObject.rigidbody.velocity = forceToAdd;
                     transform.LookAt(gameObject.transform.position + forceToAdd);
+
+                    playerThumbpad.transform.position = hit.point;
                 }
                 if (hit.transform.gameObject.name == "AttackButton")
                 {
+                    
                     SwingSword();
                 }
-                
             }
             else
             {
-                
+                playerThumbpad.transform.localPosition = thumbOrigin;
                 gameObject.rigidbody.velocity = Vector2.zero;
-
             }
         }
         else
         {
-            playerThumbpad.transform.localPosition = thumbOrigin;
+            
             gameObject.rigidbody.velocity = Vector2.zero;
-
         }
     }
 

@@ -14,7 +14,6 @@ GameObject:
   - 65: {fileID: 6564862}
   - 54: {fileID: 5464860}
   - 114: {fileID: 11437702}
-  - 148: {fileID: 14864860}
   m_Layer: 0
   m_Name: bystanderPlayer
   m_TagString: Player
@@ -214,7 +213,6 @@ MonoBehaviour:
   playerCamera: {fileID: 2009980, guid: 66070b207feb8b944917d259c0d1fcb3, type: 2}
   playerThumbpad: {fileID: 109980, guid: 66070b207feb8b944917d259c0d1fcb3, type: 2}
   thumbOrigin: {x: 0, y: 0, z: 0}
-  swordOrigin: {x: 0, y: 0, z: 0}
   playerSpeed: 10
   attackRate: .600000024
   meleeTimer: 0
@@ -245,18 +243,6 @@ MonoBehaviour:
   viewIdField: 0
   instantiationId: -1
   isRuntimeInstantiated: 0
---- !u!148 &14864860
-NetworkView:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 164864}
-  m_Enabled: 1
-  m_StateSynchronization: 1
-  m_Observed: {fileID: 464864}
-  m_ViewID:
-    m_ID: 0
-    m_Type: 0
 --- !u!212 &21286200
 SpriteRenderer:
   m_ObjectHideFlags: 1
