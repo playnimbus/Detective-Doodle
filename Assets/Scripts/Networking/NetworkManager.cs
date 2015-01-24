@@ -10,7 +10,6 @@ public class NetworkManager : Photon.MonoBehaviour {
 
     public GameObject connectBtn;
     public GameObject hostBtn;
-    public Button attackBtn;
 
     bool isHost = false;
 
@@ -23,7 +22,15 @@ public class NetworkManager : Photon.MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-	
+	    if(isHost)
+        {
+            if(Input.GetKeyDown(KeyCode.Escape))
+            {
+                PhotonNetwork.DestroyAll();
+                PhotonNetwork.LeaveRoom();
+                PhotonNetwork.LoadLevel(Application.loadedLevel);
+            }
+        }
 	}
 
     void OnGUI()
@@ -33,6 +40,7 @@ public class NetworkManager : Photon.MonoBehaviour {
             GUILayout.Label(PhotonNetwork.connectionStateDetailed.ToString());
         }
         GUI.Label(new Rect(10, 10, 230, 70), PhotonNetwork.countOfPlayers + "/8");
+        GUI.Label(new Rect(10, 30, 230, 70), "Ping: " + PhotonNetwork.GetPing() + "");
     }
 
     public void HostRoom()
@@ -47,12 +55,12 @@ public class NetworkManager : Photon.MonoBehaviour {
 
     void OnPhotonJoinRoomFailed()
     {
-        Debug.Log("Failed to Connect to Room");
+        Debug.Log("Failed to Connect");
     }
 
     void OnJoinedRoom()
     {
-        Debug.Log("Connected to Room");
+        Debug.Log("Connected");
 
         if (isHost == false)
         {

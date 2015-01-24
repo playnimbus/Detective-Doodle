@@ -53,7 +53,7 @@ public class playerController : Photon.MonoBehaviour
         
         if (meleeTimer > attackRate)
         {
-            Debug.Log("SwordSwung");
+            
             meleeSword.transform.position = swordSpawn.transform.position;
             meleeTimer = 0;
         }

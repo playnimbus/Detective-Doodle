@@ -7,6 +7,7 @@ public class SwordScript : MonoBehaviour {
     {
         if (trg.collider.tag == "Player")
         {
+            Debug.Log("playerAttacked");
             trg.collider.SendMessage("Attacked");
         }
     }
