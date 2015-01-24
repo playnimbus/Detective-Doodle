@@ -8,6 +8,7 @@ public class playerController : Photon.MonoBehaviour
     public GameObject playerThumbpad;
     public GameObject meleeSword;
     public GameObject swordSpawn;
+    public GameObject swordNotify;
 
     public float cluesObtained;
     public float playerSpeed;
@@ -37,9 +38,10 @@ public class playerController : Photon.MonoBehaviour
         { 
             meleeTimer = 3; 
         } 
-        if (cluesObtained >= 3) 
+        if (cluesObtained >= 3 && gameObject.name == "Player0") 
         { 
-            hasWeapon = true; 
+            hasWeapon = true;
+            swordNotify.SetActive(true);
         } 
  
 
@@ -152,6 +154,9 @@ public class playerController : Photon.MonoBehaviour
                 print("found 1 clue!");
                 GameObject.Destroy(collision.gameObject);
                 cluesObtained += 1;
+
+                GameObject[] clueSpawns = GameObject.FindGameObjectsWithTag("WeaponSpawn");
+                GameObject clue = PhotonNetwork.Instantiate("Clue", clueSpawns[Random.Range(0, clueSpawns.Length)].transform.position, Quaternion.identity, 0);
             }
         }
         else if (collision.collider.tag == "Sword")
@@ -163,7 +168,11 @@ public class playerController : Photon.MonoBehaviour
       //      PhotonNetwork.Destroy(gameObject);
       //      PhotonNetwork.LeaveRoom();
 
-            GameObject.Destroy(gameObject);
+     //       if (PhotonNetwork.isMasterClient)
+     //       {
+                PhotonNetwork.Destroy(gameObject);
+     //       }
+     //       GameObject.Destroy(gameObject);
         }
     }
 

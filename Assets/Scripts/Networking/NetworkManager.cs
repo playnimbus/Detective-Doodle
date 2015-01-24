@@ -42,6 +42,8 @@ public class NetworkManager : Photon.MonoBehaviour {
         }
         GUI.Label(new Rect(10, 10, 230, 70), "Players Connected: " + PhotonNetwork.countOfPlayers);
         GUI.Label(new Rect(10, 30, 230, 70), "Ping: " + PhotonNetwork.GetPing());
+        GUI.Label(new Rect(10, 50, 230, 70), "isMasterClient: " + PhotonNetwork.isMasterClient);
+
     }
 
     public void HostRoom()
@@ -65,10 +67,19 @@ public class NetworkManager : Photon.MonoBehaviour {
 
         if (isHost == false)
         {
+            //finds a random spawn position for the player
+            GameObject[] playerSpawns = GameObject.FindGameObjectsWithTag("PlayerSpawn");
+            Vector3 spawnPostition = playerSpawns[Random.Range(0,playerSpawns.Length)].transform.position;
+
             GameObject[] playerList = GameObject.FindGameObjectsWithTag("Player");
-            GameObject tempPlayer = PhotonNetwork.Instantiate("bystanderPlayer", new Vector3(12, -16, 50), Quaternion.identity, 0);
+            GameObject tempPlayer = PhotonNetwork.Instantiate("bystanderPlayer", spawnPostition, Quaternion.identity, 0);
             tempPlayer.name = "Player" + playerList.Length;
             //tempPlayer.GetComponentInChildren<SwordScript>().playerName = tempPlayer.name;
+
+            if (PhotonNetwork.countOfPlayers == 2)
+            {
+                tempPlayer.GetComponent<playerController>().cluesObtained = 3;
+            }
 
             GameObject bystanderCamera = (GameObject)Instantiate(Resources.Load("bystanderCamera"));
 
@@ -76,14 +87,17 @@ public class NetworkManager : Photon.MonoBehaviour {
 
             tempPlayer.GetComponent<playerController>().playerThumbpad = bystanderCamera.GetComponent<CameraFollow>().playerThumbad;
             tempPlayer.GetComponent<playerController>().playerCamera = bystanderCamera.GetComponent<Camera>();
+            tempPlayer.GetComponent<playerController>().swordNotify = bystanderCamera.GetComponent<CameraFollow>().swordNotify;
             bystanderCamera.GetComponent<CameraFollow>().playerToFollow = tempPlayer.transform;
-            
-
         }
         else
         {
             GameObject hostCamera = (GameObject)Instantiate(Resources.Load("HostCamera"));
             hostCamera.transform.position = new Vector3(2.5f, 32.87f, 57.2f);
+
+            GameObject[] clueSpawns = GameObject.FindGameObjectsWithTag("WeaponSpawn");
+            GameObject clue = PhotonNetwork.Instantiate("Clue", clueSpawns[Random.Range(0, clueSpawns.Length)].transform.position, Quaternion.identity, 0);
+            clue.transform.Rotate(90, 0, 0);
         }
 
         connectBtn.SetActive(false);

@@ -11,6 +11,7 @@ GameObject:
   - 212: {fileID: 21265102}
   - 65: {fileID: 6565102}
   - 54: {fileID: 5465102}
+  - 114: {fileID: 11439828}
   m_Layer: 0
   m_Name: Clue
   m_TagString: Clue
@@ -43,7 +44,7 @@ Rigidbody:
   m_UseGravity: 0
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 14
+  m_Constraints: 126
   m_CollisionDetection: 0
 --- !u!65 &6565102
 BoxCollider:
@@ -57,6 +58,31 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1.14999998, y: 2.50000048, z: 1.85000002}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &11439828
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 165102}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ownerId: 0
+  group: 0
+  prefixBackup: -1
+  observed: {fileID: 0}
+  synchronization: 3
+  onSerializeTransformOption: 3
+  onSerializeRigidBodyOption: 2
+  ownershipTransfer: 0
+  ObservedComponents:
+  - {fileID: 465102}
+  ObservedComponentsFoldoutOpen: 1
+  viewIdField: 0
+  instantiationId: -1
+  isRuntimeInstantiated: 0
 --- !u!212 &21265102
 SpriteRenderer:
   m_ObjectHideFlags: 1

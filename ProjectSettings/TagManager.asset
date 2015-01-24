@@ -18,6 +18,7 @@ TagManager:
   - Player8
   - Sword
   - WeaponSpawn
+  - PlayerSpawn
   - 
   Builtin Layer 0: Default
   Builtin Layer 1: TransparentFX

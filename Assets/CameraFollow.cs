@@ -4,6 +4,7 @@ using System.Collections;
 public class CameraFollow : Photon.MonoBehaviour {
 
     public GameObject playerThumbad;
+    public GameObject swordNotify;
 
     public float dampTime = 0.15f;
     private Vector3 cameraOffset = new Vector3(0, 15, 0);
