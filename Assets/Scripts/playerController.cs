@@ -65,6 +65,11 @@ public class playerController : Photon.MonoBehaviour
                     gameObject.rigidbody.velocity = forceToAdd;
                     transform.LookAt(gameObject.transform.position + forceToAdd);
                 }
+
+                if (hit.transform.gameObject.name == "AttackButton")
+                {
+                    SwingSword();
+                }
             }
             else
             {
