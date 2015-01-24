@@ -216,7 +216,7 @@ MonoBehaviour:
   swordSpawn: {fileID: 186200}
   cluesObtained: 3
   playerSpeed: 10
-  attackRate: .25
+  attackRate: .100000001
   meleeTimer: 0
 --- !u!114 &11486200
 MonoBehaviour:

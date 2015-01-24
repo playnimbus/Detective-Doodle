@@ -33,9 +33,9 @@ public class playerController : Photon.MonoBehaviour
     void Update()
     {
         meleeTimer += Time.deltaTime;
-        if (meleeTimer >= 3)
+        if (meleeTimer >= attackRate)
         {
-            meleeTimer = 3;
+            meleeSword.transform.position = new Vector3(0, 50, 0);
         }
         if (cluesObtained >= 3)
         {
@@ -63,10 +63,6 @@ public class playerController : Photon.MonoBehaviour
         {
             meleeSword.transform.position = swordSpawn.transform.position;
             meleeTimer = 0;
-        }
-        else
-        {
-            meleeSword.transform.position = new Vector3(0,50,0);
         }
     }
 
