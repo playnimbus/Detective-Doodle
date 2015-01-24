@@ -87,6 +87,7 @@ public class playerController : Photon.MonoBehaviour
         }
         else
         {
+         //   print("stream is not writing");
             syncEndPosition = (Vector3)stream.ReceiveNext();
             syncStartPosition = rigidbody.position;
 
