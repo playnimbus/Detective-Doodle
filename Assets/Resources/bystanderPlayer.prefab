@@ -17,7 +17,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!1 &164864
 GameObject:
   m_ObjectHideFlags: 0
@@ -193,8 +193,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerCamera: {fileID: 2009980, guid: 66070b207feb8b944917d259c0d1fcb3, type: 2}
-  playerThumbpad: {fileID: 189232, guid: 66070b207feb8b944917d259c0d1fcb3, type: 2}
-  thumbOrigin: {fileID: 489232, guid: 66070b207feb8b944917d259c0d1fcb3, type: 2}
+  playerThumbpad: {fileID: 109980, guid: 66070b207feb8b944917d259c0d1fcb3, type: 2}
+  thumbOrigin: {x: 0, y: 0, z: 0}
   playerSpeed: 10
   meleeGO: {fileID: 164862}
 --- !u!148 &14864860

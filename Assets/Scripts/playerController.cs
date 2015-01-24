@@ -5,7 +5,7 @@ public class playerController : Photon.MonoBehaviour
 {
     public Camera playerCamera;
     public GameObject playerThumbpad;
-    public Transform thumbOrigin;
+    public Vector3 thumbOrigin;
     public float playerSpeed;
 
     public GameObject meleeGO;
@@ -17,6 +17,11 @@ public class playerController : Photon.MonoBehaviour
     private float syncTime = 0f;
     private Vector3 syncStartPosition = Vector3.zero;
     private Vector3 syncEndPosition = Vector3.zero;
+
+    void Start()
+    {
+        thumbOrigin = playerThumbpad.transform.localPosition;
+    }
 
     // Update is called once per frame
     void Update()
@@ -58,13 +63,13 @@ public class playerController : Photon.MonoBehaviour
             Ray ray = playerCamera.ScreenPointToRay(Input.mousePosition);
             if (Physics.Raycast(ray, out hit))
             {
-                if (hit.transform.gameObject.name == "AnalogStick")
+                if (hit.transform.gameObject.name == "AnalogBG")
                 {
                     Vector3 normalizedCastPosition = hit.point - hit.transform.position;
                     
                     Vector3 forceToAdd = new Vector3(((hit.point.x - hit.transform.position.x) * playerSpeed), 0, ((hit.point.z - hit.transform.position.z) * playerSpeed));
                     //gameObject.rigidbody.AddForce(forceToAdd);
-                    playerThumbpad.transform.position = hit.transform.position;
+                    playerThumbpad.transform.position = hit.point;
                     gameObject.rigidbody.velocity = forceToAdd;
                     transform.LookAt(gameObject.transform.position + forceToAdd);
                 }
@@ -76,13 +81,14 @@ public class playerController : Photon.MonoBehaviour
             }
             else
             {
+                
                 gameObject.rigidbody.velocity = Vector2.zero;
-                playerThumbpad.transform.position = thumbOrigin.transform.position;
 
             }
         }
         else
         {
+            playerThumbpad.transform.localPosition = thumbOrigin;
             gameObject.rigidbody.velocity = Vector2.zero;
 
         }

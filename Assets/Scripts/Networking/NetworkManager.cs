@@ -64,7 +64,7 @@ public class NetworkManager : Photon.MonoBehaviour {
 
             tempPlayer.GetComponent<playerController>().playerCamera = bystanderCamera.GetComponent<Camera>();
             bystanderCamera.GetComponent<CameraFollow>().playerToFollow = tempPlayer.transform;
-
+            tempPlayer.GetComponent<playerController>().playerThumbpad = bystanderCamera.GetComponent<CameraFollow>().playerThumbad;
 
         }
         else
