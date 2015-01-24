@@ -7,12 +7,13 @@ public class SwordScript : MonoBehaviour {
 
     void OnCollisionEnter(Collision col)
     {
-        if (col.collider.tag == "Player")
+        if (col.gameObject.tag == "Player")
         {
-            if (col.collider.name != playerName)
+            if (col.gameObject.name != playerName)
             {
-                Debug.Log("playerAttacked");
-                col.collider.SendMessage("Attacked");
+                Debug.Log("playerAttacked " + playerName);
+             //   col.gameObject.SendMessage("Attacked");
+                col.gameObject.GetComponent<playerController>().Attacked();
             }
         }
     }

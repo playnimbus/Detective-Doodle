@@ -17,8 +17,8 @@ public class playerController : Photon.MonoBehaviour
     private float lastSynchronizationTime = 0f;
     private float syncDelay = 0f;
     private float syncTime = 0f;
-    private Vector3 thumbOrigin;
 
+    private Vector3 thumbOrigin;
     private Vector3 syncStartPosition = Vector3.zero;
     private Vector3 syncEndPosition = Vector3.zero;
 
@@ -72,7 +72,7 @@ public class playerController : Photon.MonoBehaviour
 
     public void Attacked()
     {
-        Debug.Log("playerAttacked");
+        Debug.Log(gameObject.name + "Such a sad day to stop living");
         PhotonNetwork.Destroy(gameObject);
         PhotonNetwork.Disconnect();
         PhotonNetwork.NetworkStatisticsReset();
