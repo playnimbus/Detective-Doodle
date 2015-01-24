@@ -5,8 +5,8 @@ using UnityEngine.UI;
 public class NetworkManager : Photon.MonoBehaviour {
 
     public GameObject bystanderPlayer;
-    public GameObject Murderer;
-    public GameObject Vigilante;
+    public GameObject murdererPlayer;
+    public GameObject vigilantePlayer;
 
     public GameObject connectBtn;
     public GameObject hostBtn;
@@ -32,6 +32,7 @@ public class NetworkManager : Photon.MonoBehaviour {
         {
             GUILayout.Label(PhotonNetwork.connectionStateDetailed.ToString());
         }
+        GUI.Label(new Rect(10, 10, 230, 70), PhotonNetwork.countOfPlayers + "/8");
     }
 
     public void HostRoom()

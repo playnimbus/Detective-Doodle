@@ -7,10 +7,11 @@ public class playerController : Photon.MonoBehaviour
     public GameObject playerThumbpad;
     public Vector3 thumbOrigin;
     public float playerSpeed;
+    public float attackRate;
+    public float meleeTimer;
 
-    public GameObject meleeGO;
-    float meleeTimer = 0;
-    float meleeUpTime = 0.2f;
+    public GameObject meleeSword;
+    public GameObject swordSpawn;
 
     private float lastSynchronizationTime = 0f;
     private float syncDelay = 0f;
@@ -42,9 +43,12 @@ public class playerController : Photon.MonoBehaviour
 
     public void SwingSword()
     {
-        GameObject clone = PhotonNetwork.Instantiate("Sword", gameObject.transform.position, Quaternion.identity, 0);
-        clone.rigidbody.velocity = transform.forward * 8;
-        //PhotonNetwork.Destroy(clone.gameObject, .45F);
+        meleeTimer += Time.deltaTime;
+        if (meleeTimer > attackRate)
+        {
+            meleeSword.transform.position = swordSpawn.transform.position + transform.forward * 1.5F;
+            meleeTimer = 0;
+        }
     }
 
     public void MovementAnalog()
