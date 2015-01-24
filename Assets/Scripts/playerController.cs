@@ -3,8 +3,9 @@ using System.Collections;
 
 public class playerController : Photon.MonoBehaviour
 {
-    public GameObject playerCursor;
     public Camera playerCamera;
+    public GameObject playerThumbpad;
+    public Transform thumbOrigin;
     public float playerSpeed;
 
     public GameObject meleeGO;
@@ -60,8 +61,10 @@ public class playerController : Photon.MonoBehaviour
                 if (hit.transform.gameObject.name == "AnalogStick")
                 {
                     Vector3 normalizedCastPosition = hit.point - hit.transform.position;
+                    
                     Vector3 forceToAdd = new Vector3(((hit.point.x - hit.transform.position.x) * playerSpeed), 0, ((hit.point.z - hit.transform.position.z) * playerSpeed));
                     //gameObject.rigidbody.AddForce(forceToAdd);
+                    playerThumbpad.transform.position = hit.transform.position;
                     gameObject.rigidbody.velocity = forceToAdd;
                     transform.LookAt(gameObject.transform.position + forceToAdd);
                 }
@@ -69,6 +72,7 @@ public class playerController : Photon.MonoBehaviour
             else
             {
                 gameObject.rigidbody.velocity = Vector2.zero;
+                playerThumbpad.transform.position = thumbOrigin.transform.position;
 
             }
         }

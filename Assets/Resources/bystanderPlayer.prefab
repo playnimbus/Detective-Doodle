@@ -192,8 +192,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a8084c671627e6e4587577519ba84673, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerCursor: {fileID: 0}
   playerCamera: {fileID: 2009980, guid: 66070b207feb8b944917d259c0d1fcb3, type: 2}
+  playerThumbpad: {fileID: 189232, guid: 66070b207feb8b944917d259c0d1fcb3, type: 2}
+  thumbOrigin: {fileID: 489232, guid: 66070b207feb8b944917d259c0d1fcb3, type: 2}
   playerSpeed: 10
   meleeGO: {fileID: 164862}
 --- !u!148 &14864860
