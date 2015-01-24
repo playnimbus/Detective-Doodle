@@ -65,14 +65,19 @@ public class NetworkManager : Photon.MonoBehaviour {
 
         if (isHost == false)
         {
+            GameObject[] playerList = GameObject.FindGameObjectsWithTag("Player");
             GameObject tempPlayer = PhotonNetwork.Instantiate("bystanderPlayer", new Vector3(12, -16, 50), Quaternion.identity, 0);
-            //GameObject tempCamera =  PhotonNetwork.Instantiate("bystanderCamera", new Vector3(12, -3.72F, 50), Quaternion.identity, 0);
+            tempPlayer.name = "Player" + playerList.Length;
+            tempPlayer.GetComponentInChildren<SwordScript>().playerName = tempPlayer.name;
+
             GameObject bystanderCamera = (GameObject)Instantiate(Resources.Load("bystanderCamera"));
+
             bystanderCamera.transform.position = tempPlayer.transform.position + new Vector3(0, 20, 0);
 
+            tempPlayer.GetComponent<playerController>().playerThumbpad = bystanderCamera.GetComponent<CameraFollow>().playerThumbad;
             tempPlayer.GetComponent<playerController>().playerCamera = bystanderCamera.GetComponent<Camera>();
             bystanderCamera.GetComponent<CameraFollow>().playerToFollow = tempPlayer.transform;
-            tempPlayer.GetComponent<playerController>().playerThumbpad = bystanderCamera.GetComponent<CameraFollow>().playerThumbad;
+            
 
         }
         else
