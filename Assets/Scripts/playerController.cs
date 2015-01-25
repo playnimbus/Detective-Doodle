@@ -27,6 +27,7 @@ public class playerController : Photon.MonoBehaviour
 
     void Start()
     {
+        
         thumbOrigin = playerThumbpad.transform.localPosition;
     }
 
