@@ -13,12 +13,15 @@ public class NetworkManager : Photon.MonoBehaviour {
     public GameObject murdererWinsTxt;
     public GameObject murdererLosesTxt;
 
+    public GameObject roomCovers;
+
     bool isHost = false;
 
     float murderAssignCountdown = 20;
     GameObject[] FinalPlayerList = null;
     public GameObject ChosenMurderer = null;
     bool murdererAssigned = false;
+    TextMesh countDownText;
 
 
 	// Use this for initialization
@@ -42,6 +45,9 @@ public class NetworkManager : Photon.MonoBehaviour {
             if (PhotonNetwork.playerList.Length >= 4 && murdererAssigned == false)
             {
                 murderAssignCountdown -= Time.deltaTime;
+
+                countDownText.text = murderAssignCountdown.ToString("0.#");
+
                 if (murderAssignCountdown <= 0)
                 {
                     FinalPlayerList = GameObject.FindGameObjectsWithTag("Player");
@@ -58,6 +64,7 @@ public class NetworkManager : Photon.MonoBehaviour {
                     clue.transform.Rotate(new Vector3(90, 0, 0));
 
                     murdererAssigned = true;
+                    countDownText.gameObject.SetActive(false);
                 }
             }
 
@@ -89,8 +96,14 @@ public class NetworkManager : Photon.MonoBehaviour {
         GUI.Label(new Rect(10, 30, 230, 70), "Ping: " + PhotonNetwork.GetPing());
         GUI.Label(new Rect(10, 50, 230, 70), "isMasterClient: " + PhotonNetwork.isMasterClient);
 
-       
+        /*
+        GUI.Label(new Rect(10, 70, 230, 70), "My Player ID: " + PhotonNetwork.player.ID);
 
+        for(int i = 0; i < PhotonNetwork.playerList.Length; i++)
+        {
+            GUI.Label(new Rect(10, 110 + (20 * i), 230, 70), "Player " + i + ": " + PhotonNetwork.playerList[i].ID);
+        }
+         * */
     }
 
     public void HostRoom()
@@ -144,6 +157,11 @@ public class NetworkManager : Photon.MonoBehaviour {
             GameObject.Find("CreepSpawner").GetComponent<CreepSpawner>().spawnPhotonCreep();
             GameObject.Find("CreepSpawner").GetComponent<CreepSpawner>().spawnPhotonCreep();
             GameObject.Find("CreepSpawner").GetComponent<CreepSpawner>().spawnPhotonCreep();
+
+            countDownText = GameObject.Find("CountDownTimer").GetComponent<TextMesh>();
+            countDownText.text = murderAssignCountdown.ToString();
+
+            roomCovers.SetActive(false);
         }
 
         connectBtn.SetActive(false);
