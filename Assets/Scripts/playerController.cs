@@ -13,8 +13,6 @@ public class playerController : Photon.MonoBehaviour
 
     public float cluesObtained;
     public float playerSpeed;
-    public float attackRate;
-    public float meleeTimer;
 
     private float lastSynchronizationTime = 0f;
     private float syncDelay = 0f;
@@ -38,11 +36,7 @@ public class playerController : Photon.MonoBehaviour
     // Update is called once per frame
     void Update()
     { 
-        meleeTimer += Time.deltaTime; 
-        if (meleeTimer >= 3) 
-        { 
-            meleeTimer = 3; 
-        } 
+
         if (cluesObtained >= 3 && gameObject.name == "Player0") 
         { 
             hasWeapon = true;
@@ -66,17 +60,17 @@ public class playerController : Photon.MonoBehaviour
  
 
     public void SwingSword() 
-    { 
-          
-        if (meleeTimer > attackRate) 
-        { 
-            meleeSword.transform.position = swordSpawn.transform.position; 
-            meleeTimer = 0; 
-        } 
-        else 
-        { 
-            meleeSword.transform.position = new Vector3(0,50,0); 
-        } 
+    {
+
+        if (meleeSword.transform.position.y <= 25)
+        {
+            meleeSword.transform.position = new Vector3(0, 50, 0); 
+        }
+        else if (meleeSword.transform.position.y > 25)
+        {
+            meleeSword.transform.position = swordSpawn.transform.position;
+        }
+
     } 
 
 
@@ -103,20 +97,27 @@ public class playerController : Photon.MonoBehaviour
 
                     playerThumbpad.transform.position = hit.point;
                 }
-                if (hasWeapon)
-                {
-                    if (hit.transform.gameObject.name == "AttackButton")
-                    {
-
-                        SwingSword();
-                    }
-                }
             }
             else
             {
                 playerThumbpad.transform.localPosition = thumbOrigin;
                 gameObject.rigidbody.velocity = Vector2.zero;
             }
+
+            if (Input.GetMouseButtonDown(0))
+            {
+                if (hasWeapon)
+                {
+                    if (hit.transform.gameObject.name == "AttackButton")
+                    {
+                        print("Swing Sword");
+                        SwingSword();
+                    }
+                }
+            }
+
+
+
         }
         else
         {
