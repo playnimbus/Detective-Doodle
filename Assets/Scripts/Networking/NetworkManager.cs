@@ -34,8 +34,9 @@ public class NetworkManager : Photon.MonoBehaviour {
             {
                 PhotonNetwork.DestroyAll();
                 PhotonNetwork.LeaveRoom();
+                PhotonNetwork.Disconnect();
                 PhotonNetwork.NetworkStatisticsReset();
-                PhotonNetwork.LoadLevel(Application.loadedLevel);
+                Application.LoadLevel(Application.loadedLevel);
             }
 
             if (PhotonNetwork.playerList.Length >= 4 && murdererAssigned == false)
