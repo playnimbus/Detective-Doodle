@@ -10,10 +10,16 @@ public class NetworkManager : Photon.MonoBehaviour {
 
     public GameObject connectBtn;
     public GameObject hostBtn;
+    public GameObject murdererWinsTxt;
+    public GameObject murdererLosesTxt;
 
     bool isHost = false;
 
-    private const string roomName = "RoomName";
+    float murderAssignCountdown = 20;
+    GameObject[] FinalPlayerList = null;
+    public GameObject ChosenMurderer = null;
+    bool murdererAssigned = false;
+
 
 	// Use this for initialization
 	void Start () {
@@ -31,6 +37,44 @@ public class NetworkManager : Photon.MonoBehaviour {
                 PhotonNetwork.NetworkStatisticsReset();
                 PhotonNetwork.LoadLevel(Application.loadedLevel);
             }
+
+            if (PhotonNetwork.playerList.Length >= 4 && murdererAssigned == false)
+            {
+                murderAssignCountdown -= Time.deltaTime;
+                if (murderAssignCountdown <= 0)
+                {
+                    FinalPlayerList = GameObject.FindGameObjectsWithTag("Player");
+
+                    ChosenMurderer = FinalPlayerList[Random.Range(0, FinalPlayerList.Length)];
+
+                    GameObject clue = PhotonNetwork.Instantiate("Clue", ChosenMurderer.transform.position, Quaternion.identity, 0);
+                    clue.transform.Rotate(new Vector3(90, 0, 0));
+
+                    clue = PhotonNetwork.Instantiate("Clue", ChosenMurderer.transform.position, Quaternion.identity, 0);
+                    clue.transform.Rotate(new Vector3(90, 0, 0));
+
+                    clue = PhotonNetwork.Instantiate("Clue", ChosenMurderer.transform.position, Quaternion.identity, 0);
+                    clue.transform.Rotate(new Vector3(90, 0, 0));
+
+                    murdererAssigned = true;
+                }
+            }
+
+            if (murdererAssigned == true)
+            {
+                if (ChosenMurderer == null)
+                {
+                    murdererLosesTxt.SetActive(true);
+                }
+            }
+            if (murdererAssigned == true)
+            {
+                GameObject[] tempPlayerlist = GameObject.FindGameObjectsWithTag("Player");
+                if (tempPlayerlist.Length <= 1)
+                {
+                    murdererWinsTxt.SetActive(true);
+                }
+            }
         }
 	}
 
@@ -40,9 +84,11 @@ public class NetworkManager : Photon.MonoBehaviour {
         {
             GUILayout.Label(PhotonNetwork.connectionStateDetailed.ToString());
         }
-        GUI.Label(new Rect(10, 10, 230, 70), "Players Connected: " + PhotonNetwork.countOfPlayers);
+        GUI.Label(new Rect(10, 10, 230, 70), "Players Connected: " + PhotonNetwork.playerList.Length);
         GUI.Label(new Rect(10, 30, 230, 70), "Ping: " + PhotonNetwork.GetPing());
         GUI.Label(new Rect(10, 50, 230, 70), "isMasterClient: " + PhotonNetwork.isMasterClient);
+
+       
 
     }
 
@@ -75,11 +121,6 @@ public class NetworkManager : Photon.MonoBehaviour {
             GameObject tempPlayer = PhotonNetwork.Instantiate("bystanderPlayer", spawnPostition, Quaternion.identity, 0);
             tempPlayer.name = "Player" + playerList.Length;
             //tempPlayer.GetComponentInChildren<SwordScript>().playerName = tempPlayer.name;
-
-            if (PhotonNetwork.countOfPlayers == 2)
-            {
-                tempPlayer.GetComponent<playerController>().cluesObtained = 3;
-            }
 
             GameObject bystanderCamera = (GameObject)Instantiate(Resources.Load("bystanderCamera"));
 
