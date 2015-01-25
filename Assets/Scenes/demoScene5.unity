@@ -6557,7 +6557,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 149384, guid: 3644155f5a5cb96478cdc4f072611d3f, type: 2}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 3644155f5a5cb96478cdc4f072611d3f, type: 2}
@@ -11538,7 +11538,7 @@ Transform:
   - {fileID: 1970807310}
   - {fileID: 706434587}
   m_Father: {fileID: 0}
-  m_RootOrder: 12
+  m_RootOrder: 11
 --- !u!1 &716631454
 GameObject:
   m_ObjectHideFlags: 0
@@ -13433,7 +13433,7 @@ GameObject:
   m_Icon: {fileID: 266726316, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &782864451
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15402,7 +15402,7 @@ Transform:
   - {fileID: 2010073094}
   - {fileID: 931850280}
   m_Father: {fileID: 0}
-  m_RootOrder: 11
+  m_RootOrder: 13
 --- !u!1 &906519110
 GameObject:
   m_ObjectHideFlags: 0
@@ -27133,7 +27133,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1492412509
 Transform:
   m_ObjectHideFlags: 0
@@ -27155,7 +27155,7 @@ Transform:
   - {fileID: 1451019290}
   - {fileID: 53943653}
   m_Father: {fileID: 0}
-  m_RootOrder: 13
+  m_RootOrder: 12
 --- !u!1 &1495229434
 GameObject:
   m_ObjectHideFlags: 0
@@ -27248,6 +27248,7 @@ MonoBehaviour:
   murdererLosesTxt: {fileID: 0}
   roomCovers: {fileID: 1492412508}
   ChosenMurderer: {fileID: 0}
+  murderSwordSprite: {fileID: 21300000, guid: 9eba8cb70435d3a418d00f801d774c37, type: 3}
 --- !u!4 &1502126206
 Transform:
   m_ObjectHideFlags: 0
@@ -32476,7 +32477,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1769661441
 Transform:
   m_ObjectHideFlags: 0

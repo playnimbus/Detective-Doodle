@@ -23,6 +23,8 @@ public class NetworkManager : Photon.MonoBehaviour {
     bool murdererAssigned = false;
     TextMesh countDownText;
 
+    public Sprite murderSwordSprite;
+    bool Murderfound = false;
 
 	// Use this for initialization
 	void Start () {
@@ -84,6 +86,23 @@ public class NetworkManager : Photon.MonoBehaviour {
                 }
             }
         }
+
+        if (Murderfound == false)
+        {
+            GameObject[] Players = GameObject.FindGameObjectsWithTag("Player");
+
+            for (int i = 0; i < Players.Length; i++)
+            {
+                if (Players[i].GetComponent<playerController>().cluesObtained >= 3)
+                {
+                    Players[i].GetComponent<playerController>().meleeSword.GetComponent<SpriteRenderer>().sprite = murderSwordSprite;
+                    Murderfound = true;
+                }
+
+            }
+
+        }
+
 	}
 
     void OnGUI()

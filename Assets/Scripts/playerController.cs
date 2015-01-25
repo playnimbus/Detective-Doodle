@@ -26,7 +26,8 @@ public class playerController : Photon.MonoBehaviour
 
     private bool hasWeapon;
 
-    string[] names = { "Mike", "Nick", "Jacob", "John", "Joe", "Ian" };
+
+    string[] names = { "Mike", "Nick", "Jacob", "John", "Joe", "Ian", "Marc","Swei","Flood","Mudry","Neo","Adam","Pup0","Yuka","Sarah","Brit","Casey","Jess","Nora","Jamie","Renzo","Keith","Kyle","Ryan","Kate","Ali","Rich", "Dave","Nate","Monty","Mina","Sam" };
 
     void Start()
     {
@@ -48,11 +49,10 @@ public class playerController : Photon.MonoBehaviour
             swordNotify.SetActive(true);
         } 
  
-
         if (photonView.isMine) 
         { 
             MovementAnalog();  
-        } 
+        }
     } 
  
 
