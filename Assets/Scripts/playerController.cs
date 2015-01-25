@@ -9,6 +9,7 @@ public class playerController : Photon.MonoBehaviour
     public GameObject meleeSword;
     public GameObject swordSpawn;
     public GameObject swordNotify;
+    public TextMesh name;
 
     public float cluesObtained;
     public float playerSpeed;
@@ -25,10 +26,12 @@ public class playerController : Photon.MonoBehaviour
 
     private bool hasWeapon;
 
+    string[] names = { "Mike", "Nick", "Jacob", "John", "Joe", "Ian" };
+
     void Start()
     {
-        
         thumbOrigin = playerThumbpad.transform.localPosition;
+        name.text = names[Random.Range(0, names.Length)];
     }
 
     // Update is called once per frame
