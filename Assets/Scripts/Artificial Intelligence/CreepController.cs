@@ -49,42 +49,53 @@ public class CreepController : MonoBehaviour {
 
     public Node destinationNodeDebug;
 
+
+    //photon lag
+    private float lastSynchronizationTime = 0f;
+    private float syncDelay = 0f;
+    private float syncTime = 0f;
+    private Vector3 syncStartPosition = Vector3.zero;
+    private Vector3 syncEndPosition = Vector3.zero;
+
 	// Use this for initialization
 	void Start () {
 
-        gameObject.rigidbody.AddForce(new Vector3(1, 0, 0));
-
-        nodeBuilder = GameObject.Find("NodeBuilder");
-
-        /*
-        foreach (AnimationState state in animation)
+        if (PhotonNetwork.isMasterClient == true)
         {
-            switch (state.name)
+            gameObject.rigidbody.AddForce(new Vector3(1, 0, 0));
+
+            nodeBuilder = GameObject.Find("NodeBuilder");
+
+            /*
+            foreach (AnimationState state in animation)
             {
-                case "idle": idleAnimState = state; break;
-                case "walk": walkAnimState = state; break;
-                case "attack": attackAnimState = state; break;
-                case "death": deathAnimState = state; break;
+                switch (state.name)
+                {
+                    case "idle": idleAnimState = state; break;
+                    case "walk": walkAnimState = state; break;
+                    case "attack": attackAnimState = state; break;
+                    case "death": deathAnimState = state; break;
+                }
             }
+            */
+            idleStateEnter();
+            enemyState = enemyStates.idle;
         }
-        */
-        idleStateEnter();
-        enemyState = enemyStates.idle;
 	}
 	
 	// Update is called once per frame
 
 	void Update () {
 
-        checkCurrentNode();
-
-        switch (enemyState)
+        if (PhotonNetwork.isMasterClient == true)
         {
-            case enemyStates.idle: idleStateUpdate(); break;
-            case enemyStates.walkPath: walkStateUpdate(); break;
-            case enemyStates.attack: attackStateUpdate(); break;
-            case enemyStates.death: deathStateUpdate(); break;
-            case enemyStates.pursue: pursueStateUpdate(); break;
+            checkCurrentNode();
+
+            switch (enemyState)
+            {
+                case enemyStates.idle: idleStateUpdate(); break;
+                case enemyStates.walkPath: walkStateUpdate(); break;
+            }
         }
 
         /*
@@ -107,15 +118,30 @@ public class CreepController : MonoBehaviour {
         
 	}
 
+    void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+    {
+        if (stream.isWriting)
+        {
+            stream.SendNext(rigidbody.position);
+        }
+        else
+        {
+            //   print("stream is not writing");
+            syncEndPosition = (Vector3)stream.ReceiveNext();
+            syncStartPosition = rigidbody.position;
+
+            syncTime = 0f;
+            syncDelay = Time.time - lastSynchronizationTime;
+            lastSynchronizationTime = Time.time;
+        }
+    }
+
     void changeEnemyState(enemyStates newState)
     {
         switch (enemyState)
         {
             case enemyStates.idle: idleStateExit(); break;
             case enemyStates.walkPath: walkStateExit(); break;
-            case enemyStates.attack: attackStateExit(); break;
-            case enemyStates.death: deathStateExit(); break;
-            case enemyStates.pursue: pursueStateExit(); break;
         }
 
         enemyState = newState;
@@ -124,9 +150,6 @@ public class CreepController : MonoBehaviour {
         {
             case enemyStates.idle: idleStateEnter(); break;
             case enemyStates.walkPath: walkStateEnter(); break;
-            case enemyStates.attack: attackStateEnter(); break;
-            case enemyStates.death: deathStateEnter(); break;
-            case enemyStates.pursue: pursueStateEnter(); break;
         }
     }
 
@@ -150,96 +173,7 @@ public class CreepController : MonoBehaviour {
     }
 
     //-------------- PURSUE STATE -----------------------
-    float sightTimer = 0;
-    void pursueStateEnter()
-    {
-   //     animation.Play("run");
-        DestinationNode = null;
-        sightTimer = 0;
-        alertMark.SetActive(true);
-    }
 
-    float pursueWallTimer = 0;
-    string oldCurrentNode = "";
-    public Vector3 directionDebug;
-    void pursueStateUpdate()
-    {
-        /*
-        if (animation.isPlaying == false)
-        {
-            animation.Play("run");
-        }
-         * */
-        if (currentNode.name == oldCurrentNode)
-        {
-            pursueWallTimer += Time.deltaTime;
-            if (pursueWallTimer >= 1)
-            {
-                DestinationNode = Player.GetComponent<Player>().currentNode;
-                changeEnemyState(enemyStates.walkPath);
-            }
-        }
-        else
-        {
-            pursueWallTimer = 0;
-        }
-
-
-        alertMark.transform.LookAt(Player.transform.position);
-        gameObject.transform.LookAt(new Vector3(Player.transform.position.x, gameObject.transform.position.y, Player.transform.position.z));
-
-        Vector3 directionToDesitination = (Player.transform.position - gameObject.transform.position).normalized;
-        directionToDesitination = (directionToDesitination * walkSpeed) * Time.deltaTime;
-
-        gameObject.transform.position += new Vector3(directionToDesitination.x, 0, directionToDesitination.z);
-
-
-        if (Vector3.Distance(Player.transform.position, gameObject.transform.position) <= 15)
-        {
-            RaycastHit hit;
-            if (Physics.Raycast(gameObject.transform.position + (new Vector3(0, gameObject.GetComponentInChildren<SkinnedMeshRenderer>().bounds.size.y / 2, 0)), ((Player.transform.position - (new Vector3(0, Player.GetComponentInChildren<MeshRenderer>().bounds.size.y / 2, 0))) - gameObject.transform.position).normalized, out hit))
-            {
-                if (hit.transform.tag == "Player")
-                {
-                    sightTimer = 0;
-                }
-                else if (hit.transform.tag == "LevelGeometry")
-                {
-                    sightTimer += Time.deltaTime;
-
-                    if (Player.GetComponent<Player>().currentNode.status == Node.Status.closed)
-                    {
-                        destinationNodeDebug = Player.GetComponent<Player>().currentNode;
-                        print("Entity sent bad destination");
-                    }
-                    DestinationNode = Player.GetComponent<Player>().currentNode;
-                    changeEnemyState(enemyStates.walkPath);
-                }
-                else if (hit.transform.tag != "Player")
-                {
-                    sightTimer += Time.deltaTime;
-                    if (sightTimer >= 2)
-                    {
-                        changeEnemyState(enemyStates.idle);
-                    }
-                }
-            }
-            else
-            {
-                changeEnemyState(enemyStates.idle);
-            }
-        }
-        else
-        {
-            changeEnemyState(enemyStates.idle);
-        }
-
-        oldCurrentNode = currentNode.name;
-    }
-    void pursueStateExit()
-    {
-        alertMark.SetActive(false);
-    }
 
     //-------------- walkPath STATE -----------------------
 
@@ -268,12 +202,12 @@ public class CreepController : MonoBehaviour {
          * */
         if (NextNodeOnPath != null)
         {
-            gameObject.transform.LookAt(new Vector3(NextNodeOnPath.position.x, gameObject.transform.position.y, NextNodeOnPath.position.z));
+            gameObject.transform.LookAt(new Vector3(NextNodeOnPath.position.x,gameObject.transform.position.y, NextNodeOnPath.position.z));
         }
 
         Vector3 directionToDesitination = (NextNodeOnPath.position - gameObject.transform.position).normalized;
         directionToDesitination = (directionToDesitination * walkSpeed) * Time.deltaTime;
-        gameObject.transform.position += new Vector3(directionToDesitination.x, 0, directionToDesitination.z);
+        gameObject.rigidbody.MovePosition(gameObject.transform.position += new Vector3(directionToDesitination.x, 0, directionToDesitination.z));
 
         if (Vector3.Distance(gameObject.transform.position, NextNodeOnPath.position) <= 0.7f)
         {
@@ -372,62 +306,6 @@ public class CreepController : MonoBehaviour {
        
     }
     void idleStateExit() { }
-
-//-------------- ATTACK STATE -----------------------
-    void attackStateEnter() 
-    {
-     //   animation.Play("attack");
-        gameObject.rigidbody.isKinematic = true;
-        attackTimer = 0;
-        StartCoroutine(CheckAttackRange());
-
-    }
-    void attackStateUpdate()
-    {
-        if (animation.isPlaying == false)
-        {
-            changeEnemyState(enemyStates.pursue);
-        }
-    }
-    void attackStateExit() 
-    {
-        gameObject.rigidbody.isKinematic = false;
-    }
-
-    float timeUntilHit = 0.5f;
-    IEnumerator CheckAttackRange()
-    {
-        yield return new WaitForSeconds(timeUntilHit);
-
-        if (Vector3.Distance(gameObject.transform.position, Player.transform.position) <= attackRange)
-        {
-            if (Player.tag == "Player")
-            {
-                Player.GetComponent<Player>().applyDamage(attackDamage);
-            }
-        }
-    }
-
-
-    //-------------- DEATH STATE -----------------------
-    void deathStateEnter() 
-    {
-   //     animation.Play("die");
-        gameObject.GetComponent<CapsuleCollider>().enabled = false;
-        gameObject.rigidbody.isKinematic = true;
-    }
-    void deathStateUpdate() 
-    {
-        /*
-        if (animation.isPlaying == false)
-        {
-            DestroyObject(gameObject);
-        }
-         * */
-    }
-    void deathStateExit() { }
-
-
 
     //-------------------------------------------------
     bool firstPath = true;

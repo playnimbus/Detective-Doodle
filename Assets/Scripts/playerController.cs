@@ -149,15 +149,19 @@ public class playerController : Photon.MonoBehaviour
     {
         if (collision.collider.tag == "Clue")
         {
-            if (!hasWeapon)
-            {
-                print("found 1 clue!");
-                GameObject.Destroy(collision.gameObject);
-                cluesObtained += 1;
+            print("found 1 clue!");
+            GameObject.Destroy(collision.gameObject);
+            cluesObtained += 1;
 
+
+            GameObject[] clues = GameObject.FindGameObjectsWithTag("Clue");
+
+            if (clues.Length <= 1)
+            {
                 GameObject[] clueSpawns = GameObject.FindGameObjectsWithTag("WeaponSpawn");
                 GameObject clue = PhotonNetwork.Instantiate("Clue", clueSpawns[Random.Range(0, clueSpawns.Length)].transform.position, Quaternion.identity, 0);
             }
+            
         }
         else if (collision.collider.tag == "Sword")
         {

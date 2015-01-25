@@ -6,7 +6,8 @@ using System.Collections.Generic;
  * spawns entities at the location of the spawner when the 'm' key is pressed
  */
 
-public class CreepSpawner : MonoBehaviour {
+public class CreepSpawner : Photon.MonoBehaviour
+{
 
     public float spawnRate;
     float time;
@@ -30,7 +31,7 @@ public class CreepSpawner : MonoBehaviour {
             }
         }
 
-        spawnCreep();
+   //     spawnCreep();
 	}
 
     // Update is called once per frame
@@ -48,10 +49,12 @@ public class CreepSpawner : MonoBehaviour {
             numCreep++;
         }
 */
+        /*
         if (Input.GetKeyDown("m"))
         {
             spawnCreep();
         }
+         * */
 	}
 
     public void minusCreep()
@@ -62,6 +65,12 @@ public class CreepSpawner : MonoBehaviour {
     {
         GameObject creep = (GameObject)Instantiate(Resources.Load("entity"));
         creep.transform.position = gameObject.transform.position;
+        creep.GetComponent<CreepController>().setCurrentNode(creepStartingNode);
+        numCreep++;
+    }
+    public void spawnPhotonCreep()
+    {
+        GameObject creep = PhotonNetwork.Instantiate("entity", gameObject.transform.position, Quaternion.identity, 0);
         creep.GetComponent<CreepController>().setCurrentNode(creepStartingNode);
         numCreep++;
     }

@@ -97,7 +97,11 @@ public class NetworkManager : Photon.MonoBehaviour {
 
             GameObject[] clueSpawns = GameObject.FindGameObjectsWithTag("WeaponSpawn");
             GameObject clue = PhotonNetwork.Instantiate("Clue", clueSpawns[Random.Range(0, clueSpawns.Length)].transform.position, Quaternion.identity, 0);
-            clue.transform.Rotate(90, 0, 0);
+            clue.transform.Rotate(new Vector3(90, 0, 0));
+
+            GameObject.Find("CreepSpawner").GetComponent<CreepSpawner>().spawnPhotonCreep();
+            GameObject.Find("CreepSpawner").GetComponent<CreepSpawner>().spawnPhotonCreep();
+            GameObject.Find("CreepSpawner").GetComponent<CreepSpawner>().spawnPhotonCreep();
         }
 
         connectBtn.SetActive(false);
