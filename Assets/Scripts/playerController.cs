@@ -31,6 +31,11 @@ public class playerController : Photon.MonoBehaviour
     {
         thumbOrigin = playerThumbpad.transform.localPosition;
         name.text = names[Random.Range(0, names.Length)];
+
+        if (PhotonNetwork.isMasterClient == true)
+        {
+            name.gameObject.SetActive(false);
+        }
     }
 
     // Update is called once per frame
@@ -47,8 +52,8 @@ public class playerController : Photon.MonoBehaviour
         { 
             MovementAnalog();  
         }
-    } 
- 
+    }
+
 
     void FixedUpdate() 
     { 
