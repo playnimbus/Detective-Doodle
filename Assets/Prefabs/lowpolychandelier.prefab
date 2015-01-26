@@ -108,7 +108,7 @@ GameObject:
   - 4: {fileID: 402074}
   - 95: {fileID: 9502062}
   - 54: {fileID: 5402062}
-  - 75: {fileID: 7502062}
+  - 75: {fileID: 7564774}
   m_Layer: 0
   m_Name: chandelier_lights
   m_TagString: Untagged
@@ -412,8 +412,6 @@ GameObject:
   - 23: {fileID: 2302080}
   - 54: {fileID: 5402066}
   - 59: {fileID: 5902064}
-  - 75: {fileID: 7577406}
-  - 75: {fileID: 7502064}
   m_Layer: 0
   m_Name: rope
   m_TagString: Untagged
@@ -445,12 +443,12 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 102062}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 24.6700001, y: 3.87899995, z: 49.8499985}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 402090}
-  - {fileID: 402110}
   - {fileID: 402074}
+  - {fileID: 402110}
+  - {fileID: 402090}
   m_Father: {fileID: 0}
   m_RootOrder: 0
 --- !u!4 &402064
@@ -520,7 +518,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 102074}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 24.6700001, y: -7.76000071, z: 49.8499985}
+  m_LocalPosition: {x: 0, y: -11.6390009, z: 0}
   m_LocalScale: {x: 10, y: 10, z: 10}
   m_Children:
   - {fileID: 402066}
@@ -546,7 +544,7 @@ Transform:
   - {fileID: 402098}
   - {fileID: 402064}
   m_Father: {fileID: 402062}
-  m_RootOrder: 2
+  m_RootOrder: 0
 --- !u!4 &402076
 Transform:
   m_ObjectHideFlags: 1
@@ -638,11 +636,11 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 102090}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 24.6700001, y: 3.87899995, z: 49.8499985}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 402062}
-  m_RootOrder: 0
+  m_RootOrder: 2
 --- !u!4 &402092
 Transform:
   m_ObjectHideFlags: 1
@@ -758,7 +756,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 102110}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 24.6700001, y: -1.52999997, z: 49.8499985}
+  m_LocalPosition: {x: 0, y: -5.40899992, z: 0}
   m_LocalScale: {x: 10, y: 503.905884, z: 10}
   m_Children: []
   m_Father: {fileID: 402062}
@@ -1150,37 +1148,15 @@ HingeJoint:
   m_BreakForce: Infinity
   m_BreakTorque: Infinity
   m_EnableCollision: 0
---- !u!75 &7502062
+--- !u!75 &7564774
 ConstantForce:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 102074}
-  m_Enabled: 0
-  m_Force: {x: .150000006, y: 0, z: 0}
-  m_RelativeForce: {x: .200000003, y: 0, z: 0}
-  m_Torque: {x: 0, y: 0, z: 0}
-  m_RelativeTorque: {x: 0, y: 0, z: 0}
---- !u!75 &7502064
-ConstantForce:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 102110}
   m_Enabled: 1
   m_Force: {x: .5, y: 0, z: .00999999978}
   m_RelativeForce: {x: 0, y: 0, z: 0}
-  m_Torque: {x: 0, y: 0, z: 0}
-  m_RelativeTorque: {x: 0, y: 0, z: 0}
---- !u!75 &7577406
-ConstantForce:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 102110}
-  m_Enabled: 1
-  m_Force: {x: .150000006, y: 0, z: 0}
-  m_RelativeForce: {x: .100000001, y: 0, z: 0}
   m_Torque: {x: 0, y: 0, z: 0}
   m_RelativeTorque: {x: 0, y: 0, z: 0}
 --- !u!95 &9502062
