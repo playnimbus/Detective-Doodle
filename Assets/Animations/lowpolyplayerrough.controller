@@ -7,7 +7,13 @@ AnimatorController:
   m_PrefabInternal: {fileID: 0}
   m_Name: lowpolyplayerrough
   serializedVersion: 2
-  m_AnimatorParameters: []
+  m_AnimatorParameters:
+  - m_Name: pose
+    m_Type: 3
+    m_DefaultFloat: 0
+    m_DefaultInt: 0
+    m_DefaultBool: 0
+    m_Controller: {fileID: 9100000}
   m_AnimatorLayers:
   - serializedVersion: 3
     m_Name: Base Layer
@@ -32,9 +38,9 @@ Transition:
   m_TransitionDuration: .125
   m_TransitionOffset: 0
   m_Conditions:
-  - m_ConditionMode: 5
-    m_ConditionEvent: 
-    m_EventTreshold: 0
+  - m_ConditionMode: 6
+    m_ConditionEvent: pose
+    m_EventTreshold: 1
     m_ExitTime: .875
   m_Atomic: 1
   m_Solo: 0
@@ -52,9 +58,9 @@ Transition:
   m_TransitionDuration: .1875
   m_TransitionOffset: 0
   m_Conditions:
-  - m_ConditionMode: 5
-    m_ConditionEvent: 
-    m_EventTreshold: 0
+  - m_ConditionMode: 6
+    m_ConditionEvent: pose
+    m_EventTreshold: 1
     m_ExitTime: .8125
   m_Atomic: 1
   m_Solo: 0
@@ -72,8 +78,8 @@ Transition:
   m_TransitionDuration: .125
   m_TransitionOffset: 0
   m_Conditions:
-  - m_ConditionMode: 5
-    m_ConditionEvent: 
+  - m_ConditionMode: 6
+    m_ConditionEvent: pose
     m_EventTreshold: 0
     m_ExitTime: .875
   m_Atomic: 1
@@ -92,9 +98,9 @@ Transition:
   m_TransitionDuration: .1875
   m_TransitionOffset: 0
   m_Conditions:
-  - m_ConditionMode: 5
-    m_ConditionEvent: 
-    m_EventTreshold: 0
+  - m_ConditionMode: 6
+    m_ConditionEvent: pose
+    m_EventTreshold: 2
     m_ExitTime: .8125
   m_Atomic: 1
   m_Solo: 0
@@ -112,8 +118,8 @@ Transition:
   m_TransitionDuration: .125
   m_TransitionOffset: 0
   m_Conditions:
-  - m_ConditionMode: 5
-    m_ConditionEvent: 
+  - m_ConditionMode: 6
+    m_ConditionEvent: pose
     m_EventTreshold: 0
     m_ExitTime: .875
   m_Atomic: 1
@@ -132,9 +138,9 @@ Transition:
   m_TransitionDuration: .125
   m_TransitionOffset: 0
   m_Conditions:
-  - m_ConditionMode: 5
-    m_ConditionEvent: 
-    m_EventTreshold: 0
+  - m_ConditionMode: 6
+    m_ConditionEvent: pose
+    m_EventTreshold: 2
     m_ExitTime: .875
   m_Atomic: 1
   m_Solo: 0
@@ -146,7 +152,7 @@ State:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_Name: playerSneak
-  m_Speed: 1
+  m_Speed: 1.64999998
   m_CycleOffset: 0
   m_Motions:
   - {fileID: 7400000, guid: 42537ab699ef31845b26dff15071ea6c, type: 2}
@@ -161,7 +167,7 @@ State:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_Name: playerRun
-  m_Speed: 1
+  m_Speed: 2
   m_CycleOffset: 0
   m_Motions:
   - {fileID: 7400000, guid: 3239e3b1330490e4c90aa096205ff5ca, type: 2}
@@ -201,20 +207,20 @@ StateMachine:
   m_ChildStateMachinePosition: []
   m_OrderedTransitions:
     data:
-      first: {fileID: 110276286}
+      first: {fileID: 110276658}
       second:
-      - {fileID: 110161106}
-      - {fileID: 110114264}
+      - {fileID: 110122458}
+      - {fileID: 110159404}
     data:
       first: {fileID: 110250046}
       second:
       - {fileID: 110145528}
       - {fileID: 110177906}
     data:
-      first: {fileID: 110276658}
+      first: {fileID: 110276286}
       second:
-      - {fileID: 110122458}
-      - {fileID: 110159404}
+      - {fileID: 110161106}
+      - {fileID: 110114264}
   m_MotionSetCount: 1
-  m_AnyStatePosition: {x: 168, y: -72, z: 0}
+  m_AnyStatePosition: {x: 168, y: -108, z: 0}
   m_ParentStateMachinePosition: {x: 800, y: 20, z: 0}

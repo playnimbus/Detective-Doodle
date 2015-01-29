@@ -5,6 +5,8 @@ public class playerController : Photon.MonoBehaviour
 {
     public Camera playerCamera;
 
+    public Animator playerAnimator;
+
     public GameObject playerThumbpad;
     public GameObject meleeSword;
     public GameObject swordSpawn;
@@ -14,6 +16,7 @@ public class playerController : Photon.MonoBehaviour
     public float cluesObtained;
     public float playerSpeed;
 
+    public float currentVelocity;
     private float lastSynchronizationTime = 0f;
     private float syncDelay = 0f;
     private float syncTime = 0f;
@@ -25,7 +28,7 @@ public class playerController : Photon.MonoBehaviour
     private bool hasWeapon;
 
 
-    string[] names = { "Mike", "Nick", "Jacob", "John", "Joe", "Ian", "Marc","Swei","Flood","Mudry","Neo","Adam","Pup0","Yuka","Sarah","Brit","Casey","Jess","Nora","Jamie","Renzo","Keith","Kyle","Ryan","Kate","Ali","Rich", "Dave","Nate","Monty","Mina","Sam" };
+    string[] names = { "Mike", "Nick", "Jacob", "John", "Joe", "Ian", "Marc","Swei","Flood","Mudry","Neo","Adam", "Yuka","Sarah","Brit","Casey","Jess","Nora","Jamie","Renzo","Keith","Kyle","Ryan","Kate","Ali","Rich", "Dave","Nate","Monty","Mina","Sam", "Erik" };
 
     void Start()
     {
@@ -40,7 +43,10 @@ public class playerController : Photon.MonoBehaviour
 
     // Update is called once per frame
     void Update()
-    { 
+    {
+        currentVelocity = rigidbody.velocity.magnitude;
+
+        animatePlayer();
 
         if (cluesObtained >= 3 && gameObject.name == "Player0") 
         { 
@@ -78,10 +84,29 @@ public class playerController : Photon.MonoBehaviour
 
     } 
 
+    void animatePlayer()
+    {
+        if (currentVelocity > 4)
+        {
+            //running
+            playerAnimator.SetInteger("pose", 2);
+        }
+        else if (currentVelocity < 4 && currentVelocity > 0)
+        {
+            //sneaking
+            playerAnimator.SetInteger("pose", 1);
+        }
+        else
+        {
+            //idle
+            playerAnimator.SetInteger("pose", 0);
+        }
+
+    }
 
     public void Attacked()
     {
-        
+
     }
 
     public void MovementAnalog()
