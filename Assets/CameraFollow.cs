@@ -3,11 +3,11 @@ using System.Collections;
 
 public class CameraFollow : Photon.MonoBehaviour {
 
-    public GameObject playerThumbad;
-    public GameObject swordNotify;
+//    public GameObject playerThumbad;
+//    public GameObject swordNotify;
 
     public float dampTime = 0.15f;
-    private Vector3 cameraOffset = new Vector3(0, 15, 0);
+    public Vector3 cameraOffset;// = new Vector3(0.2841625f, 4.990001f, -9.514244f);
     private Vector3 velocity = Vector3.zero;
     public Transform playerToFollow;
 
@@ -20,6 +20,7 @@ public class CameraFollow : Photon.MonoBehaviour {
     {
         
         //gameObject.transform.position = playerToFollow.transform.position + cameraOffset;
+        /*
         if (playerToFollow)
         {
             Vector3 point = camera.WorldToViewportPoint(playerToFollow.position);
@@ -28,5 +29,9 @@ public class CameraFollow : Photon.MonoBehaviour {
 
             transform.position = Vector3.SmoothDamp(transform.position, destination, ref velocity, dampTime);
         }
+         * */
+
+        gameObject.transform.position = playerToFollow.transform.position + cameraOffset;
+ //       gameObject.transform.LookAt(playerToFollow);
     }
 }

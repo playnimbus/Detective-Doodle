@@ -4,6 +4,7 @@ using System.Collections;
 public class playerController : Photon.MonoBehaviour
 {
     public Camera playerCamera;
+    public Camera GuiCamera;
 
     public Animator playerAnimator;
 
@@ -34,6 +35,8 @@ public class playerController : Photon.MonoBehaviour
     {
         thumbOrigin = playerThumbpad.transform.localPosition;
         name.text = names[Random.Range(0, names.Length)];
+
+        GuiCamera = GameObject.Find("bystanderGuiCamera").GetComponent<Camera>();
 
         if (PhotonNetwork.isMasterClient == true)
         {
@@ -112,7 +115,7 @@ public class playerController : Photon.MonoBehaviour
     public void MovementAnalog()
     {
         RaycastHit hit;
-        Ray ray = playerCamera.ScreenPointToRay(Input.mousePosition);
+        Ray ray = GuiCamera.ScreenPointToRay(Input.mousePosition);
 
         if (Physics.Raycast(ray, out hit))
         {
@@ -122,8 +125,9 @@ public class playerController : Photon.MonoBehaviour
                 {
                     Vector3 normalizedCastPosition = hit.point - hit.transform.position;
                     Vector3 forceToAdd = new Vector3(((hit.point.x - hit.transform.position.x) * playerSpeed), 0, ((hit.point.z - hit.transform.position.z) * playerSpeed));
-                    gameObject.rigidbody.velocity = forceToAdd;
-                    transform.LookAt(gameObject.transform.position + forceToAdd);
+
+                    gameObject.rigidbody.velocity = gameObject.transform.forward * (forceToAdd.z * 3);
+                    gameObject.transform.localEulerAngles += new Vector3(0, forceToAdd.x / 2f, 0);
 
                     playerThumbpad.transform.position = hit.point;
                 }

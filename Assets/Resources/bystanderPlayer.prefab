@@ -1,5 +1,25 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &104136
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 404136}
+  - 20: {fileID: 2004136}
+  - 92: {fileID: 9204136}
+  - 124: {fileID: 12404136}
+  - 81: {fileID: 8104136}
+  - 114: {fileID: 11404136}
+  m_Layer: 0
+  m_Name: bystanderCamera
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
 --- !u!1 &124720
 GameObject:
   m_ObjectHideFlags: 1
@@ -232,6 +252,18 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!4 &404136
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 104136}
+  m_LocalRotation: {x: .147809401, y: 0, z: 0, w: .989015877}
+  m_LocalPosition: {x: 0, y: 2.20000005, z: -4.78999996}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 464864}
+  m_RootOrder: 4
 --- !u!4 &424720
 Transform:
   m_ObjectHideFlags: 1
@@ -368,13 +400,14 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 164864}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 26.4599991, y: -15.3000002, z: 47.6500015}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 484012}
   - {fileID: 486202}
   - {fileID: 486200}
   - {fileID: 424738}
+  - {fileID: 404136}
   m_Father: {fileID: 0}
   m_RootOrder: 0
 --- !u!4 &484012
@@ -413,6 +446,38 @@ Transform:
   m_Children: []
   m_Father: {fileID: 464864}
   m_RootOrder: 1
+--- !u!20 &2004136
+Camera:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 104136}
+  m_Enabled: 1
+  serializedVersion: 2
+  m_ClearFlags: 1
+  m_BackGroundColor: {r: 0, g: 0, b: 0, a: .0196078438}
+  m_NormalizedViewPortRect:
+    serializedVersion: 2
+    x: 0
+    y: 0
+    width: 1
+    height: 1
+  near clip plane: .300000012
+  far clip plane: 1000
+  field of view: 60
+  orthographic: 0
+  orthographic size: 5
+  m_Depth: -1
+  m_CullingMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_RenderingPath: -1
+  m_TargetTexture: {fileID: 0}
+  m_TargetDisplay: 0
+  m_HDR: 0
+  m_OcclusionCulling: 1
+  m_StereoConvergence: 10
+  m_StereoSeparation: .0219999999
 --- !u!23 &2324720
 Renderer:
   m_ObjectHideFlags: 1
@@ -630,6 +695,20 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 2, y: 1.00000024, z: .200000048}
   m_Center: {x: 0, y: 1.90734863e-06, z: 0}
+--- !u!81 &8104136
+AudioListener:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 104136}
+  m_Enabled: 1
+--- !u!92 &9204136
+Behaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 104136}
+  m_Enabled: 1
 --- !u!95 &9524720
 Animator:
   serializedVersion: 3
@@ -666,6 +745,20 @@ TextMesh:
   m_Color:
     serializedVersion: 2
     rgba: 4294967295
+--- !u!114 &11404136
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 104136}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 85ce41a3d66ca6e4ca17d8ea21d75d41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dampTime: 0
+  cameraOffset: {x: -3.5, y: 2.79999995, z: 0}
+  playerToFollow: {fileID: 0}
 --- !u!114 &11408324
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -729,6 +822,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerCamera: {fileID: 2009980, guid: 66070b207feb8b944917d259c0d1fcb3, type: 2}
+  GuiCamera: {fileID: 0}
   playerAnimator: {fileID: 9524720}
   playerThumbpad: {fileID: 109980, guid: 66070b207feb8b944917d259c0d1fcb3, type: 2}
   meleeSword: {fileID: 186202}
@@ -738,6 +832,13 @@ MonoBehaviour:
   cluesObtained: 0
   playerSpeed: 10
   currentVelocity: 0
+--- !u!124 &12404136
+Behaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 104136}
+  m_Enabled: 1
 --- !u!136 &13624720
 CapsuleCollider:
   m_ObjectHideFlags: 1

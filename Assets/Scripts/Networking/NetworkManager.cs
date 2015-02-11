@@ -7,6 +7,7 @@ public class NetworkManager : Photon.MonoBehaviour {
     public GameObject bystanderPlayer;
     public GameObject murdererPlayer;
     public GameObject vigilantePlayer;
+    public GameObject bystanderGuiCamera;
 
     public GameObject connectBtn;
     public GameObject hostBtn;
@@ -155,14 +156,13 @@ public class NetworkManager : Photon.MonoBehaviour {
             tempPlayer.name = "Player" + playerList.Length;
             //tempPlayer.GetComponentInChildren<SwordScript>().playerName = tempPlayer.name;
 
-            GameObject bystanderCamera = (GameObject)Instantiate(Resources.Load("bystanderCamera"));
+      //      GameObject bystanderCamera = (GameObject)Instantiate(Resources.Load("bystanderCamera"));
+      //      bystanderCamera.transform.position = tempPlayer.transform.position + new Vector3(0, 20, 0);
 
-            bystanderCamera.transform.position = tempPlayer.transform.position + new Vector3(0, 20, 0);
-
-            tempPlayer.GetComponent<playerController>().playerThumbpad = bystanderCamera.GetComponent<CameraFollow>().playerThumbad;
-            tempPlayer.GetComponent<playerController>().playerCamera = bystanderCamera.GetComponent<Camera>();
-            tempPlayer.GetComponent<playerController>().swordNotify = bystanderCamera.GetComponent<CameraFollow>().swordNotify;
-            bystanderCamera.GetComponent<CameraFollow>().playerToFollow = tempPlayer.transform;
+            tempPlayer.GetComponent<playerController>().playerThumbpad = bystanderGuiCamera.GetComponent<bystanderGuiCamera>().playerThumbad;
+     //       tempPlayer.GetComponent<playerController>().playerCamera = bystanderCamera.GetComponent<Camera>();
+            tempPlayer.GetComponent<playerController>().swordNotify = bystanderGuiCamera.GetComponent<bystanderGuiCamera>().swordNotify;
+     //       bystanderCamera.GetComponent<CameraFollow>().playerToFollow = tempPlayer.transform;
         }
         else
         {
