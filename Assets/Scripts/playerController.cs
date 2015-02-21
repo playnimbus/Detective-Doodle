@@ -45,6 +45,12 @@ public class playerController : Photon.MonoBehaviour
         
     }
 
+    [RPC]
+    void MakeMurderer()
+    {
+        print("I'm the murderer!");
+    }
+
     // Update is called once per frame
     void Update()
     {
@@ -118,27 +124,11 @@ public class playerController : Photon.MonoBehaviour
             Vector3 currentPos = Input.mousePosition;
             Vector3 delta = currentPos - startPos;
 
-            if (delta.y >= 50)
-            {
-                delta.y = 50;
-            }
-            if (delta.y <= -50)
-            {
-                delta.y = -50;
-            }
-            if (delta.x > 20)
-            {
-                delta.x = 20;
-            }
-            if (delta.x < -20)
-            {
-                delta.x = -20;
-            }
-
+            delta.y = Mathf.Clamp(delta.y, -50, 50);
+            delta.x = Mathf.Clamp(delta.x, -20, 20);
+            
             gameObject.rigidbody.velocity = gameObject.transform.forward * (delta.y * 0.1f);
             gameObject.transform.localEulerAngles += new Vector3(0, delta.x * 0.1f, 0);
-
-            
 
             yield return null;
         }
@@ -159,41 +149,6 @@ public class playerController : Photon.MonoBehaviour
                     StartCoroutine(MovementCoroutine());
             }
         }
-
-        /*
-
-        if (Input.touchCount > 0)
-        {
-            if (Physics.Raycast(ray, out hit))
-            {
-                if (hit.transform.gameObject.name == "AnalogBG")
-                {
-                    Vector3 normalizedCastPosition = hit.point - hit.transform.position;
-                    Vector3 forceToAdd = new Vector3(((hit.point.x - hit.transform.position.x) * playerSpeed), 0, ((hit.point.z - hit.transform.position.z) * playerSpeed));
-
-                    gameObject.rigidbody.velocity = gameObject.transform.forward * (forceToAdd.z * 3);
-                    gameObject.transform.localEulerAngles += new Vector3(0, forceToAdd.x / 2f, 0);
-
-                    playerThumbpad.transform.position = hit.point;
-                }
-                if (hit.transform.gameObject.name == "AttackButton" && hasWeapon)
-                {
-                    print("Swing Sword");
-                    SwingSword();
-                }
-            }
-            else if (Input.touchCount <= 0)
-            {
-                playerThumbpad.transform.localPosition = thumbOrigin;
-                //gameObject.rigidbody.velocity = Vector2.zero;
-            }
-        }
-        else if (Input.touchCount <= 0)
-        {
-
-            gameObject.rigidbody.velocity = Vector2.zero;
-        }
-         */
     }
 
     void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)

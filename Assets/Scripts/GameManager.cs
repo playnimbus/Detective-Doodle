@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 [RequireComponent(typeof(PhotonView))]
-public class LobbyManager : MonoBehaviour
+public class GameManager : MonoBehaviour
 {
     bool isHost = false;
     int playersJoined = 0;
@@ -11,7 +11,6 @@ public class LobbyManager : MonoBehaviour
 	void Start ()
     {
         PhotonNetwork.ConnectUsingSettings(".1");
-
 	}
 
     /*
@@ -55,7 +54,7 @@ public class LobbyManager : MonoBehaviour
         while(!Input.GetKeyDown(KeyCode.Space))
             yield return null;
               
-        PhotonNetwork.LoadLevel("demoScene5");
+        PhotonNetwork.LoadLevel("Main");
     }
 
     [RPC]

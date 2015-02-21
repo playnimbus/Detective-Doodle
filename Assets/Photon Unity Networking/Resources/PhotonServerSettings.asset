@@ -34,4 +34,5 @@ MonoBehaviour:
   - RequestForPickupTimes
   - TaggedPlayer
   - PlayerJoined
+  - MakeMurderer
   DisableAutoOpenWizard: 0
