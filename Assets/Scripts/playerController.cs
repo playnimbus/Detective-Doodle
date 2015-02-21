@@ -35,7 +35,6 @@ public class playerController : Photon.MonoBehaviour
     {
         thumbOrigin = playerThumbpad.transform.localPosition;
         name.text = names[Random.Range(0, names.Length)];
-
         GuiCamera = GameObject.Find("bystanderGuiCamera").GetComponent<Camera>();
 
         if (PhotonNetwork.isMasterClient == true)
@@ -110,14 +109,62 @@ public class playerController : Photon.MonoBehaviour
 
     }
 
+    IEnumerator MovementCoroutine()
+    {
+        Vector3 startPos = Input.mousePosition;
+
+        while (Input.GetMouseButton(0))
+        {
+            Vector3 currentPos = Input.mousePosition;
+            Vector3 delta = currentPos - startPos;
+
+            if (delta.y >= 50)
+            {
+                delta.y = 50;
+            }
+            if (delta.y <= -50)
+            {
+                delta.y = -50;
+            }
+            if (delta.x > 20)
+            {
+                delta.x = 20;
+            }
+            if (delta.x < -20)
+            {
+                delta.x = -20;
+            }
+
+            gameObject.rigidbody.velocity = gameObject.transform.forward * (delta.y * 0.1f);
+            gameObject.transform.localEulerAngles += new Vector3(0, delta.x * 0.1f, 0);
+
+            
+
+            yield return null;
+        }
+
+        rigidbody.velocity = Vector3.zero;
+    }
+
     public void MovementAnalog()
     {
-        RaycastHit hit;
-        Ray ray = GuiCamera.ScreenPointToRay(Input.mousePosition);
-
-        if (Physics.Raycast(ray, out hit))
+        if (Input.GetMouseButtonDown(0))
         {
-            if (Input.GetMouseButton(0))
+            RaycastHit hit;
+            Ray ray = GuiCamera.ScreenPointToRay(Input.mousePosition);
+
+            if (Physics.Raycast(ray, out hit))
+            {
+                if (hit.transform.gameObject.name == "AnalogBG")
+                    StartCoroutine(MovementCoroutine());
+            }
+        }
+
+        /*
+
+        if (Input.touchCount > 0)
+        {
+            if (Physics.Raycast(ray, out hit))
             {
                 if (hit.transform.gameObject.name == "AnalogBG")
                 {
@@ -129,33 +176,24 @@ public class playerController : Photon.MonoBehaviour
 
                     playerThumbpad.transform.position = hit.point;
                 }
-            }
-            else
-            {
-                playerThumbpad.transform.localPosition = thumbOrigin;
-                gameObject.rigidbody.velocity = Vector2.zero;
-            }
-
-            if (Input.GetMouseButtonDown(0))
-            {
-                if (hasWeapon)
+                if (hit.transform.gameObject.name == "AttackButton" && hasWeapon)
                 {
-                    if (hit.transform.gameObject.name == "AttackButton")
-                    {
-                        print("Swing Sword");
-                        SwingSword();
-                    }
+                    print("Swing Sword");
+                    SwingSword();
                 }
             }
-
-
-
+            else if (Input.touchCount <= 0)
+            {
+                playerThumbpad.transform.localPosition = thumbOrigin;
+                //gameObject.rigidbody.velocity = Vector2.zero;
+            }
         }
-        else
+        else if (Input.touchCount <= 0)
         {
-            
+
             gameObject.rigidbody.velocity = Vector2.zero;
         }
+         */
     }
 
     void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
