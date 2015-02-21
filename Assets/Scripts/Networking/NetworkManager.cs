@@ -28,12 +28,14 @@ public class NetworkManager : Photon.MonoBehaviour {
     bool Murderfound = false;
 
 	// Use this for initialization
-	void Start () {
-       PhotonNetwork.ConnectUsingSettings(".1");
+	void Start () 
+    {
+
 	}
 	
 	// Update is called once per frame
-	void Update () {
+	void Update ()
+    {
 	    if(isHost)
         {
             if(Input.GetKeyDown(KeyCode.Escape))
