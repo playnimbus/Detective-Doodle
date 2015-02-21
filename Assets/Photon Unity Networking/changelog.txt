@@ -1,3 +1,6 @@
+v1.50.3 (14. January 2015)
+Fixed: Custom serialization with nested Protocol.Serialize() calls. The change in 1.50 to re-use a MemoryStream has unpredictable results in this case.
+
 v1.50.2 (13. January 2015)
 Fixed: Arrays of Custom Types can be sent again. Serialization failed for (e.g.) Vector3[] and is now fixed. (This is a fix in: Assets\Plugins\Photon3Unity3D.dll and it's platform-specific variants).
 Fixed: When leaving a room, GameObjects created by InstantiateSceneObject() will be cleaned up (destroyed). For this, the PhotonViews now have a new (internal!) value isRuntimeInstantiated. Objects loaded with the scene are not cleaned up (as before).

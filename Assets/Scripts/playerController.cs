@@ -42,36 +42,34 @@ public class playerController : Photon.MonoBehaviour
         {
             name.gameObject.SetActive(false);
         }
+
+        
     }
 
     // Update is called once per frame
     void Update()
     {
+
         currentVelocity = rigidbody.velocity.magnitude;
 
         animatePlayer();
 
-        if (cluesObtained >= 3 && gameObject.name == "Player0") 
-        { 
+        if (cluesObtained >= 3 && gameObject.name == "Player0")
+        {
             hasWeapon = true;
             swordNotify.SetActive(true);
-        } 
- 
-        if (photonView.isMine) 
-        { 
-            MovementAnalog();  
+        }
+
+        if (photonView.isMine)
+        {
+            MovementAnalog();
+        }
+        else if (!photonView.isMine)
+        {
+            Destroy(playerCamera);
+            SyncedMovement(); 
         }
     }
-
-
-    void FixedUpdate() 
-    { 
-        if (!photonView.isMine) 
-        { 
-            SyncedMovement(); 
-        } 
-    } 
- 
 
     public void SwingSword() 
     {
@@ -94,7 +92,7 @@ public class playerController : Photon.MonoBehaviour
             //running
             playerAnimator.SetInteger("pose", 2);
         }
-        else if (currentVelocity < 4 && currentVelocity > 0)
+        else if (currentVelocity < 4 && currentVelocity > .35F)
         {
             //sneaking
             playerAnimator.SetInteger("pose", 1);

@@ -27938,7 +27938,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!108 &1466984326
 Light:
   m_ObjectHideFlags: 0
@@ -27949,12 +27949,12 @@ Light:
   serializedVersion: 3
   m_Type: 1
   m_Color: {r: .110294104, g: .110294104, b: .110294104, a: 1}
-  m_Intensity: .340000004
+  m_Intensity: 3.06999993
   m_Range: 10
   m_SpotAngle: 30
   m_CookieSize: 10
   m_Shadows:
-    m_Type: 2
+    m_Type: 0
     m_Resolution: -1
     m_Strength: 1
     m_Bias: 1.39999998
@@ -28374,7 +28374,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 10
+  m_RootOrder: 8
 --- !u!1 &1504717390
 GameObject:
   m_ObjectHideFlags: 0
@@ -28628,7 +28628,7 @@ RectTransform:
   - {fileID: 215321328}
   - {fileID: 554180272}
   m_Father: {fileID: 0}
-  m_RootOrder: 8
+  m_RootOrder: 9
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
@@ -41757,4 +41757,4 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 9
+  m_RootOrder: 10
