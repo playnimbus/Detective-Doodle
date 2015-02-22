@@ -11,6 +11,8 @@ public class GameManager : MonoBehaviour
 	void Start ()
     {
         PhotonNetwork.ConnectUsingSettings(".1");
+        PhotonNetwork.autoJoinLobby = false;
+        PhotonNetwork.automaticallySyncScene = true;
 	}
 
     /*
@@ -28,25 +30,34 @@ public class GameManager : MonoBehaviour
         PhotonNetwork.JoinRoom("DoodleDetective");
     }
 
+    void OnPhotonCreateGameFailed()
+    {
+        Debug.Log("Failed to create room.");
+    }
+
     void OnPhotonJoinRoomFailed()
     {
-        Debug.Log("Failed to Connect");
+        Debug.Log("Failed to join room.");
     }
 
     // Called in master when room created
     void OnCreatedRoom()
     {
-        PhotonNetwork.automaticallySyncScene = true;
+        Debug.Log("Room created.");
     }
 
     // Called in client when room joined
     void OnJoinedRoom()
     {
+        Debug.Log("Room joined.");
         GetComponent<PhotonView>().RPC("PlayerJoined", 
                                         PhotonTargets.MasterClient, 
-                                        new Object[] { });
-
-        PhotonNetwork.automaticallySyncScene = true;
+                                        null);
+    }
+    
+    void OnConnectedToMaster()
+    {
+        Debug.Log("Connected to master");   
     }
 
     IEnumerator WaitForStartCoroutine()
@@ -60,14 +71,10 @@ public class GameManager : MonoBehaviour
     [RPC]
     public void PlayerJoined()
     {
+        Debug.Log("RPC PlayerJoined() called.");
         playersJoined++;
-      //  if (playersJoined > 1)
+        // if (playersJoined > 1)
             StartCoroutine(WaitForStartCoroutine());
-    }
-
-    void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
-    {
-
     }
     
     void OnGUI()
