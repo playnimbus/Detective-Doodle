@@ -77,20 +77,7 @@ public class GameMode : Photon.MonoBehaviour {
     {
         Debug.Log("Connected");
 
-        if (isHost == false)
-        {
-            //finds a random spawn position for the player
-            GameObject[] playerSpawns = GameObject.FindGameObjectsWithTag("PlayerSpawn");
-            Vector3 spawnPostition = playerSpawns[Random.Range(0,playerSpawns.Length)].transform.position;
-
-            GameObject[] playerList = GameObject.FindGameObjectsWithTag("Player");
-            GameObject tempPlayer = PhotonNetwork.Instantiate("bystanderPlayer", spawnPostition, Quaternion.identity, 0);
-            tempPlayer.name = "Player" + playerList.Length;
-
-            tempPlayer.GetComponent<playerController>().playerThumbpad = bystanderGuiCamera.GetComponent<bystanderGuiCamera>().playerThumbad;
-            tempPlayer.GetComponent<playerController>().swordNotify = bystanderGuiCamera.GetComponent<bystanderGuiCamera>().swordNotify;
-        }
-        else
+        if (PhotonNetwork.isMasterClient)
         {
             GameObject hostCamera = (GameObject)Instantiate(Resources.Load("HostCamera"));
             hostCamera.transform.position = new Vector3(2.5f, 32.87f, 57.2f);
@@ -104,8 +91,27 @@ public class GameMode : Photon.MonoBehaviour {
 
             roomCovers.SetActive(false);
         }
+        else
+        {
+            //finds a random spawn position for the player
+            GameObject[] playerSpawns = GameObject.FindGameObjectsWithTag("PlayerSpawn");
+            Vector3 spawnPostition = playerSpawns[Random.Range(0, playerSpawns.Length)].transform.position;
+
+            GameObject[] playerList = GameObject.FindGameObjectsWithTag("Player");
+            GameObject tempPlayer = PhotonNetwork.Instantiate("bystanderPlayer", spawnPostition, Quaternion.identity, 0);
+            tempPlayer.name = "Player" + playerList.Length;
+
+            tempPlayer.GetComponent<playerController>().playerThumbpad = bystanderGuiCamera.GetComponent<bystanderGuiCamera>().playerThumbad;
+            tempPlayer.GetComponent<playerController>().swordNotify = bystanderGuiCamera.GetComponent<bystanderGuiCamera>().swordNotify;
+
+        }
 
         connectBtn.SetActive(false);
         hostBtn.SetActive(false);
+
+
+
+
+
     }
 }

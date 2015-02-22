@@ -33,7 +33,7 @@ public class playerController : Photon.MonoBehaviour
 
     void Start()
     {
-        thumbOrigin = playerThumbpad.transform.localPosition;
+  //      thumbOrigin = playerThumbpad.transform.localPosition;
         name.text = names[Random.Range(0, names.Length)];
         GuiCamera = GameObject.Find("bystanderGuiCamera").GetComponent<Camera>();
 
@@ -42,11 +42,17 @@ public class playerController : Photon.MonoBehaviour
             name.gameObject.SetActive(false);
         }
 
+        if (!photonView.isMine)
+        {
+            Destroy(playerCamera.gameObject);
+            SyncedMovement();
+        }
+
         
     }
 
     [RPC]
-    void MakeMurderer()
+    public void MakeMurderer()
     {
         print("I'm the murderer!");
     }
@@ -69,10 +75,9 @@ public class playerController : Photon.MonoBehaviour
         {
             MovementAnalog();
         }
-        else if (!photonView.isMine)
+        else if(!photonView.isMine)
         {
-            Destroy(playerCamera);
-            SyncedMovement(); 
+            SyncedMovement();
         }
     }
 
