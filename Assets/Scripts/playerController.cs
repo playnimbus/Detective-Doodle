@@ -54,7 +54,8 @@ public class playerController : Photon.MonoBehaviour
     [RPC]
     public void MakeMurderer()
     {
-        print("I'm the murderer!");
+        print("I'm the murderer! " + name.text);
+        name.text = "murderer";
     }
 
     // Update is called once per frame
@@ -172,12 +173,26 @@ public class playerController : Photon.MonoBehaviour
             syncDelay = Time.time - lastSynchronizationTime;
             lastSynchronizationTime = Time.time;
         }
+
+        SerializeState(stream, info);
     }
 
     private void SyncedMovement()
     {
         syncTime += Time.deltaTime;
         transform.position = Vector3.Lerp(syncStartPosition, syncEndPosition, syncTime / syncDelay);
+    }
+
+    void SerializeState(PhotonStream stream, PhotonMessageInfo info)
+    {
+        if (stream.isWriting)
+        {
+            stream.SendNext(name.text);
+        }
+        else
+        {
+            name.text = (string)stream.ReceiveNext();
+        }
     }
 
     void OnCollisionEnter(Collision collision)

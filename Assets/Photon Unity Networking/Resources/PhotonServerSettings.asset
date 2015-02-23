@@ -35,4 +35,5 @@ MonoBehaviour:
   - TaggedPlayer
   - PlayerJoined
   - MakeMurderer
+  - testRPCHello
   DisableAutoOpenWizard: 0

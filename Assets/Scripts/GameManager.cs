@@ -87,6 +87,11 @@ public class GameManager : MonoBehaviour
         GUI.Label(new Rect(10, 10, 230, 70), "Players Connected: " + PhotonNetwork.playerList.Length);
         GUI.Label(new Rect(10, 30, 230, 70), "Ping: " + PhotonNetwork.GetPing());
         GUI.Label(new Rect(10, 50, 230, 70), "isMasterClient: " + PhotonNetwork.isMasterClient);
+
+        for (int i = 0; i < PhotonNetwork.playerList.Length; i++)
+        {
+            GUI.Label(new Rect(10, 70 + (20 * i), 230, 70), "player list: " + PhotonNetwork.playerList[i].ID);
+        }
     }
 
 }

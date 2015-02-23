@@ -6,7 +6,6 @@ public class GameMode : Photon.MonoBehaviour {
 
     public GameObject bystanderPlayer;
     public GameObject murdererPlayer;
-    public GameObject vigilantePlayer;
     public GameObject bystanderGuiCamera;
 
     public GameObject connectBtn;
@@ -31,21 +30,39 @@ public class GameMode : Photon.MonoBehaviour {
         PlayerInitialization();
 
         if (PhotonNetwork.isMasterClient)
-            AssignMurderer();
+            StartCoroutine(AssignMurderer());
 	}
 
-    void AssignMurderer()
+
+    IEnumerator AssignMurderer()
     {
-        PhotonPlayer player = PhotonNetwork.playerList[Random.Range(0, PhotonNetwork.countOfPlayers)];
-        GetComponent<PhotonView>().RPC("MakeMurderer", player, null);
+
+        yield return new WaitForSeconds(5);
+
+        PhotonPlayer player = PhotonNetwork.playerList[2];
+        print("chosen player ID: " + player.ID);
+   //     print("count of players: " + PhotonNetwork.countOfPlayers);
+   //     print("playerlist length: " + PhotonNetwork.playerList.Length );
+   //     GetComponent<PhotonView>().RPC("MakeMurderer", player, null);
+        GameObject playerGO = GameObject.Find("bystanderPlayer(Clone)");
+
+        playerGO.GetComponent<PhotonView>().RPC("MakeMurderer", PhotonTargets.All, null);
 
         murdererAssigned = true;
         countDownText.gameObject.SetActive(false);
+
+        
+    }
+    [RPC]
+    void testRPCHello()
+    {
+        print("Hello from player");
     }
 	
 	// Update is called once per frame
 	void Update ()
     {
+        /*
         if (Murderfound == false)
         {
             GameObject[] Players = GameObject.FindGameObjectsWithTag("Player");
@@ -60,7 +77,10 @@ public class GameMode : Photon.MonoBehaviour {
 
             }
         }
+         */
 	}
+         
+         
 
     void OnGUI()
     {
@@ -105,13 +125,5 @@ public class GameMode : Photon.MonoBehaviour {
             tempPlayer.GetComponent<playerController>().swordNotify = bystanderGuiCamera.GetComponent<bystanderGuiCamera>().swordNotify;
 
         }
-
-        connectBtn.SetActive(false);
-        hostBtn.SetActive(false);
-
-
-
-
-
     }
 }
