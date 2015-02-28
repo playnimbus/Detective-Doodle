@@ -12,7 +12,7 @@ public class Bootstrap : MonoBehaviour
         
 #if UNITY_EDITOR
 
-        gameObject.AddComponent<MasterGameManager>();
+        gameObject.AddComponent<MasterGame>();
                 
 #elif UNITY_STANDALONE
        

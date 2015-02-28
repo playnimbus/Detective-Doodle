@@ -2,12 +2,14 @@
 using System;
 using Recievers = ExitGames.Client.Photon.Lite.ReceiverGroup;
 
-// Network manager provides static network functionality and wraps
+// Game network provides static network functionality and wraps
 // all network events (not game relatated, like OnDisconnected) in C# events to listen on
-public class NetworkManager : MonoBehaviour 
+// Owned and created by Game
+public class GameNetwork : MonoBehaviour
 {
-    // Temporary room name
+    // Temporary setting strings
     private readonly string roomName = "lksjfdalkjhfdlkjdsag";
+    private readonly string version = "0.1";
         
     // Shared events
     public Action onConnected;
@@ -18,13 +20,13 @@ public class NetworkManager : MonoBehaviour
 
     // Client events
     public Action onJoinedRoom;
-    public Action<int> onGameCommunicatorCreated;
+    public Action<int> onInitiateMasterControl;
     public Action onJoinRoomFailed;
 
 	void Start () 
     {
         PhotonNetwork.autoJoinLobby = false;
-        PhotonNetwork.ConnectUsingSettings("0.1");
+        PhotonNetwork.ConnectUsingSettings(version);
         PhotonNetwork.OnEventCall += OnCustomEvent;
 	}
 
@@ -49,9 +51,9 @@ public class NetworkManager : MonoBehaviour
 
     private void OnCustomEvent(byte eventCode, object content, int senderId)
     {
-        if(eventCode == (byte)CustomEvent.GameCommunicatorCreated)
+        if(eventCode == (byte)CustomEvent.InitiateMasterControl)
         {
-            if (onGameCommunicatorCreated != null) onGameCommunicatorCreated((int)content);
+            if (onInitiateMasterControl != null) onInitiateMasterControl((int)content);
         }
     }
 

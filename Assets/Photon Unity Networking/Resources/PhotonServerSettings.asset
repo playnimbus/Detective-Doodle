@@ -37,4 +37,8 @@ MonoBehaviour:
   - MakeMurderer
   - testRPCHello
   - Hello
+  - MoveToLobbyRPC
+  - ManagerRPC
+  - ClientRPC
+  - MasterRPC
   DisableAutoOpenWizard: 0
