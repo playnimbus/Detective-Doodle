@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 [RequireComponent(typeof(PhotonView))]
-public class GameManager : MonoBehaviour
+public class OldGameManager : MonoBehaviour
 {
     bool isHost = false;
     int playersJoined = 0;

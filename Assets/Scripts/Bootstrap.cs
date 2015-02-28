@@ -1,6 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+// Simple script that runs in the splash screen
+// It will assign master or client to the main script object
 public class Bootstrap : MonoBehaviour 
 {
 	void Start ()
