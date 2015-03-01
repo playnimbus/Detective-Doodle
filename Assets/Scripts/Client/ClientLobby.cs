@@ -6,7 +6,11 @@ public class ClientLobby : Lobby
 {
     public override void Enter()
     {
-        // Temporary no op
-        // Application.LoadLevel("Lobby");
+        Application.LoadLevel("ClientLobby");
+    }
+
+    public override void Exit()
+    {
+        
     }
 }

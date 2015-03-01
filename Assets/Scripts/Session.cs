@@ -1,8 +1,11 @@
 ﻿using UnityEngine;
-using System.Collections;
+using System;
 
-// Base class for gameplay sessions
-public class Session : Photon.MonoBehaviour
+// Base class for gameplay sessions.
+// Options for further implementing: either subclass this and instantiate new session each time,
+// or create a new component that plugs into this object and subclass that
+public abstract class Session : Photon.MonoBehaviour
 {
-
+    public abstract void Launch();
+    public abstract void Finish();
 }

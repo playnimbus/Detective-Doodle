@@ -6,16 +6,21 @@ using System.Collections;
 public class MasterGame : Game
 {
     private MasterLobby lobby;
-    
+    private MasterSession session;
 
     protected override void Start()
     {
         message = "Master";
+
         base.Start();
+        lobby = gameObject.AddComponent<MasterLobby>();
+
         network.onConnected += network.CreateRoom;
         network.onCreateRoomFailed += network.CreateRoom;
         network.onCreatedRoom += InitiateControl;
-        network.onCreatedRoom += () => { photonView.RPC("GoToLobby", PhotonTargets.OthersBuffered); };
+        network.onCreatedRoom += lobby.Enter;
+
+        lobby.onLaunchSession += RequestLaunchSession;
     }
     
     void InitiateControl()
@@ -25,16 +30,31 @@ public class MasterGame : Game
         network.RaiseCustomEvent(CustomEvent.InitiateMasterControl, id);
     }
 
-    [RPC]
-    void GoToLobby()
+    void RequestLaunchSession(MasterSession @session)
     {
-        lobby = gameObject.AddComponent<MasterLobby>();
-        lobby.onStartGame += StartGame;
+        this.session = @session;
+        this.session.onFinished += RequestSessionFinish;
+        photonView.RPC("LaunchSession", PhotonTargets.All, session.Code);
+    }
+
+    [RPC]
+    void LaunchSession(int sessionCode)
+    {
+        lobby.Exit();
+        session.Launch(); 
+    }
+
+    void RequestSessionFinish()
+    {
+        this.session.onFinished -= RequestSessionFinish;
+        photonView.RPC("FinishSession", PhotonTargets.All);
+    }
+
+    [RPC]
+    void FinishSession()
+    {
+        session.Finish();
         lobby.Enter();
     }
 
-    void StartGame(object gameInfo)
-    {
-
-    }  
 }

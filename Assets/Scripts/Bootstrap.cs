@@ -16,7 +16,7 @@ public class Bootstrap : MonoBehaviour
                 
 #elif UNITY_STANDALONE
        
-        gameObject.AddComponent<ClientGameManager>();
+        gameObject.AddComponent<ClientGame>();
 
 #endif
 

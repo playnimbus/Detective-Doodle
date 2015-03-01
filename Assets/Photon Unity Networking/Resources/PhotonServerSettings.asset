@@ -41,4 +41,7 @@ MonoBehaviour:
   - ManagerRPC
   - ClientRPC
   - MasterRPC
+  - BaseRPC
+  - CreateAndGoToLobby
+  - LaunchSession
   DisableAutoOpenWizard: 0
