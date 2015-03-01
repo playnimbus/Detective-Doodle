@@ -7,7 +7,14 @@ public class ClientSession : Session
 {
     public override void Launch()
     {
-        Application.LoadLevel("Session");
+        StartCoroutine(LoadLevelCoroutine());
+    }
+
+    IEnumerator LoadLevelCoroutine()
+    {
+        AsyncOperation aop = Application.LoadLevelAsync("Session");
+        aop.allowSceneActivation = true;
+        yield return aop;
     }
 
     public override void Finish()

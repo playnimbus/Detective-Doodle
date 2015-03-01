@@ -54,6 +54,8 @@ public class MasterGame : Game
     void FinishSession()
     {
         session.Finish();
+        Destroy(session);
+        session = null;
         lobby.Enter();
     }
 

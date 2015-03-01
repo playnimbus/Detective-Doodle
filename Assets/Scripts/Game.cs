@@ -18,8 +18,8 @@ public class Game : Photon.MonoBehaviour
         networkField = gameObject.AddComponent<GameNetwork>();
     }
 
-    void OnGUI()
+    /*void OnGUI()
     {
         GUI.Label(new Rect(10, 10, 230, 70), "Message: " + message);
-    }
+    }*/
 }

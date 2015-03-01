@@ -45,6 +45,8 @@ public class ClientGame : Game
     void FinishSession()
     {
         session.Finish();
+        Destroy(session);
+        session = null;
         lobby.Enter();
     }
 }

@@ -6,7 +6,14 @@ public class ClientLobby : Lobby
 {
     public override void Enter()
     {
-        Application.LoadLevel("ClientLobby");
+        StartCoroutine(LoadLevelCoroutine());
+    }
+
+    IEnumerator LoadLevelCoroutine()
+    {
+        AsyncOperation aop = Application.LoadLevelAsync("ClientLobby");
+        aop.allowSceneActivation = true;
+        yield return aop;
     }
 
     public override void Exit()

@@ -8,8 +8,8 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Splash.unity
   - enabled: 1
-    path: Assets/Scenes/ClientLobby.unity
-  - enabled: 1
     path: Assets/Scenes/MasterLobby.unity
+  - enabled: 1
+    path: Assets/Scenes/ClientLobby.unity
   - enabled: 1
     path: Assets/Scenes/Session.unity

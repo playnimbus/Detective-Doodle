@@ -44,4 +44,5 @@ MonoBehaviour:
   - BaseRPC
   - CreateAndGoToLobby
   - LaunchSession
+  - FinishSession
   DisableAutoOpenWizard: 0
