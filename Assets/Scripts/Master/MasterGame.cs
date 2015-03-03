@@ -20,27 +20,35 @@ public class MasterGame : Game
         network.onCreatedRoom += InitiateControl;
         network.onCreatedRoom += lobby.Enter;
 
-        lobby.onLaunchSession += RequestLaunchSession;
-    }
-    
-    void InitiateControl()
-    {
-        int id = PhotonNetwork.AllocateViewID();
-        photonView.viewID = id;
-        network.RaiseCustomEvent(CustomEvent.InitiateMasterControl, id);
+        lobby.onLaunchSession += RequestLaunchSession;        
     }
 
-    void RequestLaunchSession(MasterSession @session)
+    void InitiateControl()
     {
-        this.session = @session;
-        this.session.onFinished += RequestSessionFinish;
-        photonView.RPC("LaunchSession", PhotonTargets.All, session.Code);
+        // Take control of the game
+        photonView.TransferOwnership(PhotonNetwork.player.ID);
+        network.RaiseCustomEvent(CustomEvent.InitiateMasterControl, PhotonNetwork.player.ID);
+    }
+
+    void RequestLaunchSession(SessionType type)
+    {
+        photonView.RPC("LaunchSession", PhotonTargets.All, type);
     }
 
     [RPC]
-    void LaunchSession(int sessionCode)
+    void LaunchSession(SessionType type)
     {
         lobby.Exit();
+
+        switch (type)
+        {
+            case SessionType.Default:
+            default:
+                session = gameObject.AddComponent<MasterSession>();
+                break;
+        }
+
+        session.onFinished += RequestSessionFinish;
         session.Launch(); 
     }
 

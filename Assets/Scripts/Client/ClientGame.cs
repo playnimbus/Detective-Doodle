@@ -23,16 +23,17 @@ public class ClientGame : Game
     void InitiateMasterControl(int masterID)
     {
         // Assign our PhotonView over to the master
-        photonView.viewID = masterID;
+        photonView.TransferOwnership(masterID);
     }
 
     [RPC]
-    void LaunchSession(int sessionCode)
+    void LaunchSession(SessionType type)
     {
         lobby.Exit();
 
-        switch(sessionCode)
+        switch(type)
         {
+            case SessionType.Default:
             default:
                 session = gameObject.AddComponent<ClientSession>();
                 break;

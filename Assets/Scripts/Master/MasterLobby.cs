@@ -8,7 +8,7 @@ public class MasterLobby : Lobby
     private MasterLobbyMenu menu;
 
     // This gets activated when the session is to start
-    public Action<MasterSession> onLaunchSession;
+    public Action<SessionType> onLaunchSession;
 
     public override void Enter()
     {
@@ -27,8 +27,7 @@ public class MasterLobby : Lobby
 
     public void LaunchSession()
     {
-        MasterSession session = gameObject.AddComponent<MasterSession>();
-        if (onLaunchSession != null) onLaunchSession(session);
+        if (onLaunchSession != null) onLaunchSession(SessionType.Default);
     }
 
     public override void Exit()
