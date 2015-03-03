@@ -35,7 +35,7 @@ public class ClientGame : Game
         {
             case SessionType.Default:
             default:
-                session = gameObject.AddComponent<ClientSession>();
+                session = gameObject.AddComponent<DefaultClientSession>();
                 break;
         }
 

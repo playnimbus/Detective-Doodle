@@ -44,7 +44,7 @@ public class MasterGame : Game
         {
             case SessionType.Default:
             default:
-                session = gameObject.AddComponent<MasterSession>();
+                session = gameObject.AddComponent<DefaultMasterSession>();
                 break;
         }
 
