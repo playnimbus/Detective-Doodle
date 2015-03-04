@@ -5,14 +5,12 @@ public class DefaultClientSession : Session
 {
     public override void Launch()
     {
-        StartCoroutine(LoadLevelCoroutine());
+        LoadLevel("Session", LevelLoaded);
     }
 
-    IEnumerator LoadLevelCoroutine()
+    public void LevelLoaded()
     {
-        AsyncOperation aop = Application.LoadLevelAsync("Session");
-        aop.allowSceneActivation = true;
-        yield return aop;
+        photonView.RPC("PlayerCheckIn", PhotonTargets.MasterClient, PhotonNetwork.player.ID);
     }
 
     public override void Finish()

@@ -12,18 +12,14 @@ public abstract class Game : Photon.MonoBehaviour
 
     protected Lobby lobby;
     protected Session session;
-
-    protected MessageList messages;
     
     protected void Start()
     {
         DontDestroyOnLoad(this.gameObject);
         networkField = gameObject.AddComponent<GameNetwork>();
-        
-        // Add this so we can call inherited methods like the ones below (works across GameObject)
-        gameObject.AddComponent<InheritableRPC>();
     }
 
+    // Override to provide the specific Session (ie Master/Client)
     protected abstract Session CreateSession(SessionType type);
         
     protected void InitiateMasterControl(int masterID)
@@ -35,7 +31,6 @@ public abstract class Game : Photon.MonoBehaviour
     [RPC]
     protected void LaunchSession(SessionType type)
     {
-        print("LaunchSession called");
         lobby.Exit();
         session = CreateSession(type);
         session.Launch();
@@ -44,7 +39,6 @@ public abstract class Game : Photon.MonoBehaviour
     [RPC]
     protected void FinishSession()
     {
-        print("FinishSession called");
         session.Finish();
         Destroy(session);
         session = null;

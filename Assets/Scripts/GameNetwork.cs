@@ -17,6 +17,7 @@ public class GameNetwork : MonoBehaviour
     // Master events
     public Action onCreatedRoom;
     public Action onCreateRoomFailed;
+    public Action<PhotonPlayer> onPlayerConnected;
 
     // Client events
     public Action onJoinedRoom;
@@ -82,5 +83,10 @@ public class GameNetwork : MonoBehaviour
     void OnPhotonJoinRoomFailed()
     {
         if (onJoinRoomFailed != null) onJoinRoomFailed();
+    }
+
+    void OnPhotonPlayerConnected(PhotonPlayer newPlayer)
+    {
+        if (onPlayerConnected != null) onPlayerConnected(newPlayer);
     }
 }

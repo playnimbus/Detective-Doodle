@@ -47,4 +47,5 @@ MonoBehaviour:
   - FinishSession
   - PerformRPCCall
   - PrintThis
+  - PlayerCheckIn
   DisableAutoOpenWizard: 0

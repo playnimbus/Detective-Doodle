@@ -15,7 +15,7 @@ using System.Reflection;
  */
 
 [AddComponentMenu("System/Inheritable RPC Handler")]
-public class InheritableRPC : Photon.MonoBehaviour
+public class InheritableRPC : MonoBehaviour
 {
 	public class CachedRoutine
 	{

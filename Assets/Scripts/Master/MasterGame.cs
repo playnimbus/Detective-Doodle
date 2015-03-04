@@ -1,11 +1,14 @@
 ﻿using UnityEngine;
+using System.Collections.Generic;
 using System;
-using System.Collections;
+
+
 
 // Master client specific game state management logic
 public class MasterGame : Game
 {
     private MasterLobby Lobby { get { return base.lobby as MasterLobby; } }
+    private List<PhotonPlayer> playersInSession;
 
     protected void Start()
     {
@@ -17,6 +20,7 @@ public class MasterGame : Game
         network.onCreatedRoom += InitiateControl;
         network.onCreatedRoom += lobby.Enter;
         network.onInitiateMasterControl += InitiateMasterControl;
+        network.onPlayerConnected += PlayerJoined;
 
         Lobby.onLaunchSession += RequestLaunchSession;
     }
@@ -42,7 +46,12 @@ public class MasterGame : Game
         session.onFinished += RequestSessionFinish;
         return session;
     }
-    
+
+    void PlayerJoined(PhotonPlayer player)
+    {
+            
+    }
+
     void RequestLaunchSession(SessionType type)
     {
         photonView.RPCEx("LaunchSession", PhotonTargets.All, type);

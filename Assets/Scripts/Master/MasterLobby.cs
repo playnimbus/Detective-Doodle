@@ -12,17 +12,13 @@ public class MasterLobby : Lobby
 
     public override void Enter()
     {
-        StartCoroutine(LoadLevelCoroutine());
-    }
+        Action levelLoaded = () =>
+            {
+                menu = FindObjectOfType<MasterLobbyMenu>();
+                menu.launchSessionClicked += LaunchSession;
+            };
 
-    IEnumerator LoadLevelCoroutine()
-    {
-        AsyncOperation aop = Application.LoadLevelAsync("MasterLobby");
-        aop.allowSceneActivation = true; 
-        yield return aop;
-
-        menu = FindObjectOfType<MasterLobbyMenu>();
-        menu.launchSessionClicked += LaunchSession;
+        LoadLevel("MasterLobby", levelLoaded);
     }
 
     public void LaunchSession()
@@ -32,6 +28,7 @@ public class MasterLobby : Lobby
 
     public override void Exit()
     {
+        menu.launchSessionClicked -= LaunchSession;
         menu = null;
     }
 }
