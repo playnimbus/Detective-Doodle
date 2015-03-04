@@ -5,40 +5,31 @@ using System.Collections;
 // Master client specific game state management logic
 public class MasterGame : Game
 {
-    private MasterLobby lobby;
-    private MasterSession session;
+    private MasterLobby Lobby { get { return base.lobby as MasterLobby; } }
 
-    protected override void Start()
+    protected void Start()
     {
-        message = "Master";
-
         base.Start();
-        lobby = gameObject.AddComponent<MasterLobby>();
+        base.lobby = gameObject.AddComponent<MasterLobby>();
 
         network.onConnected += network.CreateRoom;
         network.onCreateRoomFailed += network.CreateRoom;
         network.onCreatedRoom += InitiateControl;
         network.onCreatedRoom += lobby.Enter;
+        network.onInitiateMasterControl += InitiateMasterControl;
 
-        lobby.onLaunchSession += RequestLaunchSession;        
+        Lobby.onLaunchSession += RequestLaunchSession;
     }
 
     void InitiateControl()
     {
         // Take control of the game
-        photonView.TransferOwnership(PhotonNetwork.player.ID);
         network.RaiseCustomEvent(CustomEvent.InitiateMasterControl, PhotonNetwork.player.ID);
     }
-
-    void RequestLaunchSession(SessionType type)
+    
+    protected override Session CreateSession(SessionType type)
     {
-        photonView.RPC("LaunchSession", PhotonTargets.All, type);
-    }
-
-    [RPC]
-    void LaunchSession(SessionType type)
-    {
-        lobby.Exit();
+        Session session = null;
 
         switch (type)
         {
@@ -49,22 +40,18 @@ public class MasterGame : Game
         }
 
         session.onFinished += RequestSessionFinish;
-        session.Launch(); 
+        return session;
+    }
+    
+    void RequestLaunchSession(SessionType type)
+    {
+        photonView.RPCEx("LaunchSession", PhotonTargets.All, type);
     }
 
     void RequestSessionFinish()
     {
         this.session.onFinished -= RequestSessionFinish;
-        photonView.RPC("FinishSession", PhotonTargets.All);
-    }
-
-    [RPC]
-    void FinishSession()
-    {
-        session.Finish();
-        Destroy(session);
-        session = null;
-        lobby.Enter();
+        photonView.RPCEx("FinishSession", PhotonTargets.All);
     }
 
 }

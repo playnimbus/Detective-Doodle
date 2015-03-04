@@ -4,50 +4,26 @@ using System.Collections;
 // Client specific game state management logic
 public class ClientGame : Game
 {
-    private ClientLobby lobby;
-    private ClientSession session;
-
-    protected override void Start()
+    private ClientLobby Lobby { get { return base.lobby as ClientLobby; } }
+    
+    protected void Start()
     {
-        message = "Client";
-
         base.Start();
-        lobby = gameObject.AddComponent<ClientLobby>();
+        base.lobby = gameObject.AddComponent<ClientLobby>();
 
         network.onConnected += network.JoinRoom;        
         network.onJoinRoomFailed += network.JoinRoom;
         network.onJoinedRoom += lobby.Enter;
         network.onInitiateMasterControl += InitiateMasterControl;
     }
-    
-    void InitiateMasterControl(int masterID)
+        
+    protected override Session CreateSession(SessionType type)
     {
-        // Assign our PhotonView over to the master
-        photonView.TransferOwnership(masterID);
-    }
-
-    [RPC]
-    void LaunchSession(SessionType type)
-    {
-        lobby.Exit();
-
         switch(type)
         {
             case SessionType.Default:
             default:
-                session = gameObject.AddComponent<DefaultClientSession>();
-                break;
+                return gameObject.AddComponent<DefaultClientSession>();
         }
-
-        session.Launch();
-    }
-
-    [RPC]
-    void FinishSession()
-    {
-        session.Finish();
-        Destroy(session);
-        session = null;
-        lobby.Enter();
     }
 }

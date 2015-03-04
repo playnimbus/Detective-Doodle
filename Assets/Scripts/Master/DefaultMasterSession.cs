@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class DefaultMasterSession : MasterSession
+public class DefaultMasterSession : Session
 {
     private SessionMenu menu;
 

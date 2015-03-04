@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class DefaultClientSession : ClientSession
+public class DefaultClientSession : Session
 {
     public override void Launch()
     {

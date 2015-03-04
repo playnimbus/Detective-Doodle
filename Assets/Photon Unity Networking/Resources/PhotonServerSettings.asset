@@ -45,4 +45,6 @@ MonoBehaviour:
   - CreateAndGoToLobby
   - LaunchSession
   - FinishSession
+  - PerformRPCCall
+  - PrintThis
   DisableAutoOpenWizard: 0

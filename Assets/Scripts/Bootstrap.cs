@@ -8,15 +8,17 @@ public class Bootstrap : MonoBehaviour
 	void Start ()
     {
         // Separate the master from the clients (replace later with XBOX and mobile)
-        // For now assume we'll run master through editor and clients through standalone
-        
+        // For now assume we'll run master through editor and clients through builds
+                
 #if UNITY_EDITOR
 
         gameObject.AddComponent<MasterGame>();
-                
-#elif UNITY_STANDALONE
-       
+        //gameObject.AddComponent<ClientGame>();
+
+#elif UNITY_STANDALONE || UNITY_ANDROID || UNITY_IOS
+        
         gameObject.AddComponent<ClientGame>();
+        //gameObject.AddComponent<MasterGame>();
 
 #endif
 
