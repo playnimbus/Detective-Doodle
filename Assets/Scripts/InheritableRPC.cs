@@ -23,7 +23,7 @@ public class InheritableRPC : MonoBehaviour
 		public MonoBehaviour behaviour;
 	}
 	
-	private Dictionary<string, List<CachedRoutine>> cache = new Dictionary<string, List<CachedRoutine>>();
+	private Dictionary<string, CachedRoutine> cache = new Dictionary<string, CachedRoutine>();
 	
 	[RPC]
 	void PerformRPCCall(string routineName, string parameters)
@@ -34,16 +34,27 @@ public class InheritableRPC : MonoBehaviour
 			var p = (object[])b.Deserialize(s);
 			
 			if(!cache.ContainsKey(routineName))
-			{
-				cache[routineName] = GetComponents<MonoBehaviour>()
-					.Select(m=> new CachedRoutine { routine = m.GetType().GetMethod(routineName, BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance), behaviour = m })
-					.Where(r=>r.routine != null && r.routine.IsDefined(typeof(RPC), true))
-					.ToList();
+			{   
+                List<CachedRoutine> foundRoutines = GetComponents<MonoBehaviour>()
+                     .Select(m => new CachedRoutine { routine = m.GetType().GetMethod(routineName, BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance), behaviour = m })
+                     .Where(r => r.routine != null && r.routine.IsDefined(typeof(RPC), true))
+                     .ToList();
+
+                // Only one method per RPC!
+                if (foundRoutines.Count == 1)
+                    cache[routineName] = foundRoutines[0];
+                else
+                    Debug.LogError("InheritableRPC Error: did not find exactly one method " + routineName + ", found " + foundRoutines.Count, this);
 			}
-			foreach(var m in cache[routineName])
-			{
-				m.routine.Invoke(m.behaviour, p);
-			}
+
+            if(cache.ContainsKey(routineName))
+            {
+                CachedRoutine m = cache[routineName];
+                if (m.behaviour == null)
+                    cache.Remove(routineName);
+                else
+                    m.routine.Invoke(m.behaviour, p);
+            }
 		}
 	}
 }
