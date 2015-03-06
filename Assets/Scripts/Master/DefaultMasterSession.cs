@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using System.Collections.Generic;
 using System.Collections;
 using System;
 
@@ -28,6 +29,9 @@ public class DefaultMasterSession : Session
 
         menu = FindObjectOfType<SessionMenu>();
         menu.buttonClicked += RequestFinish;
+
+        foreach (PhotonPlayer p in PhotonNetwork.otherPlayers)
+            photonView.RPC("CreatePlayer", p, new Vector3(0, 2.5f, 0));
     }
 
     [RPC]

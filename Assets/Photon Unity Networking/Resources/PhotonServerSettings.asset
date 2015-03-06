@@ -48,4 +48,5 @@ MonoBehaviour:
   - PerformRPCCall
   - PrintThis
   - PlayerCheckIn
+  - CreatePlayer
   DisableAutoOpenWizard: 0

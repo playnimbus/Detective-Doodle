@@ -32,6 +32,9 @@ public class InheritableRPC : MonoBehaviour
 		using(var s = new MemoryStream(Convert.FromBase64String(parameters)))
 		{
 			var p = (object[])b.Deserialize(s);
+
+            if(cache.ContainsKey(routineName) && cache[routineName].behaviour == null)
+                cache.Remove(routineName);
 			
 			if(!cache.ContainsKey(routineName))
 			{   
@@ -50,10 +53,7 @@ public class InheritableRPC : MonoBehaviour
             if(cache.ContainsKey(routineName))
             {
                 CachedRoutine m = cache[routineName];
-                if (m.behaviour == null)
-                    cache.Remove(routineName);
-                else
-                    m.routine.Invoke(m.behaviour, p);
+                m.routine.Invoke(m.behaviour, p);
             }
 		}
 	}
