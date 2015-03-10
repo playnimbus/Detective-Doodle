@@ -32,6 +32,19 @@ public class DefaultMasterSession : Session
 
         foreach (PhotonPlayer p in PhotonNetwork.otherPlayers)
             photonView.RPC("CreatePlayer", p, new Vector3(0, 2.5f, 0));
+
+        StartCoroutine(MenuCoroutine());
+    }
+
+    IEnumerator MenuCoroutine()
+    {
+        while(true)
+        {
+            if (Input.GetKeyDown(KeyCode.Escape))
+                menu.Toggle();
+
+            yield return null;
+        }
     }
 
     [RPC]

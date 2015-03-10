@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿#define NORMAL // Comment out to switch Master/Client
+
+using UnityEngine;
 using System.Collections;
 
 // Simple script that runs in the splash screen
@@ -12,13 +14,19 @@ public class Bootstrap : MonoBehaviour
                 
 #if UNITY_EDITOR
 
+#if NORMAL 
         gameObject.AddComponent<MasterGame>();
-        //gameObject.AddComponent<ClientGame>();
+#else        
+        gameObject.AddComponent<ClientGame>();
+#endif
 
 #elif UNITY_STANDALONE || UNITY_ANDROID || UNITY_IOS
         
+#if NORMAL 
         gameObject.AddComponent<ClientGame>();
-        //gameObject.AddComponent<MasterGame>();
+#else
+        gameObject.AddComponent<MasterGame>();
+#endif
 
 #endif
 
