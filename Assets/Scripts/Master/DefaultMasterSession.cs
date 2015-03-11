@@ -31,7 +31,7 @@ public class DefaultMasterSession : Session
         menu.buttonClicked += RequestFinish;
 
         foreach (PhotonPlayer p in PhotonNetwork.otherPlayers)
-            photonView.RPC("CreatePlayer", p, new Vector3(0, 2.5f, 0));
+            photonView.RPC("CreatePlayer", p, new Vector3(20f, 2.5f, -2.5f));
 
         StartCoroutine(MenuCoroutine());
     }

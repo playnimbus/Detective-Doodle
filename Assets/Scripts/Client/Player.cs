@@ -51,8 +51,9 @@ public class Player : Photon.MonoBehaviour
             
             delta.Normalize();
             float scale = CubicInOut(length, 0, 1, virtualScreenPadRadius);
-
-            transform.Translate(delta * scale * Time.deltaTime * speed, Space.World);
+            
+            // Move using rigidbody to get collision benefits
+            rigidbody.MovePosition(transform.position + delta * scale * Time.deltaTime * speed);
 
             yield return null;
         }

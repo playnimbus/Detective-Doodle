@@ -21,8 +21,19 @@ public class Level : MonoBehaviour
         }
     }
 
-    void Start()
+    public event Action<LevelRoom, Player> onExitedRoom
     {
-
+        add
+        {
+            LevelRoom[] rooms = GetComponentsInChildren<LevelRoom>();
+            foreach (LevelRoom room in rooms)
+                room.onRoomExit += value;
+        }
+        remove
+        {
+            LevelRoom[] rooms = GetComponentsInChildren<LevelRoom>();
+            foreach (LevelRoom room in rooms)
+                room.onRoomExit -= value;
+        }
     }
 }

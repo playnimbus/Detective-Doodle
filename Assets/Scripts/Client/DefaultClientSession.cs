@@ -16,6 +16,8 @@ public class DefaultClientSession : Session
     {
         photonView.RPC("PlayerCheckIn", PhotonTargets.MasterClient, PhotonNetwork.player.ID);
         level = FindObjectOfType<Level>();
+        level.onEnteredRoom += PlayerEnteredRoom;
+        level.onExitedRoom += PlayerExitedRoom;
     }
 
     [RPC]
@@ -24,6 +26,22 @@ public class DefaultClientSession : Session
         GameObject playerGO = PhotonNetwork.Instantiate("Player", location, Quaternion.identity, 0);
         player = playerGO.GetComponent<Player>();
         camera = player.Camera;
+    }
+
+    void PlayerEnteredRoom(LevelRoom room, Player player)
+    {
+        if(player.photonView.isMine)
+        {
+            camera.MoveToTransform(room.overheadCameraPosition);
+        }
+    }
+
+    void PlayerExitedRoom(LevelRoom room, Player player)
+    {
+        if(player.photonView.isMine)
+        {
+            camera.ResumeFollow();
+        }
     }
 
     public override void Finish()
