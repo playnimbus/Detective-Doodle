@@ -10,8 +10,11 @@ public class LevelRoom : MonoBehaviour
 
     public Transform overheadCameraPosition;
 
+    private Fade roomCoverFade;
+
     void Start()
     {
+        roomCoverFade = GetComponentInChildren<Fade>();
         TriggerListener listener = GetComponentInChildren<TriggerListener>();
         listener.onTriggerEntered += OnRoomEnter;
         listener.onTriggerExited += OnRoomExit;
@@ -28,5 +31,8 @@ public class LevelRoom : MonoBehaviour
         Player player = coll.GetComponent<Player>();
         if (player != null && onRoomExit != null) onRoomExit(this, player);
     }
+
+    public void Reveal() { roomCoverFade.FadeOut(); }
+    public void Conceal() { roomCoverFade.FadeIn(); }
 
 }

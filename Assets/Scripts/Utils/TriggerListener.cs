@@ -51,7 +51,7 @@ public class TriggerListener : MonoBehaviour
         if(count == 0)
         {
             if (onTriggerExited != null) onTriggerExited(other);
-            colliderContactCount.Remove(collider);
+            colliderContactCount.Remove(other);
         }
     }
 

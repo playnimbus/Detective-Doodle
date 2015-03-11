@@ -30,17 +30,19 @@ public class DefaultClientSession : Session
 
     void PlayerEnteredRoom(LevelRoom room, Player player)
     {
-        if(player.photonView.isMine)
+        if (player.photonView.isMine)
         {
             camera.MoveToTransform(room.overheadCameraPosition);
+            room.Reveal();
         }
     }
 
     void PlayerExitedRoom(LevelRoom room, Player player)
     {
-        if(player.photonView.isMine)
+        if (player.photonView.isMine)
         {
             camera.ResumeFollow();
+            room.Conceal();
         }
     }
 
