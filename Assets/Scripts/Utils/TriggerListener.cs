@@ -16,8 +16,11 @@ public class TriggerListener : MonoBehaviour
         {
             foreach (TriggerListener child in GetComponentsInChildren<TriggerListener>())
             {
-                child.onTriggerEntered += OnChildTriggerEnter;
-                child.onTriggerExited += OnChildTriggerExit;
+                if (child != this) // GetComponentsInChildren returns the component in this GO too!
+                {
+                    child.onTriggerEntered += OnChildTriggerEnter;
+                    child.onTriggerExited += OnChildTriggerExit;
+                }
             }
 
             colliderContactCount = new Dictionary<Collider, int>();

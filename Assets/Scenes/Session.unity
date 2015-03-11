@@ -1955,7 +1955,7 @@ Transform:
   - {fileID: 1036905147}
   - {fileID: 2136874775}
   m_Father: {fileID: 721275148}
-  m_RootOrder: 1
+  m_RootOrder: 0
 --- !u!1 &75078250
 GameObject:
   m_ObjectHideFlags: 0
@@ -8083,7 +8083,7 @@ Transform:
   - {fileID: 1356950569}
   - {fileID: 1525123018}
   m_Father: {fileID: 721275148}
-  m_RootOrder: 0
+  m_RootOrder: 1
 --- !u!114 &563226399
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8095,7 +8095,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 62fe47c851227db42a10c625189cc2d2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  overheadCameraPosition: {fileID: 0}
+  overheadCameraPosition: {fileID: 1525123018}
 --- !u!1 &570361366
 GameObject:
   m_ObjectHideFlags: 0
@@ -8920,8 +8920,8 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 563226398}
   - {fileID: 68808857}
+  - {fileID: 563226398}
   m_Father: {fileID: 0}
   m_RootOrder: 4
 --- !u!114 &721275149
@@ -21778,7 +21778,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 498936, guid: 80c3af405f0f81745a64fb8dd7fce15d, type: 2}
       propertyPath: m_RootOrder
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 198936, guid: 80c3af405f0f81745a64fb8dd7fce15d, type: 2}
       propertyPath: m_Name
