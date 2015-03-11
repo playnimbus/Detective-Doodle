@@ -3,7 +3,9 @@ using System.Collections;
 
 public class DefaultClientSession : Session
 {
-    Player player;
+    private Level level;
+    private Player player;
+    private new PlayerCamera camera;
 
     public override void Launch()
     {
@@ -13,6 +15,7 @@ public class DefaultClientSession : Session
     public void LevelLoaded()
     {
         photonView.RPC("PlayerCheckIn", PhotonTargets.MasterClient, PhotonNetwork.player.ID);
+        level = FindObjectOfType<Level>();
     }
 
     [RPC]
@@ -20,6 +23,7 @@ public class DefaultClientSession : Session
     {
         GameObject playerGO = PhotonNetwork.Instantiate("Player", location, Quaternion.identity, 0);
         player = playerGO.GetComponent<Player>();
+        camera = player.Camera;
     }
 
     public override void Finish()

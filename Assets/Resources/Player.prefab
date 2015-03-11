@@ -12,8 +12,9 @@ GameObject:
   - 124: {fileID: 12429422}
   - 92: {fileID: 9229422}
   - 81: {fileID: 8129422}
+  - 114: {fileID: 11487776}
   m_Layer: 0
-  m_Name: Camera
+  m_Name: PlayerCamera
   m_TagString: MainCamera
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -236,6 +237,18 @@ MonoBehaviour:
   viewIdField: 0
   instantiationId: -1
   isRuntimeInstantiated: 0
+--- !u!114 &11487776
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 129422}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 91dbd299ee633ed48a72c2c9dbfe4006, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  lerpSpeed: .100000001
 --- !u!124 &12429422
 Behaviour:
   m_ObjectHideFlags: 1

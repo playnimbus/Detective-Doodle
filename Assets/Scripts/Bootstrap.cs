@@ -1,12 +1,13 @@
-﻿#define NORMAL // Comment out to switch Master/Client
-
-using UnityEngine;
+﻿using UnityEngine;
 using System.Collections;
 
 // Simple script that runs in the splash screen
 // It will assign master or client to the main script object
 public class Bootstrap : MonoBehaviour 
 {
+    // Toggle to make editor the client
+    public bool editorIsMaster = true;
+
 	void Start ()
     {
         // Separate the master from the clients (replace later with XBOX and mobile)
@@ -14,19 +15,13 @@ public class Bootstrap : MonoBehaviour
                 
 #if UNITY_EDITOR
 
-#if NORMAL 
-        gameObject.AddComponent<MasterGame>();
-#else        
-        gameObject.AddComponent<ClientGame>();
-#endif
+        if(editorIsMaster) gameObject.AddComponent<MasterGame>();
+        else gameObject.AddComponent<ClientGame>();
 
 #elif UNITY_STANDALONE || UNITY_ANDROID || UNITY_IOS
         
-#if NORMAL 
-        gameObject.AddComponent<ClientGame>();
-#else
-        gameObject.AddComponent<MasterGame>();
-#endif
+        if(editorIsMaster) gameObject.AddComponent<ClientGame>();
+        else gameObject.AddComponent<MasterGame>();
 
 #endif
 

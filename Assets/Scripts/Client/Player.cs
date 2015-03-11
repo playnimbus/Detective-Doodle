@@ -5,13 +5,30 @@ public class Player : Photon.MonoBehaviour
 {
     public float speed;
     public float virtualScreenPadRadius;
+        
+    private new PlayerCamera camera;
+    public PlayerCamera Camera { get { return camera; } }
 
+    // Acts as a Start() for network instantiated objects
     void OnPhotonInstantiate(PhotonMessageInfo info)
     {
-        if (!photonView.isMine)
-            Destroy(GetComponentInChildren<Camera>().gameObject);
+        InitCamera();
     }
     
+    void InitCamera()
+    {
+        camera = GetComponentInChildren<PlayerCamera>();
+        if (camera == null) Debug.LogError("[Player] Couldn't find PlayerCamera", this);
+
+        if (photonView.isMine)
+        {
+            //camera.transform.parent = null;
+            transform.DetachChildren();
+            camera.Init(this.transform);
+        }
+        else Destroy(camera.gameObject);
+    }
+
     void Update()
     {
         if (Input.GetMouseButtonDown(0) && photonView.isMine)
