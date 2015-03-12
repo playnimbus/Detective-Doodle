@@ -18,6 +18,8 @@ public class DefaultClientSession : Session
         level = FindObjectOfType<Level>();
         level.onEnteredRoom += PlayerEnteredRoom;
         level.onExitedRoom += PlayerExitedRoom;
+        level.onPlayerApproachStash += PlayerApproachedStash;
+        level.onPlayerLeaveStash += PlayeLeftStash;
     }
 
     [RPC]
@@ -44,6 +46,18 @@ public class DefaultClientSession : Session
             camera.ResumeFollow();
             room.Conceal();
         }
+    }
+
+    void PlayerApproachedStash(EvidenceStash stash, Player player)
+    {
+        if (player.photonView.isMine)
+            player.AppraochedStash(stash);
+    }
+
+    void PlayeLeftStash(EvidenceStash stash, Player player)
+    {
+        if (player.photonView.isMine)
+            player.LeftStash(stash);
     }
 
     public override void Finish()

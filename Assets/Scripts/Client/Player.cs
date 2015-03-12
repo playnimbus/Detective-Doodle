@@ -9,6 +9,8 @@ public class Player : Photon.MonoBehaviour
     private new PlayerCamera camera;
     public PlayerCamera Camera { get { return camera; } }
 
+    private Coroutine stashCorouitine;
+
     // Acts as a Start() for network instantiated objects
     void OnPhotonInstantiate(PhotonMessageInfo info)
     {
@@ -27,6 +29,40 @@ public class Player : Photon.MonoBehaviour
             camera.Init(this.transform);
         }
         else Destroy(camera.gameObject);
+    }
+
+    public void AppraochedStash(EvidenceStash stash)
+    {
+        stashCorouitine = StartCoroutine(NearbyStashCorouitine(stash));
+    }
+
+    public void LeftStash(EvidenceStash stash)
+    {
+        StopCoroutine(stashCorouitine);
+        stashCorouitine = null;
+    }
+
+    IEnumerator NearbyStashCorouitine(EvidenceStash stash)
+    {
+        while(true)
+        {
+            // Double click detection
+            if(Input.GetMouseButtonDown(0))
+            {
+                float endTime = Time.time + 0.5f;
+                while(Time.time < endTime)
+                {
+                    if(Input.GetMouseButtonDown(0))
+                    {
+                        // Loot the stash
+                        Debug.Log("[Player] Player has looted the stash!");
+                        yield break;
+                    }
+                    yield return null;
+                }
+            }
+            yield return null;
+        }
     }
 
     void Update()

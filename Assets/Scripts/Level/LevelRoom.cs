@@ -8,13 +8,46 @@ public class LevelRoom : MonoBehaviour
     public Action<LevelRoom, Player> onRoomEnter;
     public Action<LevelRoom, Player> onRoomExit;
 
+    // Vantage point for the camera to go to when player enters
     public Transform overheadCameraPosition;
 
+    // Fades the cover for a room
     private Fade roomCoverFade;
+    
+    // Monitoring evidence stashes
+    private EvidenceStash[] stashes;
+    public event Action<EvidenceStash, Player> onPlayerApproachStash
+    {
+        add
+        {
+            for (int i = 0; i < stashes.Length; i++)
+                stashes[i].onPlayerApproach += value;
+        }
+        remove
+        {
+            for (int i = 0; i < stashes.Length; i++)
+                stashes[i].onPlayerApproach -= value;
+        }
+    }
+    public event Action<EvidenceStash, Player> onPlayerLeaveStash
+    {
+        add
+        {
+            for (int i = 0; i < stashes.Length; i++)
+                stashes[i].onPlayerLeave += value;
+        }
+        remove
+        {
+            for (int i = 0; i < stashes.Length; i++)
+                stashes[i].onPlayerLeave -= value;
+        }
+    }
 
     void Start()
     {
+        stashes = GetComponentsInChildren<EvidenceStash>();
         roomCoverFade = GetComponentInChildren<Fade>();
+
         TriggerListener listener = GetComponentInChildren<TriggerListener>();
         listener.onTriggerEntered += OnRoomEnter;
         listener.onTriggerExited += OnRoomExit;
