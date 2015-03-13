@@ -10,25 +10,32 @@ public class PlayerCamera : MonoBehaviour
     private Vector3 offset;
     private Quaternion initialRotation;
 
+    private Coroutine followCoroutine;
+    private Coroutine vantageCoroutine;
+
     public void Init(Transform target)
     {
         this.target = target;
         offset = transform.position - target.position;
         initialRotation = transform.rotation;
-        StartCoroutine(FollowCoroutine());
+        followCoroutine = StartCoroutine(FollowCoroutine());
     }
 
-    public void MoveToTransform(Transform t)
+    public void MoveToVantage(Transform t)
     {
         StopAllCoroutines();
-        StartCoroutine(MoveToTransformCoroutine(t));
+        followCoroutine = null;        
+        vantageCoroutine = StartCoroutine(VantageCoroutine(t));
     }
 
-    IEnumerator MoveToTransformCoroutine(Transform t)
+    IEnumerator VantageCoroutine(Transform t)
     {
         while(true)
         {
-            transform.position = Vector3.Lerp(transform.position, t.position, lerpSpeed);
+            Vector3 targetPosition = t.position;
+            targetPosition.x = target.position.x;
+
+            transform.position = Vector3.Lerp(transform.position, targetPosition, lerpSpeed);
             transform.rotation = Quaternion.Lerp(transform.rotation, t.rotation, lerpSpeed);
 
             yield return null;
@@ -37,8 +44,9 @@ public class PlayerCamera : MonoBehaviour
     
     public void ResumeFollow()
     {
-        StopAllCoroutines();
-        StartCoroutine(FollowCoroutine());
+        StopAllCoroutines(); 
+        vantageCoroutine = null;
+        followCoroutine = StartCoroutine(FollowCoroutine());
     }
 
     IEnumerator FollowCoroutine()

@@ -9,7 +9,8 @@ public class Player : Photon.MonoBehaviour
     private new PlayerCamera camera;
     public PlayerCamera Camera { get { return camera; } }
 
-    private Coroutine stashCorouitine;
+    private Coroutine stashCoroutine;
+    private Coroutine moveCoroutine;
 
     // Acts as a Start() for network instantiated objects
     void OnPhotonInstantiate(PhotonMessageInfo info)
@@ -33,13 +34,13 @@ public class Player : Photon.MonoBehaviour
 
     public void AppraochedStash(EvidenceStash stash)
     {
-        stashCorouitine = StartCoroutine(NearbyStashCorouitine(stash));
+        stashCoroutine = StartCoroutine(NearbyStashCorouitine(stash));
     }
 
     public void LeftStash(EvidenceStash stash)
     {
-        StopCoroutine(stashCorouitine);
-        stashCorouitine = null;
+        StopCoroutine(stashCoroutine);
+        stashCoroutine = null;
     }
 
     IEnumerator NearbyStashCorouitine(EvidenceStash stash)
@@ -69,13 +70,15 @@ public class Player : Photon.MonoBehaviour
     {
         if (Input.GetMouseButtonDown(0) && photonView.isMine)
         {
-            StartCoroutine(MoveCoroutine());
+            if (moveCoroutine != null) StopCoroutine(moveCoroutine);
+            moveCoroutine = StartCoroutine(MoveCoroutine());
         }
     }
 
     IEnumerator MoveCoroutine()
     {
         Vector3 startPosition = Input.mousePosition;
+        Vector3 velocity = Vector3.zero;
 
         while(Input.GetMouseButton(0))
         {
@@ -87,9 +90,21 @@ public class Player : Photon.MonoBehaviour
             
             delta.Normalize();
             float scale = CubicInOut(length, 0, 1, virtualScreenPadRadius);
+            velocity = delta * scale;
             
             // Move using rigidbody to get collision benefits
-            rigidbody.MovePosition(transform.position + delta * scale * Time.deltaTime * speed);
+            rigidbody.MovePosition(transform.position + velocity * Time.deltaTime * speed);
+
+            yield return null;
+        }
+
+        // Slow to a stop
+        while(true)
+        {
+            velocity = Vector3.Lerp(velocity, Vector3.zero, 0.15f);
+
+            // Move using rigidbody to get collision benefits
+            rigidbody.MovePosition(transform.position + velocity * Time.deltaTime * speed);
 
             yield return null;
         }

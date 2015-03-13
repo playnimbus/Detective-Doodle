@@ -6,6 +6,7 @@ public class DefaultClientSession : Session
     private Level level;
     private Player player;
     private new PlayerCamera camera;
+    private int numRoomsPlayerIsIn;
 
     public override void Launch()
     {
@@ -34,7 +35,8 @@ public class DefaultClientSession : Session
     {
         if (player.photonView.isMine)
         {
-            camera.MoveToTransform(room.overheadCameraPosition);
+            numRoomsPlayerIsIn++;
+            camera.MoveToVantage(room.overheadCameraPosition);
             room.Reveal();
         }
     }
@@ -43,7 +45,8 @@ public class DefaultClientSession : Session
     {
         if (player.photonView.isMine)
         {
-            camera.ResumeFollow();
+            numRoomsPlayerIsIn--;
+            if(numRoomsPlayerIsIn == 0) camera.ResumeFollow();
             room.Conceal();
         }
     }
