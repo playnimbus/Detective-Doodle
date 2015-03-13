@@ -49,4 +49,6 @@ MonoBehaviour:
   - PrintThis
   - PlayerCheckIn
   - CreatePlayer
+  - ReceiveEvidence
+  - RequestEvidence
   DisableAutoOpenWizard: 0

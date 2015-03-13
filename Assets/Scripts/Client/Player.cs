@@ -9,13 +9,22 @@ public class Player : Photon.MonoBehaviour
     private new PlayerCamera camera;
     public PlayerCamera Camera { get { return camera; } }
 
+    private PlayerUI ui;
+
     private Coroutine stashCoroutine;
     private Coroutine moveCoroutine;
 
     // Acts as a Start() for network instantiated objects
     void OnPhotonInstantiate(PhotonMessageInfo info)
     {
+        InitUI();
         InitCamera();
+        transform.DetachChildren();
+    }
+
+    void InitUI()
+    {
+        ui = GetComponentInChildren<PlayerUI>();
     }
     
     void InitCamera()
@@ -24,9 +33,7 @@ public class Player : Photon.MonoBehaviour
         if (camera == null) Debug.LogError("[Player] Couldn't find PlayerCamera", this);
 
         if (photonView.isMine)
-        {
-            //camera.transform.parent = null;
-            transform.DetachChildren();
+        {            
             camera.Init(this.transform);
         }
         else Destroy(camera.gameObject);
@@ -56,7 +63,11 @@ public class Player : Photon.MonoBehaviour
                     if(Input.GetMouseButtonDown(0))
                     {
                         // Loot the stash
-                        Debug.Log("[Player] Player has looted the stash!");
+                        stash.GetEvidence((evidence) =>
+                            {
+                                if (evidence) ui.ShowNewEvidence();
+                            });
+                        
                         yield break;
                     }
                     yield return null;
