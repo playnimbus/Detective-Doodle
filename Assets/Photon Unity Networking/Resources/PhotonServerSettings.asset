@@ -51,4 +51,6 @@ MonoBehaviour:
   - CreatePlayer
   - ReceiveEvidence
   - RequestEvidence
+  - Kill
+  - ShareEvidence
   DisableAutoOpenWizard: 0

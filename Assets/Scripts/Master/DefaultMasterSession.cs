@@ -29,11 +29,16 @@ public class DefaultMasterSession : Session
 
         menu = FindObjectOfType<SessionMenu>();
         menu.buttonClicked += RequestFinish;
+        StartCoroutine(MenuCoroutine());
 
+        // Create player characters
         foreach (PhotonPlayer p in PhotonNetwork.otherPlayers)
             photonView.RPC("CreatePlayer", p, new Vector3(20f, 2.5f, -2.5f));
 
-        StartCoroutine(MenuCoroutine());
+        // Assign the murderer!
+        int index = UnityEngine.Random.Range(0, PhotonNetwork.otherPlayers.Length);
+        PhotonPlayer murderer = PhotonNetwork.otherPlayers[index];
+        photonView.RPC("MakeMurderer", murderer);
     }
 
     IEnumerator MenuCoroutine()

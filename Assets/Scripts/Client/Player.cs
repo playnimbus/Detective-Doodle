@@ -9,14 +9,19 @@ public class Player : Photon.MonoBehaviour
     private new PlayerCamera camera;
     public PlayerCamera Camera { get { return camera; } }
 
+    private int evidencePiecesGathered;
     private PlayerUI ui;
 
     private Coroutine stashCoroutine;
     private Coroutine moveCoroutine;
+    private Coroutine playerContactCoroutine;
+
+    private bool isMurderer;
 
     // Acts as a Start() for network instantiated objects
     void OnPhotonInstantiate(PhotonMessageInfo info)
     {
+        evidencePiecesGathered = 0;
         InitUI();
         InitCamera();
         transform.DetachChildren();
@@ -25,6 +30,11 @@ public class Player : Photon.MonoBehaviour
     void InitUI()
     {
         ui = GetComponentInChildren<PlayerUI>();
+        if (!photonView.isMine)
+        {
+            Destroy(ui.gameObject);
+            ui = null;
+        }
     }
     
     void InitCamera()
@@ -39,7 +49,7 @@ public class Player : Photon.MonoBehaviour
         else Destroy(camera.gameObject);
     }
 
-    public void AppraochedStash(EvidenceStash stash)
+    public void ApproachedStash(EvidenceStash stash)
     {
         stashCoroutine = StartCoroutine(NearbyStashCorouitine(stash));
     }
@@ -65,7 +75,11 @@ public class Player : Photon.MonoBehaviour
                         // Loot the stash
                         stash.GetEvidence((evidence) =>
                             {
-                                if (evidence) ui.ShowNewEvidence();
+                                if (evidence)
+                                {
+                                    ui.ShowNewEvidence();
+                                    evidencePiecesGathered++;
+                                }
                             });
                         
                         yield break;
@@ -127,5 +141,74 @@ public class Player : Photon.MonoBehaviour
 	    if (t < 1) return c/2*t*t*t + b;
 	    t -= 2;
 	    return c/2*(t*t*t + 2) + b;
+    }
+
+    void OnCollisionEnter(Collision collision)
+    {
+        if (!photonView.isMine) return;
+        Player other = collision.gameObject.GetComponent<Player>();
+        if(other != null)
+        {
+            if (playerContactCoroutine == null)
+                playerContactCoroutine = StartCoroutine(PlayerContactCoroutine(other));
+        }
+    }
+
+    void OnCollisionExit(Collision collision)
+    {
+        if (!photonView.isMine) return;
+        Player other = collision.gameObject.GetComponent<Player>();
+        if(other != null)
+        {
+            if (playerContactCoroutine != null)
+            {
+                StopCoroutine(playerContactCoroutine);
+                playerContactCoroutine = null;
+            }
+        }
+    }
+
+    IEnumerator PlayerContactCoroutine(Player other)
+    {
+        while (true)
+        {
+            // Double click detection
+            if (Input.GetMouseButtonDown(0))
+            {
+                float endTime = Time.time + 0.5f;
+                while (Time.time < endTime)
+                {
+                    if (Input.GetMouseButtonDown(0))
+                    {
+                        // Interact with player
+                        if (isMurderer) other.photonView.RPC("Kill", PhotonTargets.All);
+                        else other.photonView.RPC("ShareEvidence", other.photonView.owner);
+
+                        yield break;
+                    }
+                    yield return null;
+                }
+            }
+            yield return null;
+        }
+    }
+    
+    [RPC]
+    void Kill()
+    {
+        Destroy(gameObject, 10f);
+    }
+
+    [RPC]
+    void ShareEvidence()
+    {
+        ui.ShowNewEvidence();
+        evidencePiecesGathered++;
+    }
+
+    public void MakeMurderer()
+    {
+        isMurderer = true;
+        ui.MarkAsMurderer();        
     }
 }

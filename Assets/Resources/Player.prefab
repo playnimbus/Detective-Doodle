@@ -1,5 +1,23 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &124430
+GameObject:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 424430}
+  - 33: {fileID: 3324430}
+  - 65: {fileID: 6524430}
+  - 23: {fileID: 2324430}
+  m_Layer: 8
+  m_Name: Cube
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
 --- !u!1 &129422
 GameObject:
   m_ObjectHideFlags: 0
@@ -113,6 +131,18 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!4 &424430
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 124430}
+  m_LocalRotation: {x: -.225235417, y: .332314521, z: .0460008159, w: .914724052}
+  m_LocalPosition: {x: 2.23000002, y: -3.6400001, z: 2.3499999}
+  m_LocalScale: {x: .691715717, y: .691715777, z: .691715777}
+  m_Children: []
+  m_Father: {fileID: 444186}
+  m_RootOrder: 2
 --- !u!4 &429422
 Transform:
   m_ObjectHideFlags: 1
@@ -131,12 +161,12 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 144180}
-  m_LocalRotation: {x: -.225235417, y: .332314521, z: .0460008159, w: .914724052}
-  m_LocalPosition: {x: 2.23000002, y: -3.6400001, z: 2.3499999}
-  m_LocalScale: {x: .691715717, y: .691715777, z: .691715777}
+  m_LocalRotation: {x: .017059138, y: -.593912363, z: -.577164233, w: .560230851}
+  m_LocalPosition: {x: -.0800000206, y: 4.21999788, z: 2.34999895}
+  m_LocalScale: {x: .691715956, y: .691716015, z: .691716015}
   m_Children: []
   m_Father: {fileID: 444186}
-  m_RootOrder: 2
+  m_RootOrder: 3
 --- !u!4 &444182
 Transform:
   m_ObjectHideFlags: 1
@@ -173,6 +203,7 @@ Transform:
   m_Children:
   - {fileID: 444184}
   - {fileID: 444182}
+  - {fileID: 424430}
   - {fileID: 444180}
   m_Father: {fileID: 479486}
   m_RootOrder: 1
@@ -183,7 +214,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 179486}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 64.0800018, y: 12.9799995, z: -11.8699999}
+  m_LocalPosition: {x: 8.92481518, y: 50.5457001, z: -27.531496}
   m_LocalScale: {x: 1.70257974, y: 1.70257998, z: 1.70257998}
   m_Children:
   - {fileID: 429422}
@@ -254,6 +285,26 @@ Camera:
   m_OcclusionCulling: 1
   m_StereoConvergence: 10
   m_StereoSeparation: .0219999999
+--- !u!23 &2324430
+Renderer:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 124430}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_LightmapIndex: 255
+  m_LightmapTilingOffset: {x: 1, y: 1, z: 0, w: 0}
+  m_Materials:
+  - {fileID: 2100000, guid: 66b1b63f21f45f447be5a2ef14370a0a, type: 2}
+  m_SubsetIndices: 
+  m_StaticBatchRoot: {fileID: 0}
+  m_UseLightProbes: 0
+  m_LightProbeAnchor: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_SortingLayerID: 0
+  m_SortingOrder: 0
 --- !u!23 &2344180
 Renderer:
   m_ObjectHideFlags: 1
@@ -334,6 +385,13 @@ Renderer:
   m_ScaleInLightmap: 1
   m_SortingLayerID: 0
   m_SortingOrder: 0
+--- !u!33 &3324430
+MeshFilter:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 124430}
+  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!33 &3344180
 MeshFilter:
   m_ObjectHideFlags: 1
@@ -377,6 +435,18 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 84
   m_CollisionDetection: 0
+--- !u!65 &6524430
+BoxCollider:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 124430}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!65 &6544180
 BoxCollider:
   m_ObjectHideFlags: 1
@@ -414,10 +484,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4089bc18f8ab36043816b48f2c44b5a6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  murdererIndicator: {fileID: 144180}
   evidence:
   - {fileID: 144184}
   - {fileID: 144182}
-  - {fileID: 144180}
+  - {fileID: 124430}
 --- !u!114 &11476896
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -569,7 +640,7 @@ CapsuleCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  m_Radius: .5
+  m_Radius: .779999971
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}

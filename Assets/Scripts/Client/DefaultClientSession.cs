@@ -20,7 +20,7 @@ public class DefaultClientSession : Session
         level.onEnteredRoom += PlayerEnteredRoom;
         level.onExitedRoom += PlayerExitedRoom;
         level.onPlayerApproachStash += PlayerApproachedStash;
-        level.onPlayerLeaveStash += PlayeLeftStash;
+        level.onPlayerLeaveStash += PlayerLeftStash;
     }
 
     [RPC]
@@ -29,6 +29,12 @@ public class DefaultClientSession : Session
         GameObject playerGO = PhotonNetwork.Instantiate("Player", location, Quaternion.identity, 0);
         player = playerGO.GetComponent<Player>();
         camera = player.Camera;
+    }
+
+    [RPC]
+    void MakeMurderer()
+    {
+        player.MakeMurderer();
     }
 
     void PlayerEnteredRoom(LevelRoom room, Player player)
@@ -54,10 +60,10 @@ public class DefaultClientSession : Session
     void PlayerApproachedStash(EvidenceStash stash, Player player)
     {
         if (player.photonView.isMine)
-            player.AppraochedStash(stash);
+            player.ApproachedStash(stash);
     }
 
-    void PlayeLeftStash(EvidenceStash stash, Player player)
+    void PlayerLeftStash(EvidenceStash stash, Player player)
     {
         if (player.photonView.isMine)
             player.LeftStash(stash);
