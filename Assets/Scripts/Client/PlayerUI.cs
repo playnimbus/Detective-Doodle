@@ -20,9 +20,11 @@ public class PlayerUI : MonoBehaviour
 
     public void MarkAsMurderer()
     {
-        print("[PlayerUI] Murder marker turned on?");
-        murdererIndicator.enabled = true;
+        // HACK
+        Invoke("Foo", 0.5f);
     }
+    
+    void Foo() { murdererIndicator.enabled = true; }
 
     public void ShowButton(string text, Action callback)
     {

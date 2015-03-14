@@ -139,14 +139,20 @@ public class Player : Photon.MonoBehaviour
                     ui.ShowButton("Accuse", () =>
                         {
                             other.photonView.RPC("Accuse", other.photonView.owner);
+                            evidencePiecesGathered = 0;
+                            ui.SetEvidenceText("Evidence gathered: " + evidencePiecesGathered);
                         });
                 }
-                else
+                else if(evidencePiecesGathered > 0)
                 {
                     ui.ShowButton("Share Evidence", () =>
                         {
                             other.photonView.RPC("ShareEvidence", other.photonView.owner);
                         });
+                }
+                else
+                {
+                    ui.ShowButton("No Evidence To Share", null);
                 }
             }
         }
@@ -166,7 +172,10 @@ public class Player : Photon.MonoBehaviour
     void Accuse()
     {
         // The murderer is vanquished!
-        if (isMurderer) Destroy(gameObject, 2f);
+        if (isMurderer)
+        {
+            PhotonNetwork.Destroy(photonView);
+        }
     }
     
     [RPC]
@@ -174,7 +183,7 @@ public class Player : Photon.MonoBehaviour
     {
         Destroy(gameObject, 20f);
         // Also share evidence so player isn't aware of poison...
-        ShareEvidence();
+        if (photonView.isMine) ShareEvidence();
     }
 
     [RPC]
