@@ -49,7 +49,7 @@ public class MasterGame : Game
 
     void PlayerJoined(PhotonPlayer player)
     {
-            
+
     }
 
     void RequestLaunchSession(SessionType type)
@@ -63,4 +63,9 @@ public class MasterGame : Game
         photonView.RPCEx("FinishSession", PhotonTargets.All);
     }
 
+
+    void OnGUI()
+    {
+        GUI.Label(new Rect(10, 10, 250, 25), "Ping: " + PhotonNetwork.GetPing());
+    }
 }

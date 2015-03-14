@@ -27,7 +27,14 @@ public class DefaultMasterSession : Session
         while (numPendingPlayers > 0)
             yield return null;
 
-        menu = FindObjectOfType<SessionMenu>();
+        // Done waiting for players, init
+        Initialize();
+    }
+
+    void Initialize()
+    {
+        GameObject menuGO = Instantiate(Resources.Load<GameObject>("MasterMenu")) as GameObject;
+        menu = menuGO.GetComponent<SessionMenu>();
         menu.buttonClicked += RequestFinish;
         StartCoroutine(MenuCoroutine());
 
@@ -40,6 +47,7 @@ public class DefaultMasterSession : Session
         PhotonPlayer murderer = PhotonNetwork.otherPlayers[index];
         photonView.RPC("MakeMurderer", murderer);
     }
+
 
     IEnumerator MenuCoroutine()
     {

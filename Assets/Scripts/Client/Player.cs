@@ -11,12 +11,9 @@ public class Player : Photon.MonoBehaviour
 
     private int evidencePiecesGathered;
     private PlayerUI ui;
-
-    private Coroutine stashCoroutine;
     private Coroutine moveCoroutine;
-    private Coroutine playerContactCoroutine;
 
-    private bool isMurderer;
+    public bool isMurderer;
 
     // Acts as a Start() for network instantiated objects
     void OnPhotonInstantiate(PhotonMessageInfo info)
@@ -29,11 +26,11 @@ public class Player : Photon.MonoBehaviour
 
     void InitUI()
     {
-        ui = GetComponentInChildren<PlayerUI>();
-        if (!photonView.isMine)
+        if (photonView.isMine)
         {
-            Destroy(ui.gameObject);
-            ui = null;
+            GameObject menuGO = Instantiate(Resources.Load<GameObject>("ClientMenu")) as GameObject;
+            ui = menuGO.GetComponent<PlayerUI>();
+            ui.SetEvidenceText("Evidence gathered: " + evidencePiecesGathered);
         }
     }
     
@@ -51,46 +48,25 @@ public class Player : Photon.MonoBehaviour
 
     public void ApproachedStash(EvidenceStash stash)
     {
-        stashCoroutine = StartCoroutine(NearbyStashCorouitine(stash));
+        if (evidencePiecesGathered == 3)
+        {
+            ui.ShowButton("Already collected max evidence.", null);
+        }
+        else
+        {
+            ui.ShowButton("Search", () =>
+                {
+                    evidencePiecesGathered++;
+                    ui.SetEvidenceText("Evidence gathered: " + evidencePiecesGathered);
+                });
+        }
     }
 
     public void LeftStash(EvidenceStash stash)
     {
-        StopCoroutine(stashCoroutine);
-        stashCoroutine = null;
+        ui.HideButton();
     }
-
-    IEnumerator NearbyStashCorouitine(EvidenceStash stash)
-    {
-        while(true)
-        {
-            // Double click detection
-            if(Input.GetMouseButtonDown(0))
-            {
-                float endTime = Time.time + 0.5f;
-                while(Time.time < endTime)
-                {
-                    if(Input.GetMouseButtonDown(0))
-                    {
-                        // Loot the stash
-                        stash.GetEvidence((evidence) =>
-                            {
-                                if (evidence)
-                                {
-                                    ui.ShowNewEvidence();
-                                    evidencePiecesGathered++;
-                                }
-                            });
-                        
-                        yield break;
-                    }
-                    yield return null;
-                }
-            }
-            yield return null;
-        }
-    }
-
+    
     void Update()
     {
         if (Input.GetMouseButtonDown(0) && photonView.isMine)
@@ -149,8 +125,30 @@ public class Player : Photon.MonoBehaviour
         Player other = collision.gameObject.GetComponent<Player>();
         if(other != null)
         {
-            if (playerContactCoroutine == null)
-                playerContactCoroutine = StartCoroutine(PlayerContactCoroutine(other));
+            if (isMurderer)
+            {
+                ui.ShowButton("Poison", () =>
+                    {
+                        other.photonView.RPC("Kill", PhotonTargets.All);
+                    });
+            }
+            else
+            {
+                if (evidencePiecesGathered == 3)
+                {
+                    ui.ShowButton("Accuse", () =>
+                        {
+                            other.photonView.RPC("Accuse", other.photonView.owner);
+                        });
+                }
+                else
+                {
+                    ui.ShowButton("Share Evidence", () =>
+                        {
+                            other.photonView.RPC("ShareEvidence", other.photonView.owner);
+                        });
+                }
+            }
         }
     }
 
@@ -160,50 +158,34 @@ public class Player : Photon.MonoBehaviour
         Player other = collision.gameObject.GetComponent<Player>();
         if(other != null)
         {
-            if (playerContactCoroutine != null)
-            {
-                StopCoroutine(playerContactCoroutine);
-                playerContactCoroutine = null;
-            }
+            ui.HideButton();
         }
     }
 
-    IEnumerator PlayerContactCoroutine(Player other)
+    [RPC]
+    void Accuse()
     {
-        while (true)
-        {
-            // Double click detection
-            if (Input.GetMouseButtonDown(0))
-            {
-                float endTime = Time.time + 0.5f;
-                while (Time.time < endTime)
-                {
-                    if (Input.GetMouseButtonDown(0))
-                    {
-                        // Interact with player
-                        if (isMurderer) other.photonView.RPC("Kill", PhotonTargets.All);
-                        else other.photonView.RPC("ShareEvidence", other.photonView.owner);
-
-                        yield break;
-                    }
-                    yield return null;
-                }
-            }
-            yield return null;
-        }
+        // The murderer is vanquished!
+        if (isMurderer) Destroy(gameObject, 2f);
     }
     
     [RPC]
     void Kill()
     {
-        Destroy(gameObject, 10f);
+        Destroy(gameObject, 20f);
+        // Also share evidence so player isn't aware of poison...
+        ShareEvidence();
     }
 
     [RPC]
     void ShareEvidence()
     {
-        ui.ShowNewEvidence();
-        evidencePiecesGathered++;
+        // Someone gave us some evidence
+        if (evidencePiecesGathered < 3)
+        {
+            evidencePiecesGathered++;
+            ui.SetEvidenceText("Evidence gathered: " + evidencePiecesGathered);
+        }
     }
 
     public void MakeMurderer()
