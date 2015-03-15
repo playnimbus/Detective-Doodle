@@ -8,7 +8,7 @@ using Recievers = ExitGames.Client.Photon.Lite.ReceiverGroup;
 public class GameNetwork : MonoBehaviour
 {
     // Temporary setting strings
-    private readonly string roomName = "lksjfdalkjhfdlkjdsag";
+    private readonly string roomName = "sgflksg";//"lksjfdalkjhfdlkjdsag";
     private readonly string version = "0.1";
         
     // Shared events
@@ -31,14 +31,14 @@ public class GameNetwork : MonoBehaviour
         PhotonNetwork.OnEventCall += OnCustomEvent;
 	}
 
-    public void CreateRoom()
+    public void CreateRoom(string name)
     {
-        PhotonNetwork.CreateRoom(roomName);
+        PhotonNetwork.CreateRoom(name.ToLower());
     }
 
-    public void JoinRoom()
+    public void JoinRoom(string name)
     {
-        PhotonNetwork.JoinRoom(roomName);
+        PhotonNetwork.JoinRoom(name.ToLower());
     }
 
     public void RaiseCustomEvent(CustomEvent @event, object content = null, Recievers recievers = Recievers.Others)

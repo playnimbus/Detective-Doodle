@@ -6,19 +6,21 @@ using System.Collections;
 public class MasterLobby : Lobby
 {
     private MasterLobbyMenu menu;
+    private string roomName;
 
     // This gets activated when the session is to start
     public Action<SessionType> onLaunchSession;
 
     public override void Enter()
     {
-        Action levelLoaded = () =>
-            {
-                menu = FindObjectOfType<MasterLobbyMenu>();
-                menu.launchSessionClicked += LaunchSession;
-            };
+        LoadLevel("MasterLobby", LevelLoaded);
+    }
 
-        LoadLevel("MasterLobby", levelLoaded);
+    void LevelLoaded()
+    {
+        menu = FindObjectOfType<MasterLobbyMenu>();
+        menu.launchSessionClicked += LaunchSession;
+        menu.SetRoomName(roomName);
     }
 
     public void LaunchSession()
@@ -30,5 +32,11 @@ public class MasterLobby : Lobby
     {
         menu.launchSessionClicked -= LaunchSession;
         menu = null;
+    }
+
+    public void SetRoomName(string name)
+    {
+        this.roomName = name;
+        if (menu != null) menu.SetRoomName(name);
     }
 }

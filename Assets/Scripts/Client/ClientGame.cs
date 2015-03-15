@@ -10,11 +10,23 @@ public class ClientGame : Game
     {
         base.Start();
         base.lobby = gameObject.AddComponent<ClientLobby>();
+        Lobby.joinRoomRequested += JoinRoom;
 
-        network.onConnected += network.JoinRoom;        
-        network.onJoinRoomFailed += network.JoinRoom;
+        network.onConnected += lobby.Enter;
+        network.onJoinRoomFailed += JoinRoomFailed;
         network.onJoinedRoom += lobby.Enter;
+        network.onJoinedRoom += Lobby.JoinRoomSucceeded;
         network.onInitiateMasterControl += InitiateMasterControl;
+    }
+
+    void JoinRoom(string roomName)
+    {
+        network.JoinRoom(roomName);
+    }
+
+    void JoinRoomFailed()
+    {
+        Lobby.JoinRoomFailed();
     }
         
     protected override Session CreateSession(SessionType type)

@@ -9,20 +9,32 @@ public class MasterGame : Game
 {
     private MasterLobby Lobby { get { return base.lobby as MasterLobby; } }
     private List<PhotonPlayer> playersInSession;
+    private string roomName;
 
     protected void Start()
     {
         base.Start();
         base.lobby = gameObject.AddComponent<MasterLobby>();
 
-        network.onConnected += network.CreateRoom;
-        network.onCreateRoomFailed += network.CreateRoom;
+        network.onConnected += CreateRoom;
+        network.onCreateRoomFailed += CreateRoom;
         network.onCreatedRoom += InitiateControl;
         network.onCreatedRoom += lobby.Enter;
+        network.onCreatedRoom += () => { Lobby.SetRoomName(roomName); };
         network.onInitiateMasterControl += InitiateMasterControl;
         network.onPlayerConnected += PlayerJoined;
 
         Lobby.onLaunchSession += RequestLaunchSession;
+    }
+
+    void CreateRoom()
+    {
+        char[] chars = new char[4];
+        for(int i=0; i<chars.Length; i++)
+            chars[i] = (char)UnityEngine.Random.Range((int)'A', (int)'Z' + 1);
+
+        roomName = new string(chars);
+        network.CreateRoom(roomName);
     }
 
     void InitiateControl()
