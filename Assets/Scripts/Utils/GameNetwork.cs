@@ -7,9 +7,17 @@ using Recievers = ExitGames.Client.Photon.Lite.ReceiverGroup;
 // Owned and created by Game
 public class GameNetwork : MonoBehaviour
 {
+    [Serializable]
+    public struct LocalConnectionSettings
+    {
+        public string localIP;
+    }
+
+    public bool useLocalServer;
+    public LocalConnectionSettings localSettings;
+
     // Temporary setting strings
-    private readonly string roomName = "sgflksg";//"lksjfdalkjhfdlkjdsag";
-    private readonly string version = "0.1";
+    public string version = "0.1";
         
     // Shared events
     public Action onConnected;
@@ -27,8 +35,16 @@ public class GameNetwork : MonoBehaviour
 	void Start () 
     {
         PhotonNetwork.autoJoinLobby = false;
-        PhotonNetwork.ConnectUsingSettings(version);
         PhotonNetwork.OnEventCall += OnCustomEvent;
+
+        if (useLocalServer)
+        {
+            PhotonNetwork.ConnectToMaster(localSettings.localIP, PhotonNetwork.PhotonServerSettings.ServerPort, PhotonNetwork.PhotonServerSettings.AppID, version);
+        }
+        else
+        {
+            PhotonNetwork.ConnectUsingSettings(version);
+        }        
 	}
 
     public void CreateRoom(string name)

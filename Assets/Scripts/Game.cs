@@ -16,7 +16,7 @@ public abstract class Game : Photon.MonoBehaviour
     protected void Start()
     {
         DontDestroyOnLoad(this.gameObject);
-        networkField = gameObject.AddComponent<GameNetwork>();
+        networkField = gameObject.GetComponent<GameNetwork>();
     }
 
     // Override to provide the specific Session (ie Master/Client)
@@ -44,4 +44,9 @@ public abstract class Game : Photon.MonoBehaviour
         session = null;
         lobby.Enter();
     }    
+
+    void OnGUI()
+    {
+        GUI.Label(new Rect(5, 5, 200, 24), "Ping: " + PhotonNetwork.GetPing());
+    }
 }
