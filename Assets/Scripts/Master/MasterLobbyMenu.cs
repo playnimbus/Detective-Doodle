@@ -27,9 +27,12 @@ public class MasterLobbyMenu : MonoBehaviour
 
     void OnDestroy()
     {
-        network.onPlayerConnected -= RefreshPlayersText;
-        network.onPlayerDisconnected -= RefreshPlayersText;
-        network.onPlayerPropertiesChanged -= RefreshPlayersText;
+        if (network != null)
+        {
+            network.onPlayerConnected -= RefreshPlayersText;
+            network.onPlayerDisconnected -= RefreshPlayersText;
+            network.onPlayerPropertiesChanged -= RefreshPlayersText;
+        }
     }
 
     public void LaunchSession()
