@@ -41,8 +41,8 @@ public class MasterGame : Game
         // Take control of the game
         network.RaiseCustomEvent(CustomEvent.InitiateMasterControl, PhotonNetwork.player.ID);
     }
-    
-    protected override Session CreateSession(SessionType type)
+        
+    protected override Session CreateSession(byte type)
     {
         Session session = null;
 
@@ -58,20 +58,26 @@ public class MasterGame : Game
         return session;
     }
 
-    void RequestLaunchSession(SessionType type)
+    void RequestLaunchSession(byte type)
     {
-        photonView.RPCEx("LaunchSession", PhotonTargets.All, type);
+        photonView.RPC("LaunchSession", PhotonTargets.All, type);
+    }
+
+    [RPC]
+    protected void LaunchSession(byte type)
+    {
+        base.LaunchSession(type);
     }
 
     void RequestSessionFinish()
     {
         this.session.onFinished -= RequestSessionFinish;
-        photonView.RPCEx("FinishSession", PhotonTargets.All);
+        photonView.RPC("FinishSession", PhotonTargets.All);
     }
 
-
-    void OnGUI()
+    [RPC]
+    protected void FinishSession()
     {
-        GUI.Label(new Rect(10, 10, 250, 25), "Ping: " + PhotonNetwork.GetPing());
+        base.FinishSession();
     }
 }

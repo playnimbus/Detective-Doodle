@@ -20,7 +20,7 @@ public abstract class Game : Photon.MonoBehaviour
     }
 
     // Override to provide the specific Session (ie Master/Client)
-    protected abstract Session CreateSession(SessionType type);
+    protected abstract Session CreateSession(byte type);
         
     protected void InitiateMasterControl(int masterID)
     {
@@ -28,25 +28,23 @@ public abstract class Game : Photon.MonoBehaviour
         photonView.TransferOwnership(masterID);
     }
 
-    [RPC]
-    protected void LaunchSession(SessionType type)
+    protected void LaunchSession(byte type)
     {
         lobby.Exit();
         session = CreateSession(type);
         session.Launch();
     }
 
-    [RPC]
     protected void FinishSession()
     {
         session.Finish();
         Destroy(session);
         session = null;
         lobby.Enter();
-    }    
+    }
 
     void OnGUI()
     {
-        GUI.Label(new Rect(5, 5, 200, 24), "Ping: " + PhotonNetwork.GetPing());
+        GUI.Label(new Rect(5, 5, 200, 25), "Ping: " + PhotonNetwork.GetPing());
     }
 }

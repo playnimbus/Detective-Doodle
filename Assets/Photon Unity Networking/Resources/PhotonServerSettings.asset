@@ -19,39 +19,24 @@ MonoBehaviour:
   AppID: ae593766-6265-4aa1-9357-45c8f215b8fb
   PingCloudServersOnAwake: 0
   RpcList:
+  - Accuse
   - Chat
-  - ColorRpc
+  - CreatePlayer
   - DestroyRpc
-  - DoJump
+  - FinishSession
   - InstantiateRpc
-  - Marco
+  - Kill
+  - LaunchSession
+  - MakeMurderer
   - OnAwakeRPC
+  - PerformRPCCall
   - PickupItemInit
-  - Polo
+  - PlayerCheckIn
   - PunPickup
   - PunPickupSimple
   - PunRespawn
-  - RequestForPickupTimes
-  - TaggedPlayer
-  - PlayerJoined
-  - MakeMurderer
-  - testRPCHello
-  - Hello
-  - MoveToLobbyRPC
-  - ManagerRPC
-  - ClientRPC
-  - MasterRPC
-  - BaseRPC
-  - CreateAndGoToLobby
-  - LaunchSession
-  - FinishSession
-  - PerformRPCCall
-  - PrintThis
-  - PlayerCheckIn
-  - CreatePlayer
   - ReceiveEvidence
   - RequestEvidence
-  - Kill
+  - RequestForPickupTimes
   - ShareEvidence
-  - Accuse
   DisableAutoOpenWizard: 0

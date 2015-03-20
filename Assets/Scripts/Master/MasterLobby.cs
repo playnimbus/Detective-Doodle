@@ -9,7 +9,7 @@ public class MasterLobby : Lobby
     private string roomName;
 
     // This gets activated when the session is to start
-    public Action<SessionType> onLaunchSession;
+    public Action<byte> onLaunchSession;
 
     public override void Enter()
     {

@@ -12,7 +12,10 @@ public class ClientGame : Game
         base.lobby = gameObject.AddComponent<ClientLobby>();
         Lobby.joinRoomRequested += JoinRoom;
 
-        PhotonNetwork.player.name = "Adam";
+        if (PlayerPrefs.HasKey("name"))
+            PhotonNetwork.player.name = PlayerPrefs.GetString("name");
+        else
+            PhotonNetwork.player.name = "Anonymous";
 
         network.onConnected += lobby.Enter;
         network.onJoinRoomFailed += JoinRoomFailed;
@@ -30,8 +33,14 @@ public class ClientGame : Game
     {
         Lobby.JoinRoomFailed();
     }
-        
-    protected override Session CreateSession(SessionType type)
+
+    [RPC]
+    protected void LaunchSession(byte type)
+    {
+        base.LaunchSession(type);
+    }
+
+    protected override Session CreateSession(byte type)
     {
         switch(type)
         {
@@ -39,5 +48,11 @@ public class ClientGame : Game
             default:
                 return gameObject.AddComponent<DefaultClientSession>();
         }
+    }
+
+    [RPC]
+    protected void FinishSession()
+    {
+        base.FinishSession();
     }
 }

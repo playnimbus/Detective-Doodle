@@ -41,5 +41,6 @@ public class ClientLobby : Lobby
     public void NameChange(string newName)
     {
         PhotonNetwork.player.name = newName;
+        PlayerPrefs.SetString("name", newName);
     }
 }
