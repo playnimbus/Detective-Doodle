@@ -4,12 +4,20 @@ using System;
 
 public class ClientLobbyMenu : MonoBehaviour
 {
-    public Action<string> joinRoomRequested;
     public InputField field;
     public Button joinButton;
     public Button nameButton;
+    public Text playersText;
 
+    public Action<string> joinRoomRequested;
     public Action<string> nameChangedRequested;
+
+    private GameNetwork network;
+    
+    void Start()
+    {
+        RefreshPlayersText();
+    }
 
     public void JoinRoom()
     {
@@ -27,9 +35,34 @@ public class ClientLobbyMenu : MonoBehaviour
         joinButton.interactable = false;
     }
 
+    public void SetNetwork(GameNetwork network)
+    {
+        this.network = network;
+        network.onPlayerConnected += RefreshPlayersText;
+        network.onPlayerDisconnected += RefreshPlayersText;
+        network.onPlayerPropertiesChanged += RefreshPlayersText;
+    }
+
+    void OnDestroy()
+    {
+        network.onPlayerConnected -= RefreshPlayersText;
+        network.onPlayerDisconnected -= RefreshPlayersText;
+        network.onPlayerPropertiesChanged -= RefreshPlayersText;
+    }
+    
     public void SetName()
     {
         if (nameChangedRequested != null) nameChangedRequested(field.text);
-        nameButton.interactable = false;
+    }
+
+    public void RefreshPlayersText()
+    {
+        playersText.text = "";
+        PhotonPlayer[] players = PhotonNetwork.playerList;
+        for (int i = 0; i < players.Length; i++)
+        {
+            if(!players[i].isMasterClient)
+                playersText.text = playersText.text + players[i].name + "\n";
+        }
     }
 }

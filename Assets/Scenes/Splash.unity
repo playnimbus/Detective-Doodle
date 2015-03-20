@@ -244,7 +244,6 @@ GameObject:
   - 114: {fileID: 1748786235}
   - 114: {fileID: 1748786239}
   - 114: {fileID: 1748786236}
-  - 114: {fileID: 1748786238}
   m_Layer: 0
   m_Name: ScriptObject
   m_TagString: Untagged
@@ -263,7 +262,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ce8a368d69d5ee14fa24d2dc1f01b85a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  editorIsMaster: 1
+  editorIsMaster: 0
 --- !u!114 &1748786236
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -285,7 +284,7 @@ MonoBehaviour:
   ownershipTransfer: 1
   ObservedComponents:
   - {fileID: 0}
-  ObservedComponentsFoldoutOpen: 1
+  ObservedComponentsFoldoutOpen: 0
   viewIdField: 1
   instantiationId: 1
   isRuntimeInstantiated: 0
@@ -301,17 +300,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 1
---- !u!114 &1748786238
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1748786234}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 754d95386d6cc489195f951bbeeb7345, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &1748786239
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -323,7 +311,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 649d536156ceb974cab3a4aad1c29805, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  useLocalServer: 0
+  useLocalServer: 1
   localSettings:
     localIP: 192.168.1.91
   version: 0.1

@@ -18,6 +18,7 @@ public class ClientLobby : Lobby
         menu = FindObjectOfType<ClientLobbyMenu>();
         menu.joinRoomRequested += this.joinRoomRequested;
         menu.nameChangedRequested += NameChange;
+        menu.SetNetwork(GetComponent<GameNetwork>());
         if (successfullyJoinedRoom) menu.JoinRoomSucceeded();
     }
 
