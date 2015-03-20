@@ -46,8 +46,13 @@ public class GameNetwork : MonoBehaviour
         else
         {
             PhotonNetwork.ConnectUsingSettings(version);
-        }        
+        }
 	}
+
+    void OnFailedToConnectToPhoton(DisconnectCause cause)
+    {
+        Debug.LogError("[GameNetwork] Failed to connect to Photon: " + cause);
+    }
 
     public void CreateRoom(string name)
     {

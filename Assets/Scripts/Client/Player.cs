@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 
 public class Player : Photon.MonoBehaviour
@@ -21,7 +22,9 @@ public class Player : Photon.MonoBehaviour
         evidencePiecesGathered = 0;
         InitUI();
         InitCamera();
-        transform.DetachChildren();
+
+        // HACK ... Kinda. Assumes we only one text field on the player
+        GetComponentInChildren<Text>().text = photonView.owner.name;
     }
 
     void InitUI()
@@ -40,10 +43,12 @@ public class Player : Photon.MonoBehaviour
         if (camera == null) Debug.LogError("[Player] Couldn't find PlayerCamera", this);
 
         if (photonView.isMine)
-        {            
+        {
             camera.Init(this.transform);
+            camera.transform.parent = null;
         }
-        else Destroy(camera.gameObject);
+        //else Destroy(camera.gameObject);
+        else camera.camera.enabled = false;
     }
 
     public void ApproachedStash(EvidenceStash stash)
@@ -81,6 +86,9 @@ public class Player : Photon.MonoBehaviour
         Vector3 startPosition = Input.mousePosition;
         Vector3 velocity = Vector3.zero;
 
+        // Use fixed update to play nicely with physics
+        WaitForFixedUpdate fixedUpdate = new WaitForFixedUpdate();
+
         while(Input.GetMouseButton(0))
         {
             Vector3 current = Input.mousePosition;
@@ -96,7 +104,7 @@ public class Player : Photon.MonoBehaviour
             // Move using rigidbody to get collision benefits
             rigidbody.MovePosition(transform.position + velocity * Time.deltaTime * speed);
 
-            yield return null;
+            yield return fixedUpdate;
         }
 
         // Slow to a stop
@@ -107,7 +115,7 @@ public class Player : Photon.MonoBehaviour
             // Move using rigidbody to get collision benefits
             rigidbody.MovePosition(transform.position + velocity * Time.deltaTime * speed);
 
-            yield return null;
+            yield return fixedUpdate;
         }
     }
 
