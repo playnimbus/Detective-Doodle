@@ -21,6 +21,7 @@ public class MasterLobby : Lobby
         menu = FindObjectOfType<MasterLobbyMenu>();
         menu.launchSessionClicked += LaunchSession;
         menu.SetRoomName(roomName);
+        menu.SetNetwork(GetComponent<GameNetwork>());
     }
 
     public void LaunchSession()

@@ -12,6 +12,8 @@ public class ClientGame : Game
         base.lobby = gameObject.AddComponent<ClientLobby>();
         Lobby.joinRoomRequested += JoinRoom;
 
+        PhotonNetwork.player.name = "Adam";
+
         network.onConnected += lobby.Enter;
         network.onJoinRoomFailed += JoinRoomFailed;
         network.onJoinedRoom += lobby.Enter;

@@ -21,11 +21,13 @@ public class GameNetwork : MonoBehaviour
         
     // Shared events
     public Action onConnected;
+    public Action onPlayerConnected;
+    public Action onPlayerDisconnected;
+    public Action onPlayerPropertiesChanged;
 
     // Master events
     public Action onCreatedRoom;
-    public Action onCreateRoomFailed;
-    public Action<PhotonPlayer> onPlayerConnected;
+    public Action onCreateRoomFailed;   
 
     // Client events
     public Action onJoinedRoom;
@@ -103,6 +105,17 @@ public class GameNetwork : MonoBehaviour
 
     void OnPhotonPlayerConnected(PhotonPlayer newPlayer)
     {
-        if (onPlayerConnected != null) onPlayerConnected(newPlayer);
+        if (onPlayerConnected != null) onPlayerConnected();
     }
+
+    void OnPhotonPlayerDisconnected(PhotonPlayer player)
+    {
+        if (onPlayerDisconnected != null) onPlayerDisconnected();
+    }
+
+    void OnPhotonPlayerPropertiesChanged(object[] playerAndProperties)
+    {
+        if (onPlayerPropertiesChanged != null) onPlayerPropertiesChanged();
+    }
+
 }

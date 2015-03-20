@@ -22,7 +22,6 @@ public class MasterGame : Game
         network.onCreatedRoom += lobby.Enter;
         network.onCreatedRoom += () => { Lobby.SetRoomName(roomName); };
         network.onInitiateMasterControl += InitiateMasterControl;
-        network.onPlayerConnected += PlayerJoined;
 
         Lobby.onLaunchSession += RequestLaunchSession;
     }
@@ -57,11 +56,6 @@ public class MasterGame : Game
 
         session.onFinished += RequestSessionFinish;
         return session;
-    }
-
-    void PlayerJoined(PhotonPlayer player)
-    {
-
     }
 
     void RequestLaunchSession(SessionType type)

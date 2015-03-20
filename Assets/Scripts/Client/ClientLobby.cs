@@ -17,6 +17,7 @@ public class ClientLobby : Lobby
     {
         menu = FindObjectOfType<ClientLobbyMenu>();
         menu.joinRoomRequested += this.joinRoomRequested;
+        menu.nameChangedRequested += NameChange;
         if (successfullyJoinedRoom) menu.JoinRoomSucceeded();
     }
 
@@ -35,5 +36,10 @@ public class ClientLobby : Lobby
     {
         successfullyJoinedRoom = true;
         if (menu != null) menu.JoinRoomSucceeded();
+    }
+
+    public void NameChange(string newName)
+    {
+        PhotonNetwork.player.name = newName;
     }
 }

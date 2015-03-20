@@ -41,6 +41,9 @@ public class PhotonPlayer
     public string name {
         get
         {
+            // Defer to our custom name property
+            if (customProperties.ContainsKey("name"))
+                return nameField = customProperties["name"] as string;
             return this.nameField;
         }
         set
@@ -52,6 +55,11 @@ public class PhotonPlayer
             }
 
             this.nameField = value;
+
+            // Changed by Adam so name changes raise network event
+            Hashtable nameProp = new Hashtable();
+            nameProp["name"] = value;
+            SetCustomProperties(nameProp);
         }
     }
 
