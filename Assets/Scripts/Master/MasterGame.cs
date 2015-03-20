@@ -28,7 +28,7 @@ public class MasterGame : Game
 
     void CreateRoom()
     {
-        char[] chars = new char[4];
+        char[] chars = new char[2];
         for(int i=0; i<chars.Length; i++)
             chars[i] = (char)UnityEngine.Random.Range((int)'A', (int)'Z' + 1);
 

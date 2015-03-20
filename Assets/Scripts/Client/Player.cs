@@ -47,8 +47,7 @@ public class Player : Photon.MonoBehaviour
             camera.Init(this.transform);
             camera.transform.parent = null;
         }
-        //else Destroy(camera.gameObject);
-        else camera.camera.enabled = false;
+        else Destroy(camera.gameObject);
     }
 
     public void ApproachedStash(EvidenceStash stash)

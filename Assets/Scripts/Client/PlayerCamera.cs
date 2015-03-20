@@ -51,12 +51,14 @@ public class PlayerCamera : MonoBehaviour
 
     IEnumerator FollowCoroutine()
     {
+        WaitForFixedUpdate wait = new WaitForFixedUpdate();
+
         while(true)
         {
             transform.position = Vector3.Lerp(transform.position, target.position + offset, lerpSpeed);
             transform.rotation = Quaternion.Lerp(transform.rotation, initialRotation, lerpSpeed);
 
-            yield return null;
+            yield return wait;
         }
     }
 }
