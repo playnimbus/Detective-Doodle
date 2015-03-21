@@ -61,21 +61,9 @@ public class MasterGame : Game
         photonView.RPC("LaunchSession", PhotonTargets.All, type);
     }
 
-    [RPC]
-    protected void LaunchSession(byte type)
-    {
-        base.LaunchSession(type);
-    }
-
     void RequestSessionFinish()
     {
         this.session.onFinished -= RequestSessionFinish;
         photonView.RPC("FinishSession", PhotonTargets.All);
-    }
-
-    [RPC]
-    protected void FinishSession()
-    {
-        base.FinishSession();
     }
 }

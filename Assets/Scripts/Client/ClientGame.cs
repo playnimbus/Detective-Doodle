@@ -34,12 +34,6 @@ public class ClientGame : Game
         Lobby.JoinRoomFailed();
     }
 
-    [RPC]
-    protected void LaunchSession(byte type)
-    {
-        base.LaunchSession(type);
-    }
-
     protected override Session CreateSession(byte type)
     {
         switch(type)
@@ -48,11 +42,5 @@ public class ClientGame : Game
             default:
                 return gameObject.AddComponent<WhodunnitClientSession>();
         }
-    }
-
-    [RPC]
-    protected void FinishSession()
-    {
-        base.FinishSession();
     }
 }

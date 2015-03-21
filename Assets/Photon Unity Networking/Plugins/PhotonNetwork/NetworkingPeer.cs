@@ -2092,7 +2092,15 @@ internal class NetworkingPeer : LoadbalancingPeer, IPhotonPeerListener
 
             if (cachedRPCMethods == null)
             {
-                List<MethodInfo> entries = SupportClass.GetMethods(type, typeof(RPC));
+                // Was this
+                // List<MethodInfo> entries = SupportClass.GetMethods(type, typeof(RPC));
+
+                // Adam changing stuff to support inheritable RPCs :]
+                List<MethodInfo> entries = new List<MethodInfo>();
+                MethodInfo[] temp = type.GetMethods(BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance);
+                foreach(MethodInfo info in temp)
+                    if(info != null && info.IsDefined(typeof(RPC), true))
+                        entries.Add(info);
 
                 this.monoRPCMethodsCache[type] = entries;
                 cachedRPCMethods = entries;

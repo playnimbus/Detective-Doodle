@@ -28,6 +28,7 @@ public abstract class Game : Photon.MonoBehaviour
         photonView.TransferOwnership(masterID);
     }
 
+    [RPC]
     protected void LaunchSession(byte type)
     {
         lobby.Exit();
@@ -35,6 +36,7 @@ public abstract class Game : Photon.MonoBehaviour
         session.Launch();
     }
 
+    [RPC]
     protected void FinishSession()
     {
         session.Finish();
