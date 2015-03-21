@@ -39,6 +39,8 @@ public class GameNetwork : MonoBehaviour
         PhotonNetwork.autoJoinLobby = false;
         PhotonNetwork.OnEventCall += OnCustomEvent;
 
+#if !UNITY_IPHONE
+
         if (useLocalServer)
         {
             PhotonNetwork.ConnectToMaster(localSettings.localIP, PhotonNetwork.PhotonServerSettings.ServerPort, PhotonNetwork.PhotonServerSettings.AppID, version);
@@ -47,7 +49,13 @@ public class GameNetwork : MonoBehaviour
         {
             PhotonNetwork.ConnectUsingSettings(version);
         }
-	}
+#else
+
+        PhotonNetwork.ConnectUsingSettings(version);
+
+#endif
+
+    }
 
     void OnFailedToConnectToPhoton(DisconnectCause cause)
     {
