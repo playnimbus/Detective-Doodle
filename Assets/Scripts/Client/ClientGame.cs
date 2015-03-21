@@ -44,9 +44,9 @@ public class ClientGame : Game
     {
         switch(type)
         {
-            case SessionType.Default:
+            case SessionType.Whodunnit:
             default:
-                return gameObject.AddComponent<DefaultClientSession>();
+                return gameObject.AddComponent<WhodunnitClientSession>();
         }
     }
 

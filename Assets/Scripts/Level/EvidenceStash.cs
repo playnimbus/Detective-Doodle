@@ -24,14 +24,12 @@ public class EvidenceStash : Photon.MonoBehaviour
 
     void TriggerEntered(Collider collider)
     {
-        Player p = collider.GetComponent<Player>();
-        if (p != null) p.gameObject.SendMessage("ApproachedStash", this, SendMessageOptions.DontRequireReceiver);
+        if (collider.gameObject.CompareTag(Tags.Player)) collider.SendMessage("ApproachedStash", this, SendMessageOptions.DontRequireReceiver);
     }
 
     void TriggerExited(Collider collider)
     {
-        Player p = collider.GetComponent<Player>();
-        if (p != null) p.gameObject.SendMessage("LeftStash", this, SendMessageOptions.DontRequireReceiver);
+        if (collider.gameObject.CompareTag(Tags.Player)) collider.SendMessage("LeftStash", this, SendMessageOptions.DontRequireReceiver);
     }
 
     public void GetEvidence(Action<bool> callBack)
@@ -43,8 +41,7 @@ public class EvidenceStash : Photon.MonoBehaviour
     [RPC]
     void RequestEvidence(PhotonMessageInfo info)
     {
-        // Should only be true for master as this is a scene object
-        if(photonView.isMine)
+        if(PhotonNetwork.isMasterClient)
         {
             photonView.RPC("ReceiveEvidence", info.sender, hasEvidence);
             hasEvidence = false;

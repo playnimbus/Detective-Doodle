@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Collections;
 using System;
 
-public class DefaultMasterSession : Session
+public class WhodunnitMasterSession : Session
 {
     private SessionMenu menu;
     private int numPendingPlayers;

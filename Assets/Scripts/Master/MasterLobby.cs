@@ -26,7 +26,7 @@ public class MasterLobby : Lobby
 
     public void LaunchSession()
     {
-        if (onLaunchSession != null) onLaunchSession(SessionType.Default);
+        if (onLaunchSession != null) onLaunchSession(SessionType.Whodunnit);
     }
 
     public override void Exit()

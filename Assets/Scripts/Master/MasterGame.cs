@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using System;
 
-
-
 // Master client specific game state management logic
 public class MasterGame : Game
 {
@@ -48,9 +46,9 @@ public class MasterGame : Game
 
         switch (type)
         {
-            case SessionType.Default:
+            case SessionType.Whodunnit:
             default:
-                session = gameObject.AddComponent<DefaultMasterSession>();
+                session = gameObject.AddComponent<WhodunnitMasterSession>();
                 break;
         }
 

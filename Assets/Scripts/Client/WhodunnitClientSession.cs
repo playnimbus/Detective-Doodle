@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class DefaultClientSession : Session
+public class WhodunnitClientSession : Session
 {
     private Level level;
     private Player player;

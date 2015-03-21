@@ -21,14 +21,12 @@ public class LevelRoom : MonoBehaviour
 
     void OnRoomEnter(Collider coll)
     {
-        Player player = coll.GetComponent<Player>();
-        if (player != null) player.SendMessage("EnteredRoom", this, SendMessageOptions.DontRequireReceiver);
+        if (coll.gameObject.CompareTag(Tags.Player)) coll.SendMessage("EnteredRoom", this, SendMessageOptions.DontRequireReceiver);
     }
 
     void OnRoomExit(Collider coll)
     {
-        Player player = coll.GetComponent<Player>();
-        if (player != null) player.SendMessage("ExitedRoom", this, SendMessageOptions.DontRequireReceiver);
+        if (coll.gameObject.CompareTag(Tags.Player)) coll.SendMessage("ExitedRoom", this, SendMessageOptions.DontRequireReceiver);
     }
 
     public void Reveal() { roomCoverFade.FadeOut(); }
