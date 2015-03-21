@@ -38,7 +38,7 @@ public class PlayerMovement : Photon.MonoBehaviour
             velocity = delta * scale;
 
             // Move using rigidbody to get collision benefits
-            rigidbody.MovePosition(transform.position + velocity * Time.deltaTime * speed);
+            GetComponent<Rigidbody>().MovePosition(transform.position + velocity * Time.deltaTime * speed);
 
             yield return fixedUpdate;
         }
@@ -49,7 +49,7 @@ public class PlayerMovement : Photon.MonoBehaviour
             velocity = Vector3.Lerp(velocity, Vector3.zero, 0.15f);
 
             // Move using rigidbody to get collision benefits
-            rigidbody.MovePosition(transform.position + velocity * Time.deltaTime * speed);
+            GetComponent<Rigidbody>().MovePosition(transform.position + velocity * Time.deltaTime * speed);
 
             yield return fixedUpdate;
         }

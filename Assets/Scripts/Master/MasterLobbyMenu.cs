@@ -35,6 +35,18 @@ public class MasterLobbyMenu : MonoBehaviour
         }
     }
 
+#if UNITY_XBOXONE
+
+    void Update()
+    {
+        if (XboxOneInput.GetKey(XboxOneKeyCode.GamepadButtonA))
+        {
+            LaunchSession();
+        }
+    }
+
+#endif
+
     public void LaunchSession()
     {
         if (launchSessionClicked != null) launchSessionClicked();

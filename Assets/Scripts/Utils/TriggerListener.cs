@@ -12,7 +12,7 @@ public class TriggerListener : MonoBehaviour
     
     void Start()
     {
-        if(collider == null)
+        if(GetComponent<Collider>() == null)
         {
             foreach (TriggerListener child in GetComponentsInChildren<TriggerListener>())
             {
@@ -25,7 +25,7 @@ public class TriggerListener : MonoBehaviour
 
             colliderContactCount = new Dictionary<Collider, int>();
         }
-        else collider.isTrigger = true;
+        else GetComponent<Collider>().isTrigger = true;
     }
 
     void OnChildTriggerEnter(Collider other)
