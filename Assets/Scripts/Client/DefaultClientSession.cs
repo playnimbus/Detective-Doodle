@@ -5,7 +5,6 @@ public class DefaultClientSession : Session
 {
     private Level level;
     private Player player;
-    private new PlayerCamera camera;
     private int numRoomsPlayerIsIn;
 
     public override void Launch()
@@ -24,7 +23,6 @@ public class DefaultClientSession : Session
     {
         GameObject playerGO = PhotonNetwork.Instantiate("Player", location, Quaternion.identity, 0);
         player = playerGO.GetComponent<Player>();
-        camera = player.Camera;
     }
 
     [RPC]
