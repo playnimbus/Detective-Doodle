@@ -25,13 +25,13 @@ public class EvidenceStash : Photon.MonoBehaviour
     void TriggerEntered(Collider collider)
     {
         Player p = collider.GetComponent<Player>();
-        if (p != null && onPlayerApproach != null) onPlayerApproach(this, p);
+        if (p != null) p.gameObject.SendMessage("ApproachedStash", this, SendMessageOptions.DontRequireReceiver);
     }
 
     void TriggerExited(Collider collider)
     {
         Player p = collider.GetComponent<Player>();
-        if (p != null && onPlayerLeave != null) onPlayerLeave(this, p);
+        if (p != null) p.gameObject.SendMessage("LeftStash", this, SendMessageOptions.DontRequireReceiver);
     }
 
     public void GetEvidence(Action<bool> callBack)

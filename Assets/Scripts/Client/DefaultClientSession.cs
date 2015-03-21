@@ -17,10 +17,6 @@ public class DefaultClientSession : Session
     {
         photonView.RPC("PlayerCheckIn", PhotonTargets.MasterClient, PhotonNetwork.player.ID);
         level = FindObjectOfType<Level>();
-        level.onEnteredRoom += PlayerEnteredRoom;
-        level.onExitedRoom += PlayerExitedRoom;
-        level.onPlayerApproachStash += PlayerApproachedStash;
-        level.onPlayerLeaveStash += PlayerLeftStash;
     }
 
     [RPC]
@@ -35,38 +31,6 @@ public class DefaultClientSession : Session
     void MakeMurderer()
     {
         player.MakeMurderer();
-    }
-
-    void PlayerEnteredRoom(LevelRoom room, Player player)
-    {
-        if (player.photonView.isMine)
-        {
-            numRoomsPlayerIsIn++;
-            camera.MoveToVantage(room.overheadCameraPosition);
-            room.Reveal();
-        }
-    }
-
-    void PlayerExitedRoom(LevelRoom room, Player player)
-    {
-        if (player.photonView.isMine)
-        {
-            numRoomsPlayerIsIn--;
-            if(numRoomsPlayerIsIn == 0) camera.ResumeFollow();
-            room.Conceal();
-        }
-    }
-
-    void PlayerApproachedStash(EvidenceStash stash, Player player)
-    {
-        if (player.photonView.isMine)
-            player.ApproachedStash(stash);
-    }
-
-    void PlayerLeftStash(EvidenceStash stash, Player player)
-    {
-        if (player.photonView.isMine)
-            player.LeftStash(stash);
     }
 
     public override void Finish()

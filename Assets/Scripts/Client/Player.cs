@@ -52,6 +52,8 @@ public class Player : Photon.MonoBehaviour
 
     public void ApproachedStash(EvidenceStash stash)
     {
+        if (!photonView.isMine) return;
+
         if (evidencePiecesGathered == 3)
         {
             ui.ShowButton("Already collected max evidence.", null);
@@ -68,9 +70,27 @@ public class Player : Photon.MonoBehaviour
 
     public void LeftStash(EvidenceStash stash)
     {
+        if (!photonView.isMine) return;
+
         ui.HideButton();
     }
     
+    void EnteredRoom(LevelRoom room)
+    {
+        if (!photonView.isMine) return;
+
+        camera.MoveToVantage(room.overheadCameraPosition);
+        room.Reveal();
+    }
+
+    void ExitedRoom(LevelRoom room)
+    {
+        if (!photonView.isMine) return;
+
+        camera.ResumeFollow();
+        room.Conceal();
+    }
+
     void Update()
     {
         if (Input.GetMouseButtonDown(0) && photonView.isMine)
