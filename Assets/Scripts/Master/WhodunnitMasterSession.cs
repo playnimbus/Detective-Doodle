@@ -56,6 +56,13 @@ public class WhodunnitMasterSession : Session
             if (Input.GetKeyDown(KeyCode.Escape))
                 menu.Toggle();
 
+#if UNITY_XBOXONE
+
+            if (XboxOneInput.GetKeyDown(XboxOneKeyCode.GamepadButtonB))
+                RequestFinish();
+
+#endif
+
             yield return null;
         }
     }

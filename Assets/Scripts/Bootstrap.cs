@@ -13,7 +13,7 @@ public class Bootstrap : MonoBehaviour
         // Separate the master from the clients (replace later with XBOX and mobile)
         // For now assume we'll run master through editor and clients through builds
                 
-#if UNITY_EDITOR
+#if UNITY_EDITOR || UNITY_XBOXONE
 
         if(editorIsMaster) gameObject.AddComponent<MasterGame>();
         else gameObject.AddComponent<ClientGame>();
