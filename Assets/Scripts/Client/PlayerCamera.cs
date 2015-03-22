@@ -13,6 +13,8 @@ public class PlayerCamera : MonoBehaviour
     private Coroutine followCoroutine;
     private Coroutine vantageCoroutine;
 
+	public Vector3 playerDirection = Vector3.zero;
+
     public void Init(Transform target)
     {
         this.target = target;
@@ -55,7 +57,7 @@ public class PlayerCamera : MonoBehaviour
 
         while(true)
         {
-            transform.position = Vector3.Lerp(transform.position, target.position + offset, lerpSpeed);
+			transform.position = Vector3.Lerp(transform.position, target.position + offset + (playerDirection * 2.5f), lerpSpeed);
             transform.rotation = Quaternion.Lerp(transform.rotation, initialRotation, lerpSpeed);
 
             yield return wait;

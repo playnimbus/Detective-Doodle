@@ -7,6 +7,7 @@ public class PlayerMovement : Photon.MonoBehaviour
     public float virtualScreenPadRadius;
 
     private Coroutine moveCoroutine;
+	public PlayerCamera playerCamera;
 
     void Update()
     {
@@ -36,6 +37,8 @@ public class PlayerMovement : Photon.MonoBehaviour
             delta.Normalize();
             float scale = CubicInOut(length, 0, 1, virtualScreenPadRadius);
             velocity = delta * scale;
+
+			playerCamera.playerDirection = delta;
 
             // Move using rigidbody to get collision benefits
             GetComponent<Rigidbody>().MovePosition(transform.position + velocity * Time.deltaTime * speed);
