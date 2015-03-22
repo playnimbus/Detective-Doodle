@@ -7,10 +7,11 @@ public class PlayerMovement : Photon.MonoBehaviour
     public float virtualScreenPadRadius;
 
     private Coroutine moveCoroutine;
+    private bool canMove = true;
 
     void Update()
     {
-        if (Input.GetMouseButtonDown(0) && photonView.isMine)
+        if (Input.GetMouseButtonDown(0) && photonView.isMine && canMove)
         {
             if (moveCoroutine != null) StopCoroutine(moveCoroutine);
             moveCoroutine = StartCoroutine(MoveCoroutine());
@@ -37,8 +38,11 @@ public class PlayerMovement : Photon.MonoBehaviour
             float scale = CubicInOut(length, 0, 1, virtualScreenPadRadius);
             velocity = delta * scale;
 
-            // Move using rigidbody to get collision benefits
-            GetComponent<Rigidbody>().MovePosition(transform.position + velocity * Time.deltaTime * speed);
+            if (canMove)
+            {
+                // Move using rigidbody to get collision benefits
+                GetComponent<Rigidbody>().MovePosition(transform.position + velocity * Time.deltaTime * speed);
+            }
 
             yield return fixedUpdate;
         }
@@ -48,8 +52,11 @@ public class PlayerMovement : Photon.MonoBehaviour
         {
             velocity = Vector3.Lerp(velocity, Vector3.zero, 0.15f);
 
-            // Move using rigidbody to get collision benefits
-            GetComponent<Rigidbody>().MovePosition(transform.position + velocity * Time.deltaTime * speed);
+            if (canMove)
+            {
+                // Move using rigidbody to get collision benefits
+                GetComponent<Rigidbody>().MovePosition(transform.position + velocity * Time.deltaTime * speed);
+            }
 
             yield return fixedUpdate;
         }
@@ -61,5 +68,17 @@ public class PlayerMovement : Photon.MonoBehaviour
         if (t < 1) return c / 2 * t * t * t + b;
         t -= 2;
         return c / 2 * (t * t * t + 2) + b;
+    }
+
+    public void StopMovement(float seconds)
+    {
+        canMove = false;
+        if (seconds != 0f) 
+            Invoke("ResumeMovement", seconds);
+    }
+
+    void ResumeMovement()
+    {
+        canMove = true;
     }
 }

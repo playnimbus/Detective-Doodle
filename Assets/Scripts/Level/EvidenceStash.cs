@@ -4,19 +4,18 @@ using System;
 // Place where evidence will be 'hidden' in a room
 public class EvidenceStash : Photon.MonoBehaviour 
 {
+    public Action<EvidenceStash> evidenceLooted;
+
     private Evidence evidence; // Unused for now
     private TriggerListener triggerListener;
-
-    // Called when a player comes near or leaves the stash
-    public Action<EvidenceStash, Player> onPlayerApproach;
-    public Action<EvidenceStash, Player> onPlayerLeave;
 
     private Action<bool> evidenceRequestCallback;
     private bool hasEvidence;
     
+    
     void Start()
     {
-        hasEvidence = true;
+        hasEvidence = false;
         triggerListener = GetComponent<TriggerListener>();
         triggerListener.onTriggerEntered += TriggerEntered;
         triggerListener.onTriggerExited += TriggerExited;
@@ -41,10 +40,11 @@ public class EvidenceStash : Photon.MonoBehaviour
     [RPC]
     void RequestEvidence(PhotonMessageInfo info)
     {
-        if(PhotonNetwork.isMasterClient)
+        if (PhotonNetwork.isMasterClient)
         {
             photonView.RPC("ReceiveEvidence", info.sender, hasEvidence);
-            hasEvidence = false;
+            if (hasEvidence && evidenceLooted != null) evidenceLooted(this);
+            photonView.RPC("SetHasEvidence", PhotonTargets.All, false);
         }
     }
 
@@ -56,4 +56,9 @@ public class EvidenceStash : Photon.MonoBehaviour
         evidenceRequestCallback = null;
     }
 
+    [RPC]
+    void SetHasEvidence(bool value)
+    {
+        hasEvidence = value;
+    }
 }

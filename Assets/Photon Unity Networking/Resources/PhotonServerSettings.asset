@@ -39,4 +39,12 @@ MonoBehaviour:
   - RequestEvidence
   - RequestForPickupTimes
   - ShareEvidence
+  - AssignDetective
+  - AssignMurderer
+  - GiveEvidence
+  - MakeDetective
+  - SetHaveEvidence
+  - RemoveDetectiveship
+  - ReplenishEvidence
+  - SetHasEvidence
   DisableAutoOpenWizard: 0

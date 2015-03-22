@@ -7,6 +7,7 @@ public class WhodunnitMasterSession : Session
 {
     private SessionMenu menu;
     private int numPendingPlayers;
+    private EvidenceStash[] stashes;
 
     public override void Launch()
     {
@@ -43,11 +44,27 @@ public class WhodunnitMasterSession : Session
             photonView.RPC("CreatePlayer", p, new Vector3(20f, 2.5f, -2.5f));
 
         // Assign the murderer!
-        int index = UnityEngine.Random.Range(0, PhotonNetwork.otherPlayers.Length);
-        PhotonPlayer murderer = PhotonNetwork.otherPlayers[index];
-        photonView.RPC("MakeMurderer", murderer);
+        int murdererIndex = UnityEngine.Random.Range(0, PhotonNetwork.otherPlayers.Length);
+        PhotonPlayer murderer = PhotonNetwork.otherPlayers[murdererIndex];
+        photonView.RPC("AssignMurderer", murderer);
+
+        // Assign the detective!
+        int detectiveIndex = (murdererIndex + 1) % PhotonNetwork.otherPlayers.Length;
+        PhotonPlayer detective = PhotonNetwork.otherPlayers[detectiveIndex];
+        photonView.RPC("AssignDetective", detective);
+
+        stashes = FindObjectsOfType<EvidenceStash>();
+        foreach (EvidenceStash stash in stashes)
+            stash.evidenceLooted += StashEvidenceLooted;
+        stashes[0].photonView.RPC("SetHasEvidence", PhotonTargets.All, true);
     }
 
+    void StashEvidenceLooted(EvidenceStash stash)
+    {
+        int index = UnityEngine.Random.Range(0, stashes.Length);
+        EvidenceStash newStash = stashes[index];
+        newStash.photonView.RPC("SetHasEvidence", PhotonTargets.All, true);
+    }
 
     IEnumerator MenuCoroutine()
     {

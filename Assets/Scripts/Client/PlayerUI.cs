@@ -6,31 +6,44 @@ using System;
 public class PlayerUI : MonoBehaviour 
 {
     public Image murdererIndicator;
-    public Text evidenceText;
+    public Image detectiveIndicator;
+    public Text headerText;
     public Button button;
     public Text buttonText;
 
     private Action buttonCallback;
+    private bool hideButtonOnPressed;
 
     void Start()
     {
         murdererIndicator.enabled = false;
+        detectiveIndicator.enabled = false;
         button.gameObject.SetActive(false);
     }
 
     public void MarkAsMurderer()
     {
         // HACK
-        Invoke("Foo", 0.5f);
+        Invoke("M", 0.5f);
     }
     
-    void Foo() { murdererIndicator.enabled = true; }
+    void M() { murdererIndicator.enabled = true; }
 
-    public void ShowButton(string text, Action callback)
+    public void MarkAsDetective(bool val)
+    {
+        // HACK
+        if(val) Invoke("D", 0.5f);
+        else detectiveIndicator.enabled = false;
+    }
+
+    void D() { detectiveIndicator.enabled = true; }
+
+    public void ShowButton(string text, Action callback, bool hideOnPressed)
     {
         button.gameObject.SetActive(true);
         buttonText.text = text;
         buttonCallback = callback;
+        hideButtonOnPressed = hideOnPressed;
     }
 
     public void HideButton()
@@ -42,11 +55,11 @@ public class PlayerUI : MonoBehaviour
     public void ButtonPressed()
     {
         if (buttonCallback != null) buttonCallback();
-        HideButton();
+        if (hideButtonOnPressed) HideButton();
     }
 
-    public void SetEvidenceText(string s)
+    public void SetHeaderText(string s)
     {
-        evidenceText.text = s;
+        headerText.text = s;
     }
 }

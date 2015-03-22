@@ -1,20 +1,28 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
+using System;
 
 public class Player : Photon.MonoBehaviour
-{        
+{
+    public GameObject evidenceIndictor;
+
+    public bool IsMurderer { get; private set; }
+    public bool IsDetective { get; private set; }
+    public bool IsDead { get; private set; }
+
     private new PlayerCamera camera;
-    private int evidencePiecesGathered;
     private PlayerUI ui;
-    private bool isMurderer;
+    private Coroutine stashSearch;
+
+    private bool haveEvidence;
 
     // Acts as a Start() for network instantiated objects
     void OnPhotonInstantiate(PhotonMessageInfo info)
     {
-        evidencePiecesGathered = 0;
         InitUI();
         InitCamera();
+        SetHaveEvidence(false);
 
         // HACK ... Kinda. Assumes we only one text field on the player
         GetComponentInChildren<Text>().text = photonView.owner.name;
@@ -26,7 +34,7 @@ public class Player : Photon.MonoBehaviour
 
         GameObject menuGO = Instantiate(Resources.Load<GameObject>("ClientMenu")) as GameObject;
         ui = menuGO.GetComponent<PlayerUI>();
-        ui.SetEvidenceText("Evidence gathered: " + evidencePiecesGathered);
+        ui.SetHeaderText("No Evidence");
     }
     
     void InitCamera()
@@ -42,28 +50,74 @@ public class Player : Photon.MonoBehaviour
         else Destroy(camera.gameObject);
     }
 
+    [RPC]
+    public void MakeMurderer()
+    {
+        IsMurderer = true;
+        if (photonView.isMine)
+            ui.MarkAsMurderer();
+    }
+
+    [RPC]
+    public void MakeDetective()
+    {
+        IsDetective = true;
+        GetComponent<Renderer>().material.color = Color.blue;
+        if (photonView.isMine)
+            ui.MarkAsDetective(true);
+    }
+
+    [RPC]
+    public void RemoveDetectiveship()
+    {
+        IsDetective = false;
+        if (photonView.isMine)
+            ui.MarkAsDetective(false);
+    }
+
     public void ApproachedStash(EvidenceStash stash)
     {
         if (!photonView.isMine) return;
 
-        if (evidencePiecesGathered == 3)
+        if(!haveEvidence)
         {
-            ui.ShowButton("Already collected max evidence.", null);
-        }
-        else
-        {
-            ui.ShowButton("Search", () =>
-                {
-                    evidencePiecesGathered++;
-                    ui.SetEvidenceText("Evidence gathered: " + evidencePiecesGathered);
-                });
+            if (stashSearch != null) StopCoroutine(stashSearch);
+            stashSearch = StartCoroutine(StashSearchCoroutine(stash));
+            gameObject.layer = LayerMask.NameToLayer("HiddenPlayer");
+            camera.GetComponent<Camera>().cullingMask = LayerMask.GetMask("HiddenPlayer") | 1;
         }
     }
 
     public void LeftStash(EvidenceStash stash)
     {
         if (!photonView.isMine) return;
+        if (stashSearch != null) StopCoroutine(stashSearch);
+        ui.HideButton();
+        gameObject.layer = LayerMask.NameToLayer("Player");
+        camera.GetComponent<Camera>().cullingMask = LayerMask.GetMask("HiddenPlayer", "Player") | 1;
+    }
 
+    IEnumerator StashSearchCoroutine(EvidenceStash stash)
+    {
+        int timesTapped = 0;
+        ui.ShowButton("Tap to Search", () =>
+            {
+                timesTapped++;
+
+            }, false);
+        
+        while (timesTapped < 10)
+        {
+            yield return null;
+        }
+
+        // Tapped required amount of time
+        stash.GetEvidence((hadEvidence) =>
+            {
+                photonView.RPC("SetHaveEvidence", PhotonTargets.All, hadEvidence);
+            });
+        
+        stashSearch = null;
         ui.HideButton();
     }
     
@@ -71,7 +125,7 @@ public class Player : Photon.MonoBehaviour
     {
         if (!photonView.isMine) return;
 
-        camera.MoveToVantage(room.overheadCameraPosition);
+        // camera.MoveToVantage(room.overheadCameraPosition);
         room.Reveal();
     }
 
@@ -79,46 +133,65 @@ public class Player : Photon.MonoBehaviour
     {
         if (!photonView.isMine) return;
 
-        camera.ResumeFollow();
+        // camera.ResumeFollow();
         room.Conceal();
     }
 
     void OnCollisionEnter(Collision collision)
     {
         if (!photonView.isMine) return;
-        Player other = collision.gameObject.GetComponent<Player>();
-        if(other != null)
+        Player otherPlayer = collision.gameObject.GetComponent<Player>();
+        if (otherPlayer == null) return;
+        if (IsDead) return;
+        
+        // return when you do an action!
+
+        if (IsMurderer)
         {
-            if (isMurderer)
+            if (haveEvidence)
             {
-                ui.ShowButton("Poison", () =>
+                ui.ShowButton("Murder", () =>
                     {
-                        other.photonView.RPC("Kill", PhotonTargets.All);
-                    });
+                        otherPlayer.photonView.RPC("Kill", PhotonTargets.All);
+                        photonView.RPC("SetHaveEvidence", PhotonTargets.All, false);
+                    }, true);
+                return;
             }
-            else
+        }
+        else if (IsDetective)
+        {
+            if (haveEvidence)
             {
-                if (evidencePiecesGathered == 3)
-                {
-                    ui.ShowButton("Accuse", () =>
-                        {
-                            other.photonView.RPC("Accuse", other.photonView.owner);
-                            evidencePiecesGathered = 0;
-                            ui.SetEvidenceText("Evidence gathered: " + evidencePiecesGathered);
-                        });
-                }
-                else if(evidencePiecesGathered > 0)
-                {
-                    ui.ShowButton("Share Evidence", () =>
-                        {
-                            other.photonView.RPC("ShareEvidence", other.photonView.owner);
-                        });
-                }
-                else
-                {
-                    ui.ShowButton("No Evidence To Share", null);
-                }
+                ui.ShowButton("Accuse", () =>
+                    {
+                        otherPlayer.photonView.RPC("Accuse", PhotonTargets.All);
+                        photonView.RPC("SetHaveEvidence", PhotonTargets.All, false);
+                    }, true);
+                return;
             }
+        }
+        else // Is bystander
+        {
+            if (otherPlayer.IsDetective && haveEvidence && !otherPlayer.haveEvidence && !otherPlayer.IsDead)
+            {
+                ui.ShowButton("Give Evidence", () =>
+                    {
+                        otherPlayer.photonView.RPC("SetHaveEvidence", PhotonTargets.All, true);
+                        photonView.RPC("SetHaveEvidence", PhotonTargets.All, false);
+                    }, true);
+                return;
+            }
+        }
+
+        // All players can loot dead 
+        if (otherPlayer.IsDead && otherPlayer.haveEvidence)
+        {
+            ui.ShowButton("Take Evidence", () =>
+            {
+                otherPlayer.photonView.RPC("SetHaveEvidence", PhotonTargets.All, false);
+                photonView.RPC("SetHaveEvidence", PhotonTargets.All, true);
+            }, true);
+            return;
         }
     }
 
@@ -135,35 +208,42 @@ public class Player : Photon.MonoBehaviour
     [RPC]
     void Accuse()
     {
-        // The murderer is vanquished!
-        if (isMurderer)
+        if (IsMurderer)
         {
-            PhotonNetwork.Destroy(photonView);
+            GetComponent<Renderer>().material.color = new Color(1f, 0.5f, 0f);
+            GetComponent<PlayerMovement>().StopMovement(0f);
         }
+        else
+        {
+            GetComponent<Renderer>().material.color = Color.yellow;
+            GetComponent<PlayerMovement>().StopMovement(15f);
+            Invoke("ResetColor", 15f);
+        }
+    }
+
+    void ResetColor()
+    {
+        GetComponent<Renderer>().material.color = Color.white;
     }
     
     [RPC]
     void Kill()
     {
-        Destroy(gameObject, 20f);
-        // Also share evidence so player isn't aware of poison...
-        if (photonView.isMine) ShareEvidence();
+        IsDead = true;
+        GetComponent<Renderer>().material.color = Color.red;
+        GetComponent<PlayerMovement>().StopMovement(0f);
     }
 
     [RPC]
-    void ShareEvidence()
+    void SetHaveEvidence(bool value)
     {
-        // Someone gave us some evidence
-        if (evidencePiecesGathered < 3)
+        haveEvidence = value;
+        evidenceIndictor.SetActive(value);
+        if (photonView.isMine && ui != null)
         {
-            evidencePiecesGathered++;
-            ui.SetEvidenceText("Evidence gathered: " + evidencePiecesGathered);
+            string[] evidence = { "Hammer", "Knife", "Lead Pipe", "Revolver", "Rope", "Wrench" };
+            ui.SetHeaderText(value ? "Evidence: " + evidence[UnityEngine.Random.Range(0, evidence.Length)] : "No Evidence");
         }
     }
 
-    public void MakeMurderer()
-    {
-        isMurderer = true;
-        ui.MarkAsMurderer();        
-    }
 }

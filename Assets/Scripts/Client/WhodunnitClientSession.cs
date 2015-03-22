@@ -26,9 +26,15 @@ public class WhodunnitClientSession : Session
     }
 
     [RPC]
-    void MakeMurderer()
+    void AssignMurderer()
     {
-        player.MakeMurderer();
+        player.photonView.RPC("MakeMurderer", PhotonTargets.All);
+    }
+
+    [RPC]
+    void AssignDetective()
+    {
+        player.photonView.RPC("MakeDetective", PhotonTargets.All);
     }
 
     public override void Finish()
