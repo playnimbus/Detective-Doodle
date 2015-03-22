@@ -5,20 +5,26 @@ using System;
 // Displays what a player has gathered.
 public class PlayerUI : MonoBehaviour 
 {
+    [Serializable]
+    public struct PlayerButton
+    {
+        public Button button;
+        public Text text;
+        public Action callback;
+        public bool hideOnPressed;
+    }
+
     public Image murdererIndicator;
     public Image detectiveIndicator;
     public Text headerText;
-    public Button button;
-    public Text buttonText;
-
-    private Action buttonCallback;
-    private bool hideButtonOnPressed;
+    public PlayerButton[] buttons;
 
     void Start()
     {
         murdererIndicator.enabled = false;
         detectiveIndicator.enabled = false;
-        button.gameObject.SetActive(false);
+        foreach (PlayerButton button in buttons)
+            button.button.gameObject.SetActive(false);
     }
 
     public void MarkAsMurderer()
@@ -38,24 +44,27 @@ public class PlayerUI : MonoBehaviour
 
     void D() { detectiveIndicator.enabled = true; }
 
-    public void ShowButton(string text, Action callback, bool hideOnPressed)
+    public void ShowButton(int num, string text, bool hideOnPressed, Action callback)
     {
-        button.gameObject.SetActive(true);
-        buttonText.text = text;
-        buttonCallback = callback;
-        hideButtonOnPressed = hideOnPressed;
+        buttons[num].button.gameObject.SetActive(true);
+        buttons[num].text.text = text;
+        buttons[num].callback = callback;
+        buttons[num].hideOnPressed = hideOnPressed;
     }
-
-    public void HideButton()
+        
+    public void HideAllButtons()
     {
-        button.gameObject.SetActive(false);
-        buttonCallback = null;
+        for (int num = 0; num < buttons.Length; num++)
+        {
+            buttons[num].button.gameObject.SetActive(false);
+            buttons[num].callback = null;
+        }
     }
     
-    public void ButtonPressed()
+    public void ButtonPressed(int num)
     {
-        if (buttonCallback != null) buttonCallback();
-        if (hideButtonOnPressed) HideButton();
+        if (buttons[num].callback != null) buttons[num].callback();
+        if (buttons[num].hideOnPressed) buttons[num].button.gameObject.SetActive(false);
     }
 
     public void SetHeaderText(string s)

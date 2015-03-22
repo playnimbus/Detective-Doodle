@@ -92,7 +92,7 @@ public class Player : Photon.MonoBehaviour
     {
         if (!photonView.isMine) return;
         if (stashSearch != null) StopCoroutine(stashSearch);
-        ui.HideButton();
+        ui.HideAllButtons();
         gameObject.layer = LayerMask.NameToLayer("Player");
         camera.GetComponent<Camera>().cullingMask = LayerMask.GetMask("HiddenPlayer", "Player") | 1;
     }
@@ -100,11 +100,10 @@ public class Player : Photon.MonoBehaviour
     IEnumerator StashSearchCoroutine(EvidenceStash stash)
     {
         int timesTapped = 0;
-        ui.ShowButton("Tap to Search", () =>
+        ui.ShowButton(0, "Tap to Search", false, () =>
             {
                 timesTapped++;
-
-            }, false);
+            });
         
         while (timesTapped < 10)
         {
@@ -118,7 +117,7 @@ public class Player : Photon.MonoBehaviour
             });
         
         stashSearch = null;
-        ui.HideButton();
+        ui.HideAllButtons();
     }
     
     void EnteredRoom(LevelRoom room)
@@ -145,54 +144,108 @@ public class Player : Photon.MonoBehaviour
         if (IsDead) return;
         
         // return when you do an action!
-
         if (IsMurderer)
         {
-            if (haveEvidence)
-            {
-                ui.ShowButton("Murder", () =>
-                    {
-                        otherPlayer.photonView.RPC("Kill", PhotonTargets.All);
-                        photonView.RPC("SetHaveEvidence", PhotonTargets.All, false);
-                    }, true);
-                return;
-            }
+            if (MurdererInteraction(otherPlayer)) return;
         }
         else if (IsDetective)
         {
-            if (haveEvidence)
-            {
-                ui.ShowButton("Accuse", () =>
-                    {
-                        otherPlayer.photonView.RPC("Accuse", PhotonTargets.All);
-                        photonView.RPC("SetHaveEvidence", PhotonTargets.All, false);
-                    }, true);
-                return;
-            }
+            if (DetectiveInteraction(otherPlayer)) return;
         }
         else // Is bystander
         {
-            if (otherPlayer.IsDetective && haveEvidence && !otherPlayer.haveEvidence && !otherPlayer.IsDead)
-            {
-                ui.ShowButton("Give Evidence", () =>
-                    {
-                        otherPlayer.photonView.RPC("SetHaveEvidence", PhotonTargets.All, true);
-                        photonView.RPC("SetHaveEvidence", PhotonTargets.All, false);
-                    }, true);
-                return;
-            }
+            if (BystanderInteraction(otherPlayer)) return;
         }
 
         // All players can loot dead 
+        if (LootingInteraction(otherPlayer)) return;
+    }
+
+    bool MurdererInteraction(Player otherPlayer)
+    {
+        if (haveEvidence)
+        {
+            if (otherPlayer.IsDetective)
+            {
+                ui.ShowButton(1, "Murder", true, () =>
+                {
+                    otherPlayer.photonView.RPC("Kill", PhotonTargets.All);
+                    photonView.RPC("SetHaveEvidence", PhotonTargets.All, false);
+                    ui.HideAllButtons();
+                });
+                ui.ShowButton(0, "Give Evidence", true, () =>
+                {
+                    otherPlayer.photonView.RPC("SetHaveEvidence", PhotonTargets.All, true);
+                    photonView.RPC("SetHaveEvidence", PhotonTargets.All, false);
+                    ui.HideAllButtons();
+                });
+            }
+            else
+            {
+                ui.ShowButton(0, "Murder", true, () =>
+                {
+                    otherPlayer.photonView.RPC("Kill", PhotonTargets.All);
+                    photonView.RPC("SetHaveEvidence", PhotonTargets.All, false);
+                });
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    bool DetectiveInteraction(Player otherPlayer)
+    {
+        if (haveEvidence)
+        {
+            ui.ShowButton(0, "Accuse", true, () =>
+            {
+                otherPlayer.photonView.RPC("Accuse", PhotonTargets.All);
+                photonView.RPC("SetHaveEvidence", PhotonTargets.All, false);
+            });
+            return true;
+        }
+
+        return false;
+    }
+
+    bool BystanderInteraction(Player otherPlayer)
+    {
+        if (otherPlayer.IsDetective && haveEvidence && !otherPlayer.haveEvidence && !otherPlayer.IsDead)
+        {
+            ui.ShowButton(0, "Give Evidence", true, () =>
+            {
+                otherPlayer.photonView.RPC("SetHaveEvidence", PhotonTargets.All, true);
+                photonView.RPC("SetHaveEvidence", PhotonTargets.All, false);
+            });
+            return true;
+        }
+        if (otherPlayer.IsDetective && otherPlayer.IsDead)
+        {
+            ui.ShowButton(0, "Become Detective", true, () =>
+                {
+                    otherPlayer.photonView.RPC("RemoveDetectiveship", PhotonTargets.All);
+                    photonView.RPC("MakeDetective", PhotonTargets.All);
+                });
+            return true;
+        }
+
+        return false;
+    }
+
+    bool LootingInteraction(Player otherPlayer)
+    {
         if (otherPlayer.IsDead && otherPlayer.haveEvidence)
         {
-            ui.ShowButton("Take Evidence", () =>
+            ui.ShowButton(0, "Take Evidence", true, () =>
             {
                 otherPlayer.photonView.RPC("SetHaveEvidence", PhotonTargets.All, false);
                 photonView.RPC("SetHaveEvidence", PhotonTargets.All, true);
-            }, true);
-            return;
+            });
+            return true;
         }
+
+        return false;
     }
 
     void OnCollisionExit(Collision collision)
@@ -201,7 +254,7 @@ public class Player : Photon.MonoBehaviour
         Player other = collision.gameObject.GetComponent<Player>();
         if(other != null)
         {
-            ui.HideButton();
+            ui.HideAllButtons();
         }
     }
 
