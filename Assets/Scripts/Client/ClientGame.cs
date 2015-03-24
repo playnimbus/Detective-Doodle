@@ -17,9 +17,15 @@ public class ClientGame : Game
         else
             PhotonNetwork.player.name = "Anonymous";
 
-        network.onConnected += lobby.Enter;
+        if (network.useLocalServer && !network.localSettings.connectAutomatically)
+        {
+            lobby.Enter();
+        }
+        else
+        {
+            network.onConnected += lobby.Enter;
+        }
         network.onJoinRoomFailed += JoinRoomFailed;
-        network.onJoinedRoom += lobby.Enter;
         network.onJoinedRoom += Lobby.JoinRoomSucceeded;
         network.onInitiateMasterControl += InitiateMasterControl;
     }

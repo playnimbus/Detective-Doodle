@@ -9,6 +9,8 @@ public class ClientLobbyMenu : MonoBehaviour
     public Button nameButton;
     public Text playersText;
     public InputField nameField;
+    public InputField ipField;
+    public Button ipButton;
 
     public Action<string> joinRoomRequested;
     public Action<string> nameChangedRequested;
@@ -44,6 +46,18 @@ public class ClientLobbyMenu : MonoBehaviour
         network.onPlayerConnected += RefreshPlayersText;
         network.onPlayerDisconnected += RefreshPlayersText;
         network.onPlayerPropertiesChanged += RefreshPlayersText;
+        network.onConnected += DisableIPUI;
+        network.onConnected += EnableRoomUI;
+
+        if (network.useLocalServer && !network.localSettings.connectAutomatically)
+        {
+            ipField.text = network.localSettings.localIP;
+            DisableRoomUI();
+        }
+        else
+        {
+            DisableIPUI();
+        }
     }
 
     void OnDestroy()
@@ -53,12 +67,37 @@ public class ClientLobbyMenu : MonoBehaviour
             network.onPlayerConnected -= RefreshPlayersText;
             network.onPlayerDisconnected -= RefreshPlayersText;
             network.onPlayerPropertiesChanged -= RefreshPlayersText;
+            network.onConnected -= DisableIPUI;
+            network.onConnected -= EnableRoomUI;
         }
     }
     
     public void SetName()
     {
         if (nameChangedRequested != null) nameChangedRequested(nameField.text);
+    }
+
+    public void ConnectToIP()
+    {
+        network.ConnectWithIP(ipField.text);
+    }
+
+    void DisableIPUI()
+    {
+        ipField.interactable = false;
+        ipButton.interactable = false;
+    }
+
+    void DisableRoomUI()
+    {
+        field.interactable = false;
+        joinButton.interactable = false;
+    }
+
+    void EnableRoomUI()
+    {
+        field.interactable = true;
+        joinButton.interactable = true;
     }
 
     public void RefreshPlayersText()

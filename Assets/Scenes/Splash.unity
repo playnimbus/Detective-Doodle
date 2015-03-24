@@ -325,7 +325,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   useLocalServer: 0
   localSettings:
-    localIP: 192.168.1.96
+    localIP: 192.168.1.12
+    connectAutomatically: 1
   version: 0.1
 --- !u!1 &1785955671
 GameObject:

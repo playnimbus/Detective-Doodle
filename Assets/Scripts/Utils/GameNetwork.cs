@@ -11,6 +11,7 @@ public class GameNetwork : MonoBehaviour
     public struct LocalConnectionSettings
     {
         public string localIP;
+        public bool connectAutomatically;
     }
 
     public bool useLocalServer;
@@ -43,7 +44,10 @@ public class GameNetwork : MonoBehaviour
 
         if (useLocalServer)
         {
-            PhotonNetwork.ConnectToMaster(localSettings.localIP, PhotonNetwork.PhotonServerSettings.ServerPort, PhotonNetwork.PhotonServerSettings.AppID, version);
+            if (localSettings.connectAutomatically)
+            {
+                PhotonNetwork.ConnectToMaster(localSettings.localIP, PhotonNetwork.PhotonServerSettings.ServerPort, PhotonNetwork.PhotonServerSettings.AppID, version);
+            }
         }
         else
         {
@@ -55,6 +59,11 @@ public class GameNetwork : MonoBehaviour
 
 #endif
 
+    }
+
+    public void ConnectWithIP(string ip)
+    {
+        PhotonNetwork.ConnectToMaster(ip, PhotonNetwork.PhotonServerSettings.ServerPort, PhotonNetwork.PhotonServerSettings.AppID, version);
     }
 
     void OnFailedToConnectToPhoton(DisconnectCause cause)
