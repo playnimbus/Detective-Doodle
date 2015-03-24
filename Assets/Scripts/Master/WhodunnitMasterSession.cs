@@ -16,6 +16,8 @@ public class WhodunnitMasterSession : Session
         Action levelLoaded = () => { StartCoroutine(WaitForPlayers()); };
 
         LoadLevel("Session", levelLoaded);
+
+        Analytics.Initialize(Analytics.GameModes.Detective, numPendingPlayers);
     }
 
     void RequestFinish()
