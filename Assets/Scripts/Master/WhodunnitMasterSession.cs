@@ -15,7 +15,7 @@ public class WhodunnitMasterSession : Session
 
         Action levelLoaded = () => { StartCoroutine(WaitForPlayers()); };
 
-        LoadLevel("Session", levelLoaded);
+        LoadLevel("SessionMike", levelLoaded);
 
         Analytics.Initialize(Analytics.GameModes.Detective, numPendingPlayers);
     }
@@ -43,7 +43,8 @@ public class WhodunnitMasterSession : Session
 
         // Create player characters
         foreach (PhotonPlayer p in PhotonNetwork.otherPlayers)
-            photonView.RPC("CreatePlayer", p, new Vector3(20f, 2.5f, -2.5f));
+         //   photonView.RPC("CreatePlayer", p, new Vector3(20f, 2.5f, -2.5f));     //Session spawn
+            photonView.RPC("CreatePlayer", p, new Vector3(-8, 2.5f, -22));          //sessionMike spawn
 
         // Assign the murderer!
         int murdererIndex = UnityEngine.Random.Range(0, PhotonNetwork.otherPlayers.Length);

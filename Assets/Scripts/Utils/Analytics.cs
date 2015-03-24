@@ -82,12 +82,19 @@ public static class Analytics  {
             GA.API.Design.NewEvent(CurrentGameMode.ToString() + ":" + OBJECTS_LOOTED, System.Convert.ToSingle(clueFound));
         }
     }
-    
-    public static void PlayerAccused(bool isMurderer){
-        if (isMurderer){
-            GA.API.Design.NewEvent(CurrentGameMode.ToString() + ":" + PLAYER_ACCUSED + ":" + GA_TRUE, RoundTimer);
-        }else{
-            GA.API.Design.NewEvent(CurrentGameMode.ToString() + ":" + PLAYER_ACCUSED + ":" + GA_FALSE, RoundTimer);
+
+    public static void PlayerAccused(bool isMurderer)
+    {
+        if (DisableEventsAnalytics == false)
+        {
+            if (isMurderer)
+            {
+                GA.API.Design.NewEvent(CurrentGameMode.ToString() + ":" + PLAYER_ACCUSED + ":" + GA_TRUE, RoundTimer);
+            }
+            else
+            {
+                GA.API.Design.NewEvent(CurrentGameMode.ToString() + ":" + PLAYER_ACCUSED + ":" + GA_FALSE, RoundTimer);
+            }
         }
     }
 }

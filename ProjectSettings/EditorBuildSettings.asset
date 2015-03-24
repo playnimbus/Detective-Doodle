@@ -13,3 +13,5 @@ EditorBuildSettings:
     path: Assets/Scenes/ClientLobby.unity
   - enabled: 1
     path: Assets/Scenes/Session.unity
+  - enabled: 1
+    path: Assets/Scenes/SessionMike.unity
