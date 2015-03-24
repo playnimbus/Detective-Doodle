@@ -146,7 +146,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Welcome to Master Lobby!
+  m_Text: Welcome to Private Eyes!
 --- !u!222 &195337474
 CanvasRenderer:
   m_ObjectHideFlags: 0

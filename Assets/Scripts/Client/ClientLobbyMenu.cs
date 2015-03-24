@@ -8,6 +8,7 @@ public class ClientLobbyMenu : MonoBehaviour
     public Button joinButton;
     public Button nameButton;
     public Text playersText;
+    public InputField nameField;
 
     public Action<string> joinRoomRequested;
     public Action<string> nameChangedRequested;
@@ -17,6 +18,8 @@ public class ClientLobbyMenu : MonoBehaviour
     void Start()
     {
         RefreshPlayersText();
+        if (!string.IsNullOrEmpty(PhotonNetwork.player.name))
+            nameField.text = PhotonNetwork.player.name;
     }
 
     public void JoinRoom()
@@ -55,7 +58,7 @@ public class ClientLobbyMenu : MonoBehaviour
     
     public void SetName()
     {
-        if (nameChangedRequested != null) nameChangedRequested(field.text);
+        if (nameChangedRequested != null) nameChangedRequested(nameField.text);
     }
 
     public void RefreshPlayersText()
