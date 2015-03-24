@@ -7,12 +7,14 @@ public class Bootstrap : MonoBehaviour
 {
     // Toggle to make editor the client
     public bool editorIsMaster = true;
+    public bool disableAnalyticEvents;
 
 	void Start ()
     {
+        Analytics.DisableEventsAnalytics = disableAnalyticEvents;
+
         // Separate the master from the clients (replace later with XBOX and mobile)
         // For now assume we'll run master through editor and clients through builds
-                
 #if UNITY_EDITOR || UNITY_XBOXONE
 
         if(editorIsMaster) gameObject.AddComponent<MasterGame>();

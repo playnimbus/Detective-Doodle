@@ -14,4 +14,9 @@ public abstract class Session : Scene
 
     // Let the session clean up
     public abstract void Finish();
+
+    void Update()
+    {
+        Analytics.RoundTimer += Time.deltaTime;
+    }
 }
