@@ -5,7 +5,6 @@ public class WhodunnitClientSession : Session
 {
     private Level level;
     private Player player;
-    private int numRoomsPlayerIsIn;
 
     public override void Launch()
     {
