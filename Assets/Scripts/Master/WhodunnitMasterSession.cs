@@ -9,10 +9,14 @@ public class WhodunnitMasterSession : Session
     private int numPendingPlayers;
     private EvidenceStash[] stashes;
     private Level level;
+    private int totalPlayers;
+    private int deadPlayers;
 
     public override void Launch()
     {
-        numPendingPlayers = PhotonNetwork.otherPlayers.Length;
+        deadPlayers = 0;
+        totalPlayers = PhotonNetwork.otherPlayers.Length;
+        numPendingPlayers = totalPlayers;
         LoadLevel("SessionMike", LevelLoaded);
 
         Analytics.Initialize(Analytics.GameModes.Detective, numPendingPlayers);
@@ -106,6 +110,28 @@ public class WhodunnitMasterSession : Session
     void PlayerCheckIn(int playerID)
     {
         numPendingPlayers--;
+    }
+
+    [RPC]
+    void BystandersWon()
+    {
+        menu.SetHeader("The detectives have won!", true);
+        Analytics.SendGameModeEnd(true);
+    }
+
+    [RPC]
+    void PlayerKilled()
+    {
+        deadPlayers++;
+        if (deadPlayers >= totalPlayers - 1)
+            photonView.RPC("MurdererWon", PhotonTargets.All);
+    }
+
+    [RPC]
+    void MurdererWon()
+    {
+        menu.SetHeader("The murderer has won!", true);
+        Analytics.SendGameModeEnd(false);
     }
 
     public override void Finish()

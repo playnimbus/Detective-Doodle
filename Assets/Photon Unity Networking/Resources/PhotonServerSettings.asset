@@ -20,6 +20,9 @@ MonoBehaviour:
   PingCloudServersOnAwake: 0
   RpcList:
   - Accuse
+  - AssignDetective
+  - AssignMurderer
+  - BystandersWon
   - Chat
   - CreatePlayer
   - DestroyRpc
@@ -27,24 +30,20 @@ MonoBehaviour:
   - InstantiateRpc
   - Kill
   - LaunchSession
+  - MakeDetective
   - MakeMurderer
+  - MurdererWon
   - OnAwakeRPC
-  - PerformRPCCall
   - PickupItemInit
   - PlayerCheckIn
+  - PlayerKilled
   - PunPickup
   - PunPickupSimple
   - PunRespawn
   - ReceiveEvidence
+  - RemoveDetectiveship
   - RequestEvidence
   - RequestForPickupTimes
-  - ShareEvidence
-  - AssignDetective
-  - AssignMurderer
-  - GiveEvidence
-  - MakeDetective
-  - SetHaveEvidence
-  - RemoveDetectiveship
-  - ReplenishEvidence
   - SetHasEvidence
+  - SetHaveEvidence
   DisableAutoOpenWizard: 0

@@ -6,6 +6,9 @@ using System;
 public class Player : Photon.MonoBehaviour
 {
     public GameObject evidenceIndictor;
+    
+    public static class PlayerAction { public const byte MurdererAccused = 0; public const byte PlayerKilled = 1; };
+    public Action<byte> action;
 
     public bool IsMurderer { get; private set; }
     public bool IsDetective { get; private set; }
@@ -24,7 +27,7 @@ public class Player : Photon.MonoBehaviour
         InitCamera();
         SetHaveEvidence(false);
 
-        // HACK ... Kinda. Assumes we only one text field on the player
+        // HACK ... Kinda. Assumes we only have one text field on the player
         GetComponentInChildren<Text>().text = photonView.owner.name;
     }
 
@@ -269,6 +272,10 @@ public class Player : Photon.MonoBehaviour
         {
             GetComponent<Renderer>().material.color = new Color(1f, 0.5f, 0f);
             GetComponent<PlayerMovement>().StopMovement(0f);
+            if (action != null)
+            {
+                action(PlayerAction.MurdererAccused);
+            }
         }
         else
         {
@@ -289,6 +296,10 @@ public class Player : Photon.MonoBehaviour
         IsDead = true;
         GetComponent<Renderer>().material.color = Color.red;
         GetComponent<PlayerMovement>().StopMovement(0f);
+        if (action != null)
+        {
+            action(PlayerAction.PlayerKilled);
+        }
     }
 
     [RPC]
@@ -300,6 +311,30 @@ public class Player : Photon.MonoBehaviour
         {
             string[] evidence = { "Hammer", "Knife", "Lead Pipe", "Revolver", "Rope", "Wrench" };
             ui.SetHeaderText(value ? "Evidence: " + evidence[UnityEngine.Random.Range(0, evidence.Length)] : "No Evidence");
+        }
+    }
+
+    public void BystandersWon()
+    {
+        if (IsMurderer)
+        {
+            ui.SetHeaderText("You have been caught!");
+        }
+        else
+        {
+            ui.SetHeaderText("You have won!");
+        }
+    }
+
+    public void MurdererWon()
+    {
+        if (IsMurderer)
+        {
+            ui.SetHeaderText("You have won!");
+        }
+        else
+        {
+            ui.SetHeaderText("Everyone has been murdered!");
         }
     }
 

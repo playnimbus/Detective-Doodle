@@ -22,6 +22,7 @@ public class WhodunnitClientSession : Session
     {
         GameObject playerGO = PhotonNetwork.Instantiate("Player", location, Quaternion.identity, 0);
         player = playerGO.GetComponent<Player>();
+        player.action += OnPlayerAction;
     }
 
     [RPC]
@@ -36,8 +37,35 @@ public class WhodunnitClientSession : Session
         player.photonView.RPC("MakeDetective", PhotonTargets.All);
     }
 
+    void OnPlayerAction(byte action)
+    {
+        switch (action)
+        {
+            case Player.PlayerAction.MurdererAccused:
+                photonView.RPC("BystandersWon", PhotonTargets.All);
+                break;
+            case Player.PlayerAction.PlayerKilled:
+                photonView.RPC("PlayerKilled", PhotonTargets.MasterClient);
+                break;
+            default: 
+                break;
+        }
+    }
+
+    [RPC]
+    void BystandersWon()
+    {
+        player.BystandersWon();
+    }
+
+    [RPC]
+    void MurdererWon()
+    {
+        player.MurdererWon();
+    }
+
     public override void Finish()
     {
-
+        player.action -= OnPlayerAction;
     }
 }
