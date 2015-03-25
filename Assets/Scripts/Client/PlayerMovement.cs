@@ -27,6 +27,10 @@ public class PlayerMovement : Photon.MonoBehaviour
         // Use fixed update to play nicely with physics
         WaitForFixedUpdate fixedUpdate = new WaitForFixedUpdate();
 
+        // Wait till input is out of dead zone :]
+        while (Input.GetMouseButton(0) && Vector3.Distance(startPosition, Input.mousePosition) < 25)
+            yield return fixedUpdate;
+
         while (Input.GetMouseButton(0))
         {
             Vector3 current = Input.mousePosition;
@@ -37,7 +41,10 @@ public class PlayerMovement : Photon.MonoBehaviour
 
             delta.Normalize();
             float scale = CubicInOut(length, 0, 1, virtualScreenPadRadius);
-            velocity = delta * scale;			playerCamera.playerDirection = delta;
+            velocity = delta * scale;
+
+            playerCamera.playerDirection = velocity;
+
             if (canMove)
             {
                 // Move using rigidbody to get collision benefits
@@ -46,11 +53,13 @@ public class PlayerMovement : Photon.MonoBehaviour
 
             yield return fixedUpdate;
         }
-
+        
         // Slow to a stop
         while (true)
         {
             velocity = Vector3.Lerp(velocity, Vector3.zero, 0.15f);
+
+            playerCamera.playerDirection = velocity;
 
             if (canMove)
             {

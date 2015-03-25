@@ -86,8 +86,6 @@ public class Player : Photon.MonoBehaviour
         {
             if (stashSearch != null) StopCoroutine(stashSearch);
             stashSearch = StartCoroutine(StashSearchCoroutine(stash));
-            gameObject.layer = LayerMask.NameToLayer("HiddenPlayer");
-            camera.GetComponent<Camera>().cullingMask = LayerMask.GetMask("HiddenPlayer") | 1;
         }
     }
 
@@ -96,8 +94,7 @@ public class Player : Photon.MonoBehaviour
         if (!photonView.isMine) return;
         if (stashSearch != null) StopCoroutine(stashSearch);
         ui.HideAllButtons();
-        gameObject.layer = LayerMask.NameToLayer("Player");
-        camera.GetComponent<Camera>().cullingMask = LayerMask.GetMask("HiddenPlayer", "Player") | 1;
+        camera.RestoreDistance();
     }
 
     IEnumerator StashSearchCoroutine(EvidenceStash stash)
@@ -106,9 +103,10 @@ public class Player : Photon.MonoBehaviour
         ui.ShowButton(0, "Tap to Search", false, () =>
             {
                 timesTapped++;
+                camera.BringCloserToPosition(stash.transform);
             });
         
-        while (timesTapped < 10)
+        while (timesTapped < 25)
         {
             yield return null;
         }
@@ -122,6 +120,7 @@ public class Player : Photon.MonoBehaviour
         
         stashSearch = null;
         ui.HideAllButtons();
+        camera.RestoreDistance();
     }
     
     void EnteredRoom(LevelRoom room)

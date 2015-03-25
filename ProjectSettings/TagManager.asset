@@ -16,8 +16,8 @@ TagManager:
   - PlayerUI
   - Player
   - HiddenPlayer
-  - 
-  - 
+  - RoomCollider
+  - LevelGeometry
   - 
   - 
   - 
