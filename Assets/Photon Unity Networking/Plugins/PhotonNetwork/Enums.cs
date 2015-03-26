@@ -34,6 +34,13 @@ using ExitGames.Client.Photon;
 /// \ingroup publicApi
 public enum PhotonNetworkingMessage
 {
+
+    /// <summary>
+    /// Adam added this, called when someone used PhotonNetwork.Instantiate
+    /// </summary>
+    OnPhotonInstantiateGO,
+
+
     /// <summary>
     /// Called when the initial connection got established but before you can use the server. OnJoinedLobby() or OnConnectedToMaster() are called when PUN is ready.
     /// </summary>

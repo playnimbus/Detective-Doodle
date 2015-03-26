@@ -11,6 +11,7 @@ public class WhodunnitMasterSession : Session
     private Level level;
     private int totalPlayers;
     private int deadPlayers;
+    private AudioBank audio;
 
     public override void Launch()
     {
@@ -18,7 +19,7 @@ public class WhodunnitMasterSession : Session
         totalPlayers = PhotonNetwork.otherPlayers.Length;
         numPendingPlayers = totalPlayers;
         LoadLevel("SessionMike", LevelLoaded);
-
+        
         Analytics.Initialize(Analytics.GameModes.Detective, numPendingPlayers);
     }
 
@@ -31,6 +32,15 @@ public class WhodunnitMasterSession : Session
     {
         StartCoroutine(WaitForPlayers());
         level = FindObjectOfType<Level>();
+        InitAudio();
+        audio.PlaySound("mus_privateeyesgame", true);
+    }
+
+    void InitAudio()
+    {
+        GameObject audioResource = Resources.Load<GameObject>("MasterAudio");
+        GameObject audioGO = Instantiate(audioResource);
+        audio = audioGO.GetComponent<AudioBank>();
     }
 
     IEnumerator WaitForPlayers()
@@ -59,11 +69,7 @@ public class WhodunnitMasterSession : Session
             Vector3 position = spawnPoints[i].transform.position;
             photonView.RPC("CreatePlayer", p, position);
         }
-
-         //   Old hard coded spawn locations
-         //   photonView.RPC("CreatePlayer", p, new Vector3(20f, 2.5f, -2.5f));     //Session spawn
-         //   photonView.RPC("CreatePlayer", p, new Vector3(-8, 2.5f, -22));        //sessionMike spawn
-
+        
         // Assign the murderer!
         int murdererIndex = UnityEngine.Random.Range(0, PhotonNetwork.otherPlayers.Length);
         PhotonPlayer murderer = PhotonNetwork.otherPlayers[murdererIndex];
@@ -78,7 +84,30 @@ public class WhodunnitMasterSession : Session
         stashes = FindObjectsOfType<EvidenceStash>();
         foreach (EvidenceStash stash in stashes)
             stash.evidenceLooted += StashEvidenceLooted;
-        stashes[0].photonView.RPC("SetHasEvidence", PhotonTargets.All, true);
+        int index = UnityEngine.Random.Range(0, stashes.Length);
+        stashes[index].photonView.RPC("SetHasEvidence", PhotonTargets.All, true);
+    }
+
+    void OnPhotonInstantiateGO(GameObject go)
+    {
+        Player player = go.GetComponent<Player>();
+        if (player == null) return;
+        player.action += OnPlayerAction;
+    }
+
+    void OnPlayerAction(byte action)
+    {
+        switch (action)
+        {
+            case Player.PlayerAction.PlayerAccused:
+                audio.PlaySound("sfx_accuse");
+                break;
+            case Player.PlayerAction.PlayerKilled:
+                // TODO remove PlayerKilled RPC
+                break;
+            default:
+                break;
+        }
     }
 
     void StashEvidenceLooted(EvidenceStash stash)
@@ -115,6 +144,8 @@ public class WhodunnitMasterSession : Session
     [RPC]
     void BystandersWon()
     {
+        audio.PlaySound("sfx_murdererjailed");
+
         menu.SetHeader("The detectives have won!", true);
         Analytics.SendGameModeEnd(true);
     }
@@ -122,6 +153,8 @@ public class WhodunnitMasterSession : Session
     [RPC]
     void PlayerKilled()
     {
+        audio.PlaySound("sfx_murder");
+
         deadPlayers++;
         if (deadPlayers >= totalPlayers - 1)
             photonView.RPC("MurdererWon", PhotonTargets.All);
@@ -130,6 +163,8 @@ public class WhodunnitMasterSession : Session
     [RPC]
     void MurdererWon()
     {
+        audio.PlaySound("sfx_detectivekilled");
+
         menu.SetHeader("The murderer has won!", true);
         Analytics.SendGameModeEnd(false);
     }
