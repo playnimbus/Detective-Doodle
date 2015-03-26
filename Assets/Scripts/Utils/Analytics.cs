@@ -1,6 +1,8 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
+using System;
 
 public static class Analytics  {
 
@@ -30,8 +32,8 @@ public static class Analytics  {
     private const string OBJECTS_LOOTED = "Object Looted";
     private const string PLAYER_ACCUSED = "Player Accused";
 
-    string Path = Directory.GetCurrentDirectory();
-    string FileName = "/GameStats.txt";
+    static string Path = Directory.GetCurrentDirectory();
+    static string FileName = "/GameStats.txt";
 
     public static void Initialize(Analytics.GameModes gameMode, int numPlayers)
     {
