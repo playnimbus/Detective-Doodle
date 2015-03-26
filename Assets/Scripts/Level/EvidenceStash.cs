@@ -42,6 +42,7 @@ public class EvidenceStash : Photon.MonoBehaviour
     {
         if (PhotonNetwork.isMasterClient)
         {
+            Analytics.ObjectLooted(hasEvidence);
             photonView.RPC("ReceiveEvidence", info.sender, hasEvidence);
             if (hasEvidence && evidenceLooted != null) evidenceLooted(this);
             photonView.RPC("SetHasEvidence", PhotonTargets.All, false);
@@ -60,5 +61,10 @@ public class EvidenceStash : Photon.MonoBehaviour
     void SetHasEvidence(bool value)
     {
         hasEvidence = value;
+    }
+
+    public bool getHasEvidence()
+    {
+        return hasEvidence;
     }
 }

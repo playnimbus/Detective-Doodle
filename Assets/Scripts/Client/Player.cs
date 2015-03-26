@@ -123,7 +123,6 @@ public class Player : Photon.MonoBehaviour
         stash.GetEvidence((hadEvidence) =>
             {
                 photonView.RPC("SetHaveEvidence", PhotonTargets.All, hadEvidence);
-                Analytics.ObjectLooted(hadEvidence);
             });
         
         stashSearch = null;
@@ -183,7 +182,6 @@ public class Player : Photon.MonoBehaviour
                     otherPlayer.photonView.RPC("Kill", PhotonTargets.All);
                     photonView.RPC("SetHaveEvidence", PhotonTargets.All, false);
                     ui.HideAllButtons();
-                    Analytics.PlayerDied(Analytics.PlayerRoles.Detective);
                 });
                 ui.ShowButton(0, "Give Evidence", true, () =>
                 {
@@ -198,7 +196,6 @@ public class Player : Photon.MonoBehaviour
                 {
                     otherPlayer.photonView.RPC("Kill", PhotonTargets.All);
                     photonView.RPC("SetHaveEvidence", PhotonTargets.All, false);
-                    Analytics.PlayerDied(Analytics.PlayerRoles.Bystander);
                 });
                 return true;
             }

@@ -67,7 +67,7 @@ MonoBehaviour:
   IAD_position: {x: 0, y: 0}
   IAD_Duration: 10
   CB_foldout: 1
-  CurrentInspectorState: 2
+  CurrentInspectorState: 4
   ClosedHints: 
   DisplayHints: 0
   DisplayHintsScrollState: {x: 0, y: 0}

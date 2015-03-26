@@ -403,9 +403,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 649d536156ceb974cab3a4aad1c29805, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  useLocalServer: 0
+  useLocalServer: 1
   localSettings:
-    localIP: 192.168.1.12
+    localIP: 192.168.56.1
     connectAutomatically: 1
   version: 0.1
 --- !u!1 &1785955671

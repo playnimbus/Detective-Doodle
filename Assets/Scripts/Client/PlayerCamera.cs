@@ -76,7 +76,7 @@ public class PlayerCamera : MonoBehaviour
     public void BringCloserToPosition(Transform position)
     {
         target = position;
-        offset *= 0.92f;
+        offset *= 0.95f;
     }
 
     public void RestoreDistance()

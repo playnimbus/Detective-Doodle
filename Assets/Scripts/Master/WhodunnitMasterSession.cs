@@ -156,6 +156,9 @@ public class WhodunnitMasterSession : Session
         audio.PlaySound("sfx_murder");
 
         deadPlayers++;
+
+        Analytics.PlayerDied(Analytics.PlayerRoles.Bystander);
+
         if (deadPlayers >= totalPlayers - 1)
             photonView.RPC("MurdererWon", PhotonTargets.All);
     }

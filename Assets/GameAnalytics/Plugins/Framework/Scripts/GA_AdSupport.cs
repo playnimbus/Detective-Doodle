@@ -22,12 +22,12 @@ public class GA_AdSupport : MonoBehaviour
 	
 	//private bool _showAdOnLoad = false;
 	private bool _adShowing = false;
-	
-	#if UNITY_IPHONE
+
+#if false 
 	private ADBannerView _iAdBanner = null;
-	#endif
-	
-	private string _eventTriggerID = "";
+#endif
+
+    private string _eventTriggerID = "";
 	
 	private float _timePlayed = 0;
 	private int _sessionsPlayed = 0;
@@ -52,8 +52,8 @@ public class GA_AdSupport : MonoBehaviour
 		
 		// iAd
 		if (GA.SettingsGA.IAD_enabled)
-		{
-			#if UNITY_IPHONE
+        {
+#if false 
 			if (ADBannerView.IsAvailable(ADBannerView.Type.MediumRect) && iPhone.generation.ToString().StartsWith("iPad"))
 				_iAdBanner = new ADBannerView(GA.SettingsGA.IAD_type, GA.SettingsGA.IAD_layout);
 			else
@@ -66,8 +66,8 @@ public class GA_AdSupport : MonoBehaviour
 			
 			ADBannerView.onBannerWasClicked += OnBannerClicked;
 			ADBannerView.onBannerWasLoaded  += OnBannerLoaded;
-			#endif
-		}
+#endif
+        }
 		
 		// Charboost
 		#if CB_ON
@@ -199,22 +199,22 @@ public class GA_AdSupport : MonoBehaviour
 		
 		bool iAd = false;
 		bool cb = false;
-		
-		#if UNITY_IPHONE
+
+#if false 
 		if (GA.SettingsGA.IAD_enabled && _iAdBanner != null && _iAdBanner.loaded)
 		{
 			iAd = true;
 		}
-		#endif
-		
-		#if CB_ON
+#endif
+
+#if CB_ON
 		if (GA.SettingsGA.CB_enabled)
 		{
 			cb = true;
 		}
-		#endif
-		
-		_eventTriggerID = eventID;
+#endif
+
+        _eventTriggerID = eventID;
 		
 		if (iAd && cb)
 		{
@@ -240,16 +240,16 @@ public class GA_AdSupport : MonoBehaviour
 	}
 	
 	private void ShowIad ()
-	{
-		#if UNITY_IPHONE
+    {
+#if false 
 		_iAdBanner.visible = true;
 		_adShowing = true;
 		
 		GA.API.Design.NewEvent("Impressions:iAD:" + _eventTriggerID);
 		
 		StartCoroutine(CloseAd(GA.SettingsGA.IAD_Duration));
-		#endif
-	}
+#endif
+    }
 	
 	private void ShowCB ()
 	{
@@ -262,14 +262,14 @@ public class GA_AdSupport : MonoBehaviour
 	IEnumerator CloseAd (float duration)
 	{
 		yield return new WaitForSeconds(duration);
-		
-		#if UNITY_IPHONE
+
+#if false 
 		if (GA.SettingsGA.IAD_enabled)
 		{
 			_iAdBanner.visible = false;
 		}
-		#endif
-		_adShowing = false;
+#endif
+        _adShowing = false;
 		//_showAdOnLoad = false;
 	}
 	
