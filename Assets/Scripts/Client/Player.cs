@@ -7,7 +7,12 @@ public class Player : Photon.MonoBehaviour
 {
     public GameObject evidenceIndictor;
     
-    public static class PlayerAction { public const byte MurdererAccused = 0; public const byte PlayerKilled = 1; };
+    public static class PlayerAction
+    { 
+        public const byte MurdererAccused = 0;
+        public const byte PlayerKilled = 1;
+        public const byte PlayerAccused = 2;
+    }
     public Action<byte> action;
 
     public bool IsMurderer { get; private set; }
@@ -17,8 +22,10 @@ public class Player : Photon.MonoBehaviour
     private new PlayerCamera camera;
     private PlayerUI ui;
     private Coroutine stashSearch;
-
+    private AudioBank audio;
     private bool haveEvidence;
+
+    public AudioBank Audio { set { audio = value; } }
 
     // Acts as a Start() for network instantiated objects
     void OnPhotonInstantiate(PhotonMessageInfo info)
@@ -104,6 +111,7 @@ public class Player : Photon.MonoBehaviour
             {
                 timesTapped++;
                 camera.BringCloserToPosition(stash.transform);
+                audio.PlaySound("sfx_search");
             });
         
         while (timesTapped < 25)
@@ -281,6 +289,10 @@ public class Player : Photon.MonoBehaviour
             GetComponent<Renderer>().material.color = Color.yellow;
             GetComponent<PlayerMovement>().StopMovement(15f);
             Invoke("ResetColor", 15f);
+            if (action != null)
+            {
+                action(PlayerAction.PlayerAccused);
+            }
         }
     }
 

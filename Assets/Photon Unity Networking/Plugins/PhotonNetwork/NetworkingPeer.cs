@@ -2398,7 +2398,10 @@ internal class NetworkingPeer : LoadbalancingPeer, IPhotonPeerListener
         }
 
         this.RemoveInstantiationData(instantiationId);
-        
+
+        // Adam added this, lets everyone know when something was instantiated via network
+        SendMonoMessage(PhotonNetworkingMessage.OnPhotonInstantiateGO, go);
+
         // Send OnPhotonInstantiate callback to newly created GO.
         // GO will be enabled when instantiated from Prefab and it does not matter if the script is enabled or disabled.
         go.SendMessage(PhotonNetworkingMessage.OnPhotonInstantiate.ToString(), new PhotonMessageInfo(photonPlayer, serverTime, null), SendMessageOptions.DontRequireReceiver);

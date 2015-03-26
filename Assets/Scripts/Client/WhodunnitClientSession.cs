@@ -5,6 +5,7 @@ public class WhodunnitClientSession : Session
 {
     private Level level;
     private Player player;
+    private AudioBank audio;
 
     public override void Launch()
     {
@@ -13,8 +14,16 @@ public class WhodunnitClientSession : Session
 
     public void LevelLoaded()
     {
+        InitAudio();
         photonView.RPC("PlayerCheckIn", PhotonTargets.MasterClient, PhotonNetwork.player.ID);
         level = FindObjectOfType<Level>();
+    }
+
+    void InitAudio()
+    {
+        GameObject audioResource = Resources.Load<GameObject>("ClientAudio");
+        GameObject audioGO = Instantiate(audioResource);
+        audio = audioGO.GetComponent<AudioBank>();
     }
 
     [RPC]
@@ -23,6 +32,7 @@ public class WhodunnitClientSession : Session
         GameObject playerGO = PhotonNetwork.Instantiate("Player", location, Quaternion.identity, 0);
         player = playerGO.GetComponent<Player>();
         player.action += OnPlayerAction;
+        player.Audio = audio;
     }
 
     [RPC]
