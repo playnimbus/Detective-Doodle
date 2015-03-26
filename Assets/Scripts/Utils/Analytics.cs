@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -30,6 +30,8 @@ public static class Analytics  {
     private const string OBJECTS_LOOTED = "Object Looted";
     private const string PLAYER_ACCUSED = "Player Accused";
 
+    string Path = Directory.GetCurrentDirectory();
+    string FileName = "/GameStats.txt";
 
     public static void Initialize(Analytics.GameModes gameMode, int numPlayers)
     {
@@ -41,6 +43,13 @@ public static class Analytics  {
 
         CurrentGameMode = gameMode;
         NumberOfPlayers = numPlayers;
+
+        if (!File.Exists(Path + FileName))
+        {
+            File.WriteAllText(Path + FileName, "Game Stats" + Environment.NewLine + Environment.NewLine);
+        }
+        File.WriteAllText(Path + FileName, "" + Environment.NewLine + Environment.NewLine);
+        File.AppendAllText(Path + FileName, "GameMode: " + CurrentGameMode + Environment.NewLine);
     }
 
     //call when win condition is reached by either team
@@ -59,6 +68,14 @@ public static class Analytics  {
             }else{
                 GA.API.Design.NewEvent(CurrentGameMode.ToString() + ":" + BYSTANDER_VICTORY + ":" + GA_FALSE, System.Convert.ToSingle(bystanderVictory));
             }
+
+            File.AppendAllText(Path + FileName, "-----End of round stats-----" + Environment.NewLine);
+            File.AppendAllText(Path + FileName, LENGTH_OF_ROUND+ " " + RoundTimer + Environment.NewLine);
+            File.AppendAllText(Path + FileName, BYSTANDER_VICTORY + " " + bystanderVictory.ToString() + Environment.NewLine);
+            File.AppendAllText(Path + FileName, NUMBER_OF_PLAYERS + " " + NumberOfPlayers + Environment.NewLine);
+            File.AppendAllText(Path + FileName, NUMBER_OF_PLAYERS_KILLED + " " + DeathOrder + Environment.NewLine);
+            File.AppendAllText(Path + FileName, TOTAL_OBJECTS_LOOTED + " " + ObjectsLooted + Environment.NewLine);
+            File.AppendAllText(Path + FileName, TOTAL_CLUES_FOUND + " " + CluesFound + Environment.NewLine);
         }
     }
 
@@ -67,6 +84,7 @@ public static class Analytics  {
         DeathOrder++;
         if (DisableEventsAnalytics == false){
             GA.API.Design.NewEvent(CurrentGameMode.ToString() + ":" + playerRole.ToString() + ":" + DEATH_NUMBER + DeathOrder.ToString(), RoundTimer);
+            File.AppendAllText(Path + FileName, playerRole.ToString() + " " + DEATH_NUMBER + " " + DeathOrder.ToString() + " " + RoundTimer + Environment.NewLine);
         }
     }
 
@@ -80,6 +98,7 @@ public static class Analytics  {
 
         if (DisableEventsAnalytics == false){
             GA.API.Design.NewEvent(CurrentGameMode.ToString() + ":" + OBJECTS_LOOTED, System.Convert.ToSingle(clueFound));
+            File.AppendAllText(Path + FileName, OBJECTS_LOOTED + " " + System.Convert.ToSingle(clueFound) + " " + RoundTimer + Environment.NewLine);
         }
     }
 
@@ -95,6 +114,7 @@ public static class Analytics  {
             {
                 GA.API.Design.NewEvent(CurrentGameMode.ToString() + ":" + PLAYER_ACCUSED + ":" + GA_FALSE, RoundTimer);
             }
+            File.AppendAllText(Path + FileName, PLAYER_ACCUSED + " " + isMurderer.ToString() + " " + RoundTimer + Environment.NewLine);
         }
     }
 }
