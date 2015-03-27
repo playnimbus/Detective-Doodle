@@ -82,8 +82,13 @@ public class PlayerMovement : Photon.MonoBehaviour
     public void StopMovement(float seconds)
     {
         canMove = false;
-        if (seconds != 0f) 
+
+        // Stop any pending movement changes
+        CancelInvoke("ResumeMovement");
+
+        if (seconds != 0f)
             Invoke("ResumeMovement", seconds);
+            
     }
 
     void ResumeMovement()

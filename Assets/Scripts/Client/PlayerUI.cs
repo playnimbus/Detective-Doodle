@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
+using System.Collections;
 using System;
 
 // Displays what a player has gathered.
@@ -71,4 +72,39 @@ public class PlayerUI : MonoBehaviour
     {
         headerText.text = s;
     }
+
+    public void FadeInMurderIcon(float seconds)
+    {
+        StartCoroutine(MurderIconFadeCoroutine(seconds));
+    }
+
+    IEnumerator MurderIconFadeCoroutine(float seconds)
+    {
+        // Fade from invisible to full
+        float elapsedTime = 0f;
+        while (elapsedTime < seconds)
+        {
+            Color c = murdererIndicator.color;
+            c.a = elapsedTime / seconds;
+            murdererIndicator.color = c;
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
+
+        // Scale it up to "pop" at the end
+        elapsedTime = 0f;
+        Vector3 initialScale = murdererIndicator.rectTransform.localScale;
+        while (elapsedTime < 0.25f)
+        {
+            float progress = elapsedTime / 0.25f;  // between 0-1
+            float angle = progress * Mathf.PI;  // map that to 0-pi
+            float scalePercent = Mathf.Sin(angle); // take sin for smooth curve
+            Vector3 scale = initialScale * (1 + scalePercent * 0.25f); // scale up to 1.25x original size
+            murdererIndicator.rectTransform.localScale = scale;
+
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
+    }
+
 }

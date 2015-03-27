@@ -24,6 +24,7 @@ public class Player : Photon.MonoBehaviour
     private Coroutine stashSearch;
     private AudioBank audio;
     private bool haveEvidence;
+    private bool canMurder;
 
     public AudioBank Audio { set { audio = value; } }
 
@@ -65,7 +66,10 @@ public class Player : Photon.MonoBehaviour
     {
         IsMurderer = true;
         if (photonView.isMine)
+        {
             ui.MarkAsMurderer();
+            canMurder = true;
+        }
     }
 
     [RPC]
@@ -173,32 +177,33 @@ public class Player : Photon.MonoBehaviour
 
     bool MurdererInteraction(Player otherPlayer)
     {
-        if (haveEvidence)
+        int murderButton = 0;
+
+        // If it's the detective and we have evidence, we can give it to him.
+        if (otherPlayer.IsDetective && haveEvidence)
         {
-            if (otherPlayer.IsDetective)
+            murderButton = 1; // This changes which button we use to murder though
+            ui.ShowButton(0, "Give Evidence", true, () =>
             {
-                ui.ShowButton(1, "Murder", true, () =>
-                {
-                    otherPlayer.photonView.RPC("Kill", PhotonTargets.All);
-                    photonView.RPC("SetHaveEvidence", PhotonTargets.All, false);
-                    ui.HideAllButtons();
-                });
-                ui.ShowButton(0, "Give Evidence", true, () =>
-                {
-                    otherPlayer.photonView.RPC("SetHaveEvidence", PhotonTargets.All, true);
-                    photonView.RPC("SetHaveEvidence", PhotonTargets.All, false);
-                    ui.HideAllButtons();
-                });
-            }
-            else
+                otherPlayer.photonView.RPC("SetHaveEvidence", PhotonTargets.All, true);
+                photonView.RPC("SetHaveEvidence", PhotonTargets.All, false);
+                ui.HideAllButtons();
+            });
+            return true;
+        }
+
+        // Now our murder business
+        if (canMurder)
+        {
+            ui.ShowButton(murderButton, "Murder", true, () =>
             {
-                ui.ShowButton(0, "Murder", true, () =>
-                {
-                    otherPlayer.photonView.RPC("Kill", PhotonTargets.All);
-                    photonView.RPC("SetHaveEvidence", PhotonTargets.All, false);
-                });
-                return true;
-            }
+                otherPlayer.photonView.RPC("Kill", PhotonTargets.All);
+                canMurder = false;
+                Invoke("ResetCanMurder", 15f);
+                ui.FadeInMurderIcon(15f);
+                ui.HideAllButtons();
+            });
+            return true;
         }
 
         return false;
@@ -212,6 +217,10 @@ public class Player : Photon.MonoBehaviour
             {
                 otherPlayer.photonView.RPC("Accuse", PhotonTargets.All);
                 photonView.RPC("SetHaveEvidence", PhotonTargets.All, false);
+                
+                // If we're wrong we also are punished!
+                if (!otherPlayer.IsMurderer) photonView.RPC("Accuse", PhotonTargets.All);
+
                 Analytics.PlayerAccused(otherPlayer.IsMurderer);
             });
             return true;
@@ -275,7 +284,7 @@ public class Player : Photon.MonoBehaviour
         if (IsMurderer)
         {
             GetComponent<Renderer>().material.color = new Color(1f, 0.5f, 0f);
-            GetComponent<PlayerMovement>().StopMovement(0f);
+            GetComponent<PlayerMovement>().StopMovement(0f); // 0 = indefinitely
             if (action != null)
             {
                 action(PlayerAction.MurdererAccused);
@@ -284,8 +293,8 @@ public class Player : Photon.MonoBehaviour
         else
         {
             GetComponent<Renderer>().material.color = Color.yellow;
-            GetComponent<PlayerMovement>().StopMovement(15f);
-            Invoke("ResetColor", 15f);
+            GetComponent<PlayerMovement>().StopMovement(22f);
+            Invoke("ResetColor", 22f);
             if (action != null)
             {
                 action(PlayerAction.PlayerAccused);
@@ -295,7 +304,12 @@ public class Player : Photon.MonoBehaviour
 
     void ResetColor()
     {
-        GetComponent<Renderer>().material.color = Color.white;
+        GetComponent<Renderer>().material.color = IsDetective ? Color.blue : Color.white;
+    }
+
+    void ResetCanMurder()
+    {
+        canMurder = true;
     }
     
     [RPC]
@@ -304,6 +318,11 @@ public class Player : Photon.MonoBehaviour
         IsDead = true;
         GetComponent<Renderer>().material.color = Color.red;
         GetComponent<PlayerMovement>().StopMovement(0f);
+        CancelInvoke("ResetColor");
+        if (photonView.isMine && ui != null)
+        {
+            ui.SetHeaderText("You have been murdered!");
+        }
         if (action != null)
         {
             action(PlayerAction.PlayerKilled);
