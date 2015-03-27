@@ -178,6 +178,7 @@ public class Player : Photon.MonoBehaviour
     bool MurdererInteraction(Player otherPlayer)
     {
         int murderButton = 0;
+        bool interacted = false;
 
         // If it's the detective and we have evidence, we can give it to him.
         if (otherPlayer.IsDetective && haveEvidence)
@@ -189,7 +190,7 @@ public class Player : Photon.MonoBehaviour
                 photonView.RPC("SetHaveEvidence", PhotonTargets.All, false);
                 ui.HideAllButtons();
             });
-            return true;
+            interacted = true;
         }
 
         // Now our murder business
@@ -203,10 +204,10 @@ public class Player : Photon.MonoBehaviour
                 ui.FadeInMurderIcon(15f);
                 ui.HideAllButtons();
             });
-            return true;
+            interacted = true;
         }
 
-        return false;
+        return interacted;
     }
 
     bool DetectiveInteraction(Player otherPlayer)

@@ -11,7 +11,11 @@ public class EvidenceStash : Photon.MonoBehaviour
 
     private Action<bool> evidenceRequestCallback;
     private bool hasEvidence;
-    
+
+    public bool HasEvidence
+    {
+        get { return hasEvidence; }
+    }
     
     void Start()
     {
@@ -61,10 +65,5 @@ public class EvidenceStash : Photon.MonoBehaviour
     void SetHasEvidence(bool value)
     {
         hasEvidence = value;
-    }
-
-    public bool getHasEvidence()
-    {
-        return hasEvidence;
     }
 }

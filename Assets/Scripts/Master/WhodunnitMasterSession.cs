@@ -84,8 +84,15 @@ public class WhodunnitMasterSession : Session
         stashes = FindObjectsOfType<EvidenceStash>();
         foreach (EvidenceStash stash in stashes)
             stash.evidenceLooted += StashEvidenceLooted;
-        int index = UnityEngine.Random.Range(0, stashes.Length);
-        stashes[index].photonView.RPC("SetHasEvidence", PhotonTargets.All, true);
+        
+        // Add in an initial amount of evidence
+        int numInitialEvidence = 2;
+        int start = UnityEngine.Random.Range(0, stashes.Length);
+        for (int i = 0; i < numInitialEvidence; i++)
+        {
+            int index = start + Mathf.FloorToInt(stashes.Length * ((float)i / (float)numInitialEvidence));
+            stashes[index].photonView.RPC("SetHasEvidence", PhotonTargets.All, true);
+        }
     }
 
     void OnPhotonInstantiateGO(GameObject go)
@@ -112,9 +119,17 @@ public class WhodunnitMasterSession : Session
 
     void StashEvidenceLooted(EvidenceStash stash)
     {
-        int index = UnityEngine.Random.Range(0, stashes.Length);
-        EvidenceStash newStash = stashes[index];
-        newStash.photonView.RPC("SetHasEvidence", PhotonTargets.All, true);
+        // Linear probe from random start to find an stash with no evidence
+        int index = UnityEngine.Random.Range(0, stashes.Length);        
+        for(int i=0; i<stashes.Length; i++)
+        {
+            EvidenceStash newStash = stashes[(index + i) % stashes.Length];
+            if (!stash.HasEvidence)
+            {
+                newStash.photonView.RPC("SetHasEvidence", PhotonTargets.All, true);
+                return;
+            }
+        }
     }
 
     IEnumerator MenuCoroutine()
