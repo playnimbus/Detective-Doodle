@@ -316,17 +316,20 @@ public class Player : Photon.MonoBehaviour
     [RPC]
     void Kill()
     {
-        IsDead = true;
-        GetComponent<Renderer>().material.color = Color.red;
-        GetComponent<PlayerMovement>().StopMovement(0f);
-        CancelInvoke("ResetColor");
-        if (photonView.isMine && ui != null)
+        if (!IsDead)
         {
-            ui.SetHeaderText("You have been murdered!");
-        }
-        if (action != null)
-        {
-            action(PlayerAction.PlayerKilled);
+            IsDead = true;
+            GetComponent<Renderer>().material.color = Color.red;
+            GetComponent<PlayerMovement>().StopMovement(0f);
+            CancelInvoke("ResetColor");
+            if (photonView.isMine && ui != null)
+            {
+                ui.SetHeaderText("You have been murdered!");
+            }
+            if (action != null)
+            {
+                action(PlayerAction.PlayerKilled);
+            }
         }
     }
 
