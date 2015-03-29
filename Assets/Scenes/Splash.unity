@@ -353,7 +353,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ce8a368d69d5ee14fa24d2dc1f01b85a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  editorIsMaster: 1
+  editorIsMaster: 0
   disableAnalyticEvents: 0
 --- !u!114 &1748786236
 MonoBehaviour:
@@ -403,9 +403,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 649d536156ceb974cab3a4aad1c29805, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  useLocalServer: 0
+  useLocalServer: 1
   localSettings:
-    localIP: 192.168.56.1
+    localIP: 192.168.1.8
     connectAutomatically: 1
   version: 0.1
 --- !u!1 &1785955671
