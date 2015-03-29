@@ -49,6 +49,7 @@ public class PlayerMovement : Photon.MonoBehaviour
             {
                 // Move using rigidbody to get collision benefits
                 GetComponent<Rigidbody>().MovePosition(transform.position + velocity * Time.deltaTime * speed);
+      //          gameObject.transform.LookAt(new Vector3(transform.position.x + velocity.x, transform.position.y + velocity.y, gameObject.transform.position.z));
             }
 
             yield return fixedUpdate;

@@ -6,7 +6,8 @@ using System;
 public class Player : Photon.MonoBehaviour
 {
     public GameObject evidenceIndictor;
-    
+    public GameObject bunnyModel;
+
     public static class PlayerAction
     { 
         public const byte MurdererAccused = 0;
@@ -76,7 +77,9 @@ public class Player : Photon.MonoBehaviour
     public void MakeDetective()
     {
         IsDetective = true;
-        GetComponent<Renderer>().material.color = Color.blue;
+     //   GetComponent<Renderer>().material.color = Color.blue;
+        GetComponent<Renderer>().enabled = false;
+        bunnyModel.SetActive(true);
         if (photonView.isMine)
             ui.MarkAsDetective(true);
     }
