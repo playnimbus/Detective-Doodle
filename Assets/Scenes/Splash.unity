@@ -403,7 +403,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 649d536156ceb974cab3a4aad1c29805, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  useLocalServer: 1
+  useLocalServer: 0
   localSettings:
     localIP: 192.168.56.1
     connectAutomatically: 1

@@ -42,7 +42,7 @@ public class Player : Photon.MonoBehaviour
     void InitUI()
     {
         if (!photonView.isMine) return;
-
+        
         GameObject menuGO = Instantiate(Resources.Load<GameObject>("ClientMenu")) as GameObject;
         ui = menuGO.GetComponent<PlayerUI>();
         ui.SetHeaderText("No Evidence");

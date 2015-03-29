@@ -19,6 +19,9 @@ public class PlayerUI : MonoBehaviour
     public Image detectiveIndicator;
     public Text headerText;
     public PlayerButton[] buttons;
+    public GameObject tutorialMurderer;
+    public GameObject tutorialBystander;
+    public GameObject tutorialDetective;
 
     void Start()
     {
@@ -33,8 +36,12 @@ public class PlayerUI : MonoBehaviour
         // HACK
         Invoke("M", 0.5f);
     }
-    
-    void M() { murdererIndicator.enabled = true; }
+
+    void M() { 
+        murdererIndicator.enabled = true; 
+        tutorialMurderer.SetActive(true);
+        tutorialBystander.SetActive(false);
+    }
 
     public void MarkAsDetective(bool val)
     {
@@ -43,7 +50,12 @@ public class PlayerUI : MonoBehaviour
         else detectiveIndicator.enabled = false;
     }
 
-    void D() { detectiveIndicator.enabled = true; }
+    void D() 
+    { 
+        detectiveIndicator.enabled = true;
+        tutorialDetective.SetActive(true);
+        tutorialBystander.SetActive(false);
+    }
 
     public void ShowButton(int num, string text, bool hideOnPressed, Action callback)
     {
