@@ -11,3 +11,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4243c4d024d30844fbd2f84860776f7e, type: 3}
   m_Name: NetworkSettings
   m_EditorClassIdentifier: 
+  local: 0
+  localSettings:
+    connectAutomatically: 0
+    localIP: 
+  version: 0.1

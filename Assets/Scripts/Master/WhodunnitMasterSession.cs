@@ -18,7 +18,7 @@ public class WhodunnitMasterSession : Session
         deadPlayers = 0;
         totalPlayers = PhotonNetwork.otherPlayers.Length;
         numPendingPlayers = totalPlayers;
-        LoadLevel("SessionMike", LevelLoaded);
+        LoadLevel("Whodunnit", LevelLoaded);
         
         Analytics.Initialize(Analytics.GameModes.Detective, numPendingPlayers);
     }
@@ -91,7 +91,7 @@ public class WhodunnitMasterSession : Session
         for (int i = 0; i < numInitialEvidence; i++)
         {
             int index = start + Mathf.FloorToInt(stashes.Length * ((float)i / (float)numInitialEvidence));
-            stashes[index].photonView.RPC("SetHasEvidence", PhotonTargets.All, true);
+            stashes[index % stashes.Length].photonView.RPC("SetHasEvidence", PhotonTargets.All, true);
         }
     }
 

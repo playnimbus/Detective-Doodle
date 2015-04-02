@@ -9,17 +9,7 @@ public class Build
 
     static string[] masterScenes = { "MasterLobby.unity" };
     static string[] clientScenes = { "ClientLobby.unity" };
-    static string[] sharedScenes = { "SessionMike.unity" };
-
-    [MenuItem("Build / Create Network Settings")]
-    private static void CreateNetworkSettings()
-    {
-        var obj = ScriptableObject.CreateInstance<NetworkSettings>();
-        string path = AssetDatabase.GenerateUniqueAssetPath("Assets/NetworkSettings");
-        AssetDatabase.CreateAsset(obj, path);
-
-        AssetDatabase.SaveAssets();
-    }
+    static string[] sharedScenes = { "Whodunnit.unity" };
 
     [MenuItem("Build / Master PC")]
     private static void BuildMasterPC()
@@ -68,4 +58,5 @@ public class Build
 
         return scenes;
     }
+    
 }

@@ -7,19 +7,10 @@ using Recievers = ExitGames.Client.Photon.Lite.ReceiverGroup;
 // Owned and created by Game
 public class GameNetwork : MonoBehaviour
 {
-    [Serializable]
-    public struct LocalConnectionSettings
-    {
-        public string localIP;
-        public bool connectAutomatically;
-    }
-
-    public bool useLocalServer;
-    public LocalConnectionSettings localSettings;
-
-    // Temporary setting strings
-    public string version = "0.1";
-        
+    // The settings asset
+    [HideInInspector]
+    public NetworkSettings settings;
+            
     // Shared events
     public Action onConnected;
     public Action onPlayerConnected;
@@ -35,27 +26,30 @@ public class GameNetwork : MonoBehaviour
     public Action<int> onInitiateMasterControl;
     public Action onJoinRoomFailed;
 
+
 	void Start () 
     {
+        settings = Resources.Load<NetworkSettings>("Network/NetworkSettings");
+
         PhotonNetwork.autoJoinLobby = false;
         PhotonNetwork.OnEventCall += OnCustomEvent;
 
 #if !UNITY_IPHONE
 
-        if (useLocalServer)
+        if (settings.local)
         {
-            if (localSettings.connectAutomatically)
+            if (settings.localSettings.connectAutomatically)
             {
-                PhotonNetwork.ConnectToMaster(localSettings.localIP, PhotonNetwork.PhotonServerSettings.ServerPort, PhotonNetwork.PhotonServerSettings.AppID, version);
+                PhotonNetwork.ConnectToMaster(settings.localSettings.localIP, PhotonNetwork.PhotonServerSettings.ServerPort, PhotonNetwork.PhotonServerSettings.AppID, settings.version);
             }
         }
         else
         {
-            PhotonNetwork.ConnectUsingSettings(version);
+            PhotonNetwork.ConnectUsingSettings(settings.version);
         }
 #else
 
-        PhotonNetwork.ConnectUsingSettings(version);
+        PhotonNetwork.ConnectUsingSettings(settings.version);
 
 #endif
 
@@ -63,7 +57,7 @@ public class GameNetwork : MonoBehaviour
 
     public void ConnectWithIP(string ip)
     {
-        PhotonNetwork.ConnectToMaster(ip, PhotonNetwork.PhotonServerSettings.ServerPort, PhotonNetwork.PhotonServerSettings.AppID, version);
+        PhotonNetwork.ConnectToMaster(ip, PhotonNetwork.PhotonServerSettings.ServerPort, PhotonNetwork.PhotonServerSettings.AppID, settings.version);
     }
 
     void OnFailedToConnectToPhoton(DisconnectCause cause)

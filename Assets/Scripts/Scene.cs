@@ -12,7 +12,8 @@ public class Scene : Photon.MonoBehaviour
 
     IEnumerator LoadLevelCoroutine(string level, Action onFinished)
     {
-        yield return Application.LoadLevelAsync(level);
+        if (Application.loadedLevelName != level)
+            yield return Application.LoadLevelAsync(level);
 
         if (onFinished != null) onFinished();
     }

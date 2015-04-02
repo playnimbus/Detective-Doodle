@@ -49,9 +49,9 @@ public class ClientLobbyMenu : MonoBehaviour
         network.onConnected += DisableIPUI;
         network.onConnected += EnableRoomUI;
 
-        if (network.useLocalServer && !network.localSettings.connectAutomatically)
+        if(network.settings.NeedIP)
         {
-            ipField.text = network.localSettings.localIP;
+            ipField.text = network.settings.localSettings.localIP;
             DisableRoomUI();
         }
         else

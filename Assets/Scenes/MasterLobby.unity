@@ -268,7 +268,7 @@ Camera:
   m_Enabled: 1
   serializedVersion: 2
   m_ClearFlags: 1
-  m_BackGroundColor: {r: 0, g: 0, b: 0, a: .0196078438}
+  m_BackGroundColor: {r: 0, g: 0, b: 0, a: 0}
   m_NormalizedViewPortRect:
     serializedVersion: 2
     x: 0
@@ -936,11 +936,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 649d536156ceb974cab3a4aad1c29805, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  useLocalServer: 0
-  localSettings:
-    localIP: 
-    connectAutomatically: 0
-  version: 0.1
+  settings: {fileID: 0}
 --- !u!114 &1786539156
 MonoBehaviour:
   m_ObjectHideFlags: 0
