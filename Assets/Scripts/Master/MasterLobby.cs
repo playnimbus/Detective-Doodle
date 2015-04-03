@@ -1,43 +1,79 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System;
-using System.Collections;
 
-// Master clients lobby logic. Will include things like picking game mode and other game wide settings
-public class MasterLobby : Lobby
+public class MasterLobby : MonoBehaviour 
 {
-    private MasterLobbyMenu menu;
-    private string roomName;
+    // UI fields
+    public Text roomName;
+    public Text playersText;
 
     // This gets activated when the session is to start
     public Action<byte> onLaunchSession;
 
-    public override void Enter()
+    private GameNetwork network;
+
+    void Start()
     {
-        LoadLevel("MasterLobby", LevelLoaded);
+        RefreshPlayersText();
     }
 
-    void LevelLoaded()
+    // Begin Photon events
+
+    void OnPhotonPlayerConnected(PhotonPlayer newPlayer)
     {
-        menu = FindObjectOfType<MasterLobbyMenu>();
-        menu.launchSessionClicked += LaunchSession;
-        menu.SetRoomName(roomName);
-        menu.SetNetwork(GetComponent<GameNetwork>());
+        RefreshPlayersText();
     }
+
+    void OnPhotonPlayerDisconnected(PhotonPlayer player)
+    {
+        RefreshPlayersText();
+    }
+
+    void OnPhotonPlayerPropertiesChanged(object[] playerAndProperties)
+    {
+        RefreshPlayersText();
+    }
+
+    // End Photon events
+
+#if UNITY_XBOXONE
+
+    void Update()
+    {
+        if (XboxOneInput.GetKey(XboxOneKeyCode.GamepadButtonA))
+        {
+            LaunchSession();
+        }
+    }
+
+#endif
+
+    // Launch Button function
 
     public void LaunchSession()
     {
         if (onLaunchSession != null) onLaunchSession(SessionType.Whodunnit);
     }
 
-    public override void Exit()
+    public void SetNetwork(GameNetwork network)
     {
-        menu.launchSessionClicked -= LaunchSession;
-        menu = null;
+        this.network = network;
     }
 
     public void SetRoomName(string name)
     {
-        this.roomName = name;
-        if (menu != null) menu.SetRoomName(name);
+        roomName.text = name;
     }
+
+    public void RefreshPlayersText()
+    {
+        playersText.text = "";
+        PhotonPlayer[] players = PhotonNetwork.otherPlayers;
+        for (int i = 0; i < players.Length; i++)
+        {
+            playersText.text = playersText.text + players[i].name + "\n";
+        }
+    }
+
 }

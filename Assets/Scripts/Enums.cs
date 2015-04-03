@@ -8,9 +8,9 @@ public static class SessionType
 }
 
 // Defines custom events that don't rely on a specific PhotonView but use PhotonNetwork.RaiseEvent instead
-public enum CustomEvent : byte
+public static class CustomEvent
 {
-    InitiateMasterControl = 0
+    public const byte InitiateMasterControl = 0;
 }
 
 // Tags we are using

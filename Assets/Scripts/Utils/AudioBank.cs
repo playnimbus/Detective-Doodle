@@ -1,6 +1,9 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
 
+// This stores an plays audioclips
+// Create different audiobanks to split up how audio is loaded
+// Use right now is to load through Resources.Load (may change)
 public class AudioBank : MonoBehaviour 
 {
     public AudioClip[] clips;

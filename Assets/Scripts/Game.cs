@@ -9,18 +9,21 @@ public abstract class Game : Photon.MonoBehaviour
     // Common fields
     private GameNetwork networkField;
     protected GameNetwork network { get { return networkField; } }
-
-    protected Lobby lobby;
     protected Session session;
     
     protected void Start()
     {
         DontDestroyOnLoad(this.gameObject);
         networkField = gameObject.GetComponent<GameNetwork>();
+        EnterLobby();
     }
 
     // Override to provide the specific Session (ie Master/Client)
     protected abstract Session CreateSession(byte type);
+
+    // Override to perform lobby enter/exit
+    protected abstract void EnterLobby();
+    protected abstract void ExitLobby();
         
     protected void InitiateMasterControl(int masterID)
     {
@@ -31,7 +34,7 @@ public abstract class Game : Photon.MonoBehaviour
     [RPC]
     protected void LaunchSession(byte type)
     {
-        lobby.Exit();
+        ExitLobby();
         session = CreateSession(type);
         session.Launch();
     }
@@ -42,9 +45,9 @@ public abstract class Game : Photon.MonoBehaviour
         session.Finish();
         Destroy(session);
         session = null;
-        lobby.Enter();
+        EnterLobby();
     }
-
+    
     void OnGUI()
     {
         GUI.Label(new Rect(5, 5, 200, 25), "Ping: " + PhotonNetwork.GetPing());

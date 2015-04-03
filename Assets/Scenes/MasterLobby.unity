@@ -589,7 +589,7 @@ GameObject:
   - 223: {fileID: 1474998739}
   - 114: {fileID: 1474998738}
   - 114: {fileID: 1474998737}
-  - 114: {fileID: 1474998740}
+  - 114: {fileID: 1474998741}
   m_Layer: 5
   m_Name: MasterMenu
   m_TagString: Untagged
@@ -673,7 +673,7 @@ Canvas:
   m_OverridePixelPerfect: 0
   m_SortingLayerID: 0
   m_SortingOrder: 0
---- !u!114 &1474998740
+--- !u!114 &1474998741
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
@@ -681,7 +681,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1474998735}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5408eaf737765d748b9116ba1dc6b9a5, type: 3}
+  m_Script: {fileID: 11500000, guid: e11863fe1ba5fe54faf40b3210aec9d9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   roomName: {fileID: 195337473}
@@ -829,7 +829,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1474998740}
+      - m_Target: {fileID: 1474998741}
         m_MethodName: LaunchSession
         m_Mode: 1
         m_Arguments:

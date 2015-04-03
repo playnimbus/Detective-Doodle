@@ -9,7 +9,7 @@ public class WhodunnitClientSession : Session
 
     public override void Launch()
     {
-        LoadLevel("Whodunnit", LevelLoaded);
+        this.LoadLevel("Whodunnit", LevelLoaded);
     }
 
     public void LevelLoaded()

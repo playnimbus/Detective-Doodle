@@ -5,24 +5,38 @@ using System;
 // Master client specific game state management logic
 public class MasterGame : Game
 {
-    private MasterLobby Lobby { get { return base.lobby as MasterLobby; } }
+    private MasterLobby lobby;
     private List<PhotonPlayer> playersInSession;
     private string roomName;
 
     protected void Start()
     {
         base.Start();
-        base.lobby = gameObject.AddComponent<MasterLobby>();
 
-        network.onConnected += CreateRoom;
-        network.onCreateRoomFailed += CreateRoom;
-        network.onCreatedRoom += InitiateControl;
-        network.onCreatedRoom += lobby.Enter;
-        network.onCreatedRoom += () => { Lobby.SetRoomName(roomName); };
         network.onInitiateMasterControl += InitiateMasterControl;
-
-        Lobby.onLaunchSession += RequestLaunchSession;
+        lobby.onLaunchSession += RequestLaunchSession;
     }
+
+
+    // Begin Photon events
+
+    void OnConnectedToMaster()
+    {
+        CreateRoom();
+    }
+
+    void OnPhotonCreateRoomFailed()
+    {
+        CreateRoom();
+    }
+
+    void OnCreatedRoom()
+    {
+        InitiateControl();
+        lobby.SetRoomName(roomName);
+    }
+
+    // End Photon events
 
     void CreateRoom()
     {
@@ -65,5 +79,21 @@ public class MasterGame : Game
     {
         this.session.onFinished -= RequestSessionFinish;
         photonView.RPC("FinishSession", PhotonTargets.All);
+    }
+
+    protected override void EnterLobby()
+    {
+        SceneUtils.LoadLevel(this, "MasterLobby", OnLevelLoaded);
+    }
+
+    void OnLevelLoaded()
+    {
+        lobby = FindObjectOfType<MasterLobby>();
+        lobby.SetNetwork(network);
+    }
+
+    protected override void ExitLobby()
+    {
+        lobby = null;
     }
 }

@@ -4,33 +4,23 @@ using System.Collections;
 // Client specific game state management logic
 public class ClientGame : Game
 {
-    private ClientLobby Lobby { get { return base.lobby as ClientLobby; } }
+    private ClientLobby lobby;
     
     protected void Start()
     {
         base.Start();
-        base.lobby = gameObject.AddComponent<ClientLobby>();
-        Lobby.joinRoomRequested += JoinRoom;
 
         if (PlayerPrefs.HasKey("name"))
             PhotonNetwork.player.name = PlayerPrefs.GetString("name");
         else
             PhotonNetwork.player.name = "Anonymous";
-
-        lobby.Enter();
-        network.onJoinRoomFailed += JoinRoomFailed;
-        network.onJoinedRoom += Lobby.JoinRoomSucceeded;
+        
         network.onInitiateMasterControl += InitiateMasterControl;
     }
 
     void JoinRoom(string roomName)
     {
         network.JoinRoom(roomName);
-    }
-
-    void JoinRoomFailed()
-    {
-        Lobby.JoinRoomFailed();
     }
 
     protected override Session CreateSession(byte type)
@@ -41,5 +31,22 @@ public class ClientGame : Game
             default:
                 return gameObject.AddComponent<WhodunnitClientSession>();
         }
+    }
+
+    protected override void EnterLobby()
+    {
+        SceneUtils.LoadLevel(this, "ClientLobby", OnLobbyLoaded);
+    }
+
+    void OnLobbyLoaded()
+    {
+        lobby = FindObjectOfType<ClientLobby>();
+        lobby.SetNetwork(network);
+    }
+
+
+    protected override void ExitLobby()
+    {
+        lobby = null;
     }
 }

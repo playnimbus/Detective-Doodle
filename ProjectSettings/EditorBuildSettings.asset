@@ -14,4 +14,4 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Session.unity
   - enabled: 1
-    path: Assets/Scenes/SessionMike.unity
+    path: Assets/Scenes/Whodunnit.unity

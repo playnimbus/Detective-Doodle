@@ -18,7 +18,7 @@ public class WhodunnitMasterSession : Session
         deadPlayers = 0;
         totalPlayers = PhotonNetwork.otherPlayers.Length;
         numPendingPlayers = totalPlayers;
-        LoadLevel("Whodunnit", LevelLoaded);
+        this.LoadLevel("Whodunnit", LevelLoaded);
         
         Analytics.Initialize(Analytics.GameModes.Detective, numPendingPlayers);
     }

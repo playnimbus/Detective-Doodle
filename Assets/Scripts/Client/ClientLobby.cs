@@ -1,47 +1,123 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System;
 
-// Clients lobby logic. Whatever clients do in a lobby will be done here (like character customization)
-public class ClientLobby : Lobby
+public class ClientLobby : MonoBehaviour
 {
-    public Action<string> joinRoomRequested;
-    private ClientLobbyMenu menu;
-    private bool successfullyJoinedRoom = false;
+    // UI fields
+    public InputField field;
+    public Button joinButton;
+    public Button nameButton;
+    public Text playersText;
+    public InputField nameField;
+    public InputField ipField;
+    public Button ipButton;
 
-    public override void Enter()
+    private GameNetwork network;
+
+    void Start()
     {
-        LoadLevel("ClientLobby", LevelLoaded);
+        RefreshPlayersText();
+        if (!string.IsNullOrEmpty(PhotonNetwork.player.name))
+            nameField.text = PhotonNetwork.player.name;
     }
 
-    void LevelLoaded()
+    #region Photon events
+
+    void OnConnectedToMaster()
     {
-        menu = FindObjectOfType<ClientLobbyMenu>();
-        menu.joinRoomRequested += this.joinRoomRequested;
-        menu.nameChangedRequested += NameChange;
-        menu.SetNetwork(GetComponent<GameNetwork>());
-        if (successfullyJoinedRoom) menu.JoinRoomSucceeded();
+        DisableIPUI();
+        EnableRoomUI();
     }
 
-    public override void Exit()
+    void OnJoinedRoom()
     {
-        menu.joinRoomRequested -= this.joinRoomRequested;
-        menu = null;
+        field.text = "Successfully joined room.";
+        joinButton.interactable = false;
     }
 
-    public void JoinRoomFailed()
+    void OnPhotonJoinRoomFailed()
     {
-        if (menu != null) menu.JoinRoomFailed();
+        field.text = "Room not found.";
     }
 
-    public void JoinRoomSucceeded()
+    void OnPhotonPlayerConnected(PhotonPlayer newPlayer)
     {
-        successfullyJoinedRoom = true;
-        if (menu != null) menu.JoinRoomSucceeded();
+        RefreshPlayersText();
     }
 
-    public void NameChange(string newName)
+    void OnPhotonPlayerDisconnected(PhotonPlayer player)
     {
-        PhotonNetwork.player.name = newName;
-        PlayerPrefs.SetString("name", newName);
+        RefreshPlayersText();
+    }
+
+    void OnPhotonPlayerPropertiesChanged(object[] playerAndProperties)
+    {
+        RefreshPlayersText();
+    }
+
+    #endregion
+
+    #region Button functions
+
+    public void JoinRoom()
+    {
+        network.JoinRoom(field.text);
+    }
+
+    public void SetName()
+    {
+        PhotonNetwork.player.name = nameField.text;
+        PlayerPrefs.SetString("name", nameField.text);
+    }
+
+    public void ConnectToIP()
+    {
+        network.ConnectWithIP(ipField.text);
+    }
+
+    #endregion
+
+    public void SetNetwork(GameNetwork network)
+    {
+        this.network = network;
+        if (network.settings.NeedIP)
+        {
+            ipField.text = network.settings.localSettings.localIP;
+            DisableRoomUI();
+        }
+        else
+        {
+            DisableIPUI();
+        }
+    }
+
+    void DisableIPUI()
+    {
+        ipField.interactable = false;
+        ipButton.interactable = false;
+    }
+
+    void DisableRoomUI()
+    {
+        field.interactable = false;
+        joinButton.interactable = false;
+    }
+
+    void EnableRoomUI()
+    {
+        field.interactable = true;
+        joinButton.interactable = true;
+    }
+
+    public void RefreshPlayersText()
+    {
+        playersText.text = "";
+        PhotonPlayer[] players = PhotonNetwork.playerList;
+        for (int i = 0; i < players.Length; i++)
+        {
+            if (!players[i].isMasterClient)
+                playersText.text = playersText.text + players[i].name + "\n";
+        }
     }
 }

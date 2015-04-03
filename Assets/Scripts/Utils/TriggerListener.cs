@@ -12,11 +12,13 @@ public class TriggerListener : MonoBehaviour
     
     void Start()
     {
+        // If we have no collider it means this is set up to be an internal node that listens to its direct children
         if(GetComponent<Collider>() == null)
         {
-            foreach (TriggerListener child in GetComponentsInChildren<TriggerListener>())
+            foreach (Transform t in transform)
             {
-                if (child != this) // GetComponentsInChildren returns the component in this GO too!
+                TriggerListener child;
+                if( (child = t.GetComponent<TriggerListener>()) != null)
                 {
                     child.onTriggerEntered += OnChildTriggerEnter;
                     child.onTriggerExited += OnChildTriggerExit;
