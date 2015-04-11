@@ -10,9 +10,7 @@ public class MasterLobby : MonoBehaviour
 
     // This gets activated when the session is to start
     public Action<byte> onLaunchSession;
-
-    private GameNetwork network;
-
+    
     void Start()
     {
         RefreshPlayersText();
@@ -54,11 +52,6 @@ public class MasterLobby : MonoBehaviour
     public void LaunchSession()
     {
         if (onLaunchSession != null) onLaunchSession(SessionType.Whodunnit);
-    }
-
-    public void SetNetwork(GameNetwork network)
-    {
-        this.network = network;
     }
 
     public void SetRoomName(string name)

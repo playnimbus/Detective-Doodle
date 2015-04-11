@@ -89,7 +89,6 @@ public class MasterGame : Game
     void OnLevelLoaded()
     {
         lobby = FindObjectOfType<MasterLobby>();
-        lobby.SetNetwork(network);
     }
 
     protected override void ExitLobby()

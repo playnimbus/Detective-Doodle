@@ -29,6 +29,14 @@ public class Player : Photon.MonoBehaviour
 
     public AudioBank Audio { set { audio = value; } }
 
+
+    // New variables being added to switch over to a item-powerup scheme
+    private Item item;
+    private Powerup powerup;
+    private Knife knife;
+
+    #region Initialization
+
     // Acts as a Start() for network instantiated objects
     void OnPhotonInstantiate(PhotonMessageInfo info)
     {
@@ -92,6 +100,10 @@ public class Player : Photon.MonoBehaviour
             ui.MarkAsDetective(false);
     }
 
+    #endregion
+
+    #region Environment Interaction
+
     public void ApproachedStash(EvidenceStash stash)
     {
         if (!photonView.isMine) return;
@@ -152,6 +164,32 @@ public class Player : Photon.MonoBehaviour
         // camera.ResumeFollow();
         room.Conceal();
     }
+
+    void EncounteredItem(Item item)
+    {
+        if (!photonView.isMine) return;
+
+    }
+
+    void LeftItem(Item item)
+    {
+        if (!photonView.isMine) return;
+    }
+
+    void EncounteredPowerup(Powerup powerup)
+    {
+        if (!photonView.isMine) return;
+
+    }
+
+    void LeftPowerup(Powerup powerup)
+    {
+        if (!photonView.isMine) return;
+    }
+
+    #endregion
+
+    #region Player Interaction
 
     void OnCollisionEnter(Collision collision)
     {
@@ -282,6 +320,10 @@ public class Player : Photon.MonoBehaviour
         }
     }
 
+    #endregion
+
+    #region State Functions
+
     [RPC]
     void Accuse()
     {
@@ -347,6 +389,8 @@ public class Player : Photon.MonoBehaviour
             ui.SetHeaderText(value ? "Evidence: " + evidence[UnityEngine.Random.Range(0, evidence.Length)] : "No Evidence");
         }
     }
+
+    #endregion
 
     public void BystandersWon()
     {
