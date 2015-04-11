@@ -34,6 +34,8 @@ public class Player : Photon.MonoBehaviour
     private Item item;
     private Powerup powerup;
     private Knife knife;
+    private Coroutine itemCoroutine;
+    private Coroutine powerupCoroutine;
 
     #region Initialization
 
@@ -115,24 +117,16 @@ public class Player : Photon.MonoBehaviour
         }
     }
 
-    public void LeftStash(EvidenceStash stash)
-    {
-        if (!photonView.isMine) return;
-        if (stashSearch != null) StopCoroutine(stashSearch);
-        ui.HideAllButtons();
-        camera.RestoreDistance();
-    }
-
     IEnumerator StashSearchCoroutine(EvidenceStash stash)
     {
         int timesTapped = 0;
         ui.ShowButton(0, "Tap to Search", false, () =>
-            {
-                timesTapped++;
-                camera.BringCloserToPosition(stash.transform);
-                audio.PlaySound("sfx_search");
-            });
-        
+        {
+            timesTapped++;
+            camera.BringCloserToPosition(stash.transform);
+            audio.PlaySound("sfx_search");
+        });
+
         while (timesTapped < 25)
         {
             yield return null;
@@ -140,15 +134,23 @@ public class Player : Photon.MonoBehaviour
 
         // Tapped required amount of time
         stash.GetEvidence((hadEvidence) =>
-            {
-                photonView.RPC("SetHaveEvidence", PhotonTargets.All, hadEvidence);
-            });
-        
+        {
+            photonView.RPC("SetHaveEvidence", PhotonTargets.All, hadEvidence);
+        });
+
         stashSearch = null;
         ui.HideAllButtons();
         camera.RestoreDistance();
     }
-    
+
+    public void LeftStash(EvidenceStash stash)
+    {
+        if (!photonView.isMine) return;
+        if (stashSearch != null) StopCoroutine(stashSearch);
+        ui.HideAllButtons();
+        camera.RestoreDistance();
+    }
+        
     void EnteredRoom(LevelRoom room)
     {
         if (!photonView.isMine) return;
@@ -168,28 +170,69 @@ public class Player : Photon.MonoBehaviour
     void EncounteredItem(Item item)
     {
         if (!photonView.isMine) return;
+        
+        if (itemCoroutine != null) StopCoroutine(itemCoroutine);
 
+        ui.SetHeaderText("Pickup " + item.Name);
+        itemCoroutine = StartCoroutine(ItemPickupCoroutine(item));
+
+        Debug.Log("Encountered item.", item);
+    }
+
+    IEnumerator ItemPickupCoroutine(Item item)
+    {
+        while (true)
+        {
+            // Detect input to pickup here
+            yield return null;
+        }
     }
 
     void LeftItem(Item item)
     {
         if (!photonView.isMine) return;
+
+        ui.SetHeaderText(string.Empty);
+        if (itemCoroutine != null)
+        {
+            StopCoroutine(itemCoroutine);
+            itemCoroutine = null;
+        }
+
+        Debug.Log("Left item.", item);
     }
 
     void EncounteredPowerup(Powerup powerup)
     {
         if (!photonView.isMine) return;
 
+        if (powerupCoroutine != null) StopCoroutine(powerupCoroutine);
+
+        powerupCoroutine = StartCoroutine(PowerupPickupCoroutine(powerup));
+    }
+
+    IEnumerator PowerupPickupCoroutine(Powerup powerup)
+    {
+        while (true)
+        {
+            // Detect input to pickup here
+            yield return null;
+        }
     }
 
     void LeftPowerup(Powerup powerup)
     {
         if (!photonView.isMine) return;
+        if (powerupCoroutine != null)
+        {
+            StopCoroutine(powerupCoroutine);
+            powerupCoroutine = null;
+        }
     }
 
     #endregion
 
-    #region Player Interaction
+    #region Player-Player Interaction
 
     void OnCollisionEnter(Collision collision)
     {

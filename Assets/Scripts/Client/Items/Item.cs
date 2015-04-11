@@ -7,6 +7,9 @@ public abstract class Item : MonoBehaviour
     // Use on other players >:)
     public abstract void Use(Player target);
 
+    // Name of the object
+    public abstract string Name { get; }
+
     #region Unity events
 
     void OnTriggerEnter(Collider coll)
