@@ -7,6 +7,7 @@ public class Player : Photon.MonoBehaviour
 {
     public GameObject evidenceIndictor;
     public GameObject bunnyModel;
+    public Text name;
 
     public static class PlayerAction
     { 
@@ -28,11 +29,11 @@ public class Player : Photon.MonoBehaviour
     private bool canMurder;
 
     public AudioBank Audio { set { audio = value; } }
-
+    public Player otherPlayer;
 
     // New variables being added to switch over to a item-powerup scheme
     private Item item;
-    private Powerup powerup;
+    private Powerup powerup = null;
     private Knife knife;
     private Coroutine itemCoroutine;
     private Coroutine powerupCoroutine;
@@ -57,6 +58,18 @@ public class Player : Photon.MonoBehaviour
         GameObject menuGO = Instantiate(Resources.Load<GameObject>("ClientMenu")) as GameObject;
         ui = menuGO.GetComponent<PlayerUI>();
         ui.SetHeaderText("No Evidence");
+
+        ui.InitPowerupButton( () =>     //called when powerup button is pressed
+        {
+            if(powerup!=null)
+            {
+                if (powerup.Apply(this))    //reutrns false if powerup does not execute     ex: if you try to uniform swap and no one is in range
+                {
+                    powerup = null;
+                    ui.SetPowerupIcon(null);
+                }
+            }
+        });
     }
     
     void InitCamera()
@@ -206,28 +219,8 @@ public class Player : Photon.MonoBehaviour
     {
         if (!photonView.isMine) return;
 
-        if (powerupCoroutine != null) StopCoroutine(powerupCoroutine);
-
-        powerupCoroutine = StartCoroutine(PowerupPickupCoroutine(powerup));
-    }
-
-    IEnumerator PowerupPickupCoroutine(Powerup powerup)
-    {
-        while (true)
-        {
-            // Detect input to pickup here
-            yield return null;
-        }
-    }
-
-    void LeftPowerup(Powerup powerup)
-    {
-        if (!photonView.isMine) return;
-        if (powerupCoroutine != null)
-        {
-            StopCoroutine(powerupCoroutine);
-            powerupCoroutine = null;
-        }
+        this.powerup = powerup;
+        ui.SetPowerupIcon(powerup.Icon);
     }
 
     #endregion
@@ -237,29 +230,29 @@ public class Player : Photon.MonoBehaviour
     void OnCollisionEnter(Collision collision)
     {
         if (!photonView.isMine) return;
-        Player otherPlayer = collision.gameObject.GetComponent<Player>();
+        otherPlayer = collision.gameObject.GetComponent<Player>();
         if (otherPlayer == null) return;
         if (IsDead) return;
         
         // return when you do an action!
         if (IsMurderer)
         {
-            if (MurdererInteraction(otherPlayer)) return;
+            if (MurdererInteraction()) return;
         }
         else if (IsDetective)
         {
-            if (DetectiveInteraction(otherPlayer)) return;
+            if (DetectiveInteraction()) return;
         }
         else // Is bystander
         {
-            if (BystanderInteraction(otherPlayer)) return;
+            if (BystanderInteraction()) return;
         }
 
         // All players can loot dead 
-        if (LootingInteraction(otherPlayer)) return;
+        if (LootingInteraction()) return;
     }
 
-    bool MurdererInteraction(Player otherPlayer)
+    bool MurdererInteraction()
     {
         int murderButton = 0;
         bool interacted = false;
@@ -294,7 +287,7 @@ public class Player : Photon.MonoBehaviour
         return interacted;
     }
 
-    bool DetectiveInteraction(Player otherPlayer)
+    bool DetectiveInteraction()
     {
         if (haveEvidence)
         {
@@ -314,7 +307,7 @@ public class Player : Photon.MonoBehaviour
         return false;
     }
 
-    bool BystanderInteraction(Player otherPlayer)
+    bool BystanderInteraction()
     {
         if (otherPlayer.IsDetective && haveEvidence && !otherPlayer.haveEvidence && !otherPlayer.IsDead)
         {
@@ -338,7 +331,7 @@ public class Player : Photon.MonoBehaviour
         return false;
     }
 
-    bool LootingInteraction(Player otherPlayer)
+    bool LootingInteraction()
     {
         if (otherPlayer.IsDead && otherPlayer.haveEvidence)
         {
@@ -349,7 +342,6 @@ public class Player : Photon.MonoBehaviour
             });
             return true;
         }
-
         return false;
     }
 

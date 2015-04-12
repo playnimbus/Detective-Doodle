@@ -12,6 +12,7 @@ public class PlayerUI : MonoBehaviour
         public Button button;
         public Text text;
         public Action callback;
+        public Image Icon;
         public bool hideOnPressed;
     }
 
@@ -19,6 +20,7 @@ public class PlayerUI : MonoBehaviour
     public Image detectiveIndicator;
     public Text headerText;
     public PlayerButton[] buttons;
+    public PlayerButton powerupUpButton;
     public GameObject tutorialMurderer;
     public GameObject tutorialBystander;
     public GameObject tutorialDetective;
@@ -64,6 +66,11 @@ public class PlayerUI : MonoBehaviour
         buttons[num].callback = callback;
         buttons[num].hideOnPressed = hideOnPressed;
     }
+
+    public void InitPowerupButton(Action callback)
+    {
+        powerupUpButton.callback = callback;
+    }
         
     public void HideAllButtons()
     {
@@ -79,10 +86,18 @@ public class PlayerUI : MonoBehaviour
         if (buttons[num].callback != null) buttons[num].callback();
         if (buttons[num].hideOnPressed) buttons[num].button.gameObject.SetActive(false);
     }
-
+    public void PowerupButtonPressed()
+    {
+        powerupUpButton.callback();
+    }
     public void SetHeaderText(string s)
     {
         headerText.text = s;
+    }
+
+    public void SetPowerupIcon(Sprite powerupIcon)
+    {
+        powerupUpButton.Icon.sprite = powerupIcon;
     }
 
     public void FadeInMurderIcon(float seconds)
