@@ -17,6 +17,7 @@ public class PlayerMovement : Photon.MonoBehaviour
             if (moveCoroutine != null) StopCoroutine(moveCoroutine);
             moveCoroutine = StartCoroutine(MoveCoroutine());
         }
+        
     }
 
     IEnumerator MoveCoroutine()
@@ -33,6 +34,8 @@ public class PlayerMovement : Photon.MonoBehaviour
 
         while (Input.GetMouseButton(0))
         {
+            if (LootMicroGame.lootingEnabled == true){break;};
+
             Vector3 current = Input.mousePosition;
             Vector3 delta = current - startPosition;
             delta.z = delta.y;

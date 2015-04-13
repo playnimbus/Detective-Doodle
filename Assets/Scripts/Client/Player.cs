@@ -8,6 +8,7 @@ public class Player : Photon.MonoBehaviour
     public GameObject evidenceIndictor;
     public GameObject bunnyModel;
     public Text name;
+    LootMicroGame LootDrawer;
 
     public static class PlayerAction
     { 
@@ -58,6 +59,10 @@ public class Player : Photon.MonoBehaviour
         GameObject menuGO = Instantiate(Resources.Load<GameObject>("ClientMenu")) as GameObject;
         ui = menuGO.GetComponent<PlayerUI>();
         ui.SetHeaderText("No Evidence");
+
+        GameObject LootGame = Instantiate(Resources.Load<GameObject>("LootGame")) as GameObject;
+        LootGame.transform.position = new Vector3(-100, 0, 0);
+        LootDrawer = LootGame.GetComponent<LootMicroGame>();
 
         ui.InitPowerupButton( () =>     //called when powerup button is pressed
         {
@@ -123,6 +128,7 @@ public class Player : Photon.MonoBehaviour
     {
         if (!photonView.isMine) return;
 
+        LootDrawer.MakeDrawerAvailable();
         if(!haveEvidence)
         {
             if (stashSearch != null) StopCoroutine(stashSearch);
@@ -159,6 +165,9 @@ public class Player : Photon.MonoBehaviour
     public void LeftStash(EvidenceStash stash)
     {
         if (!photonView.isMine) return;
+
+        LootDrawer.MakeDrawerHidden();
+
         if (stashSearch != null) StopCoroutine(stashSearch);
         ui.HideAllButtons();
         camera.RestoreDistance();
