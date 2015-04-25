@@ -633,6 +633,7 @@ GameObject:
   - 33: {fileID: 137301413}
   - 23: {fileID: 137301412}
   - 64: {fileID: 137301411}
+  - 114: {fileID: 137301414}
   m_Layer: 0
   m_Name: House 5
   m_TagString: Untagged
@@ -701,6 +702,18 @@ MeshFilter:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 137301409}
   m_Mesh: {fileID: 4300022, guid: 57188b4126fa58a4e937c2c6746ab135, type: 3}
+--- !u!114 &137301414
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 137301409}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 62fe47c851227db42a10c625189cc2d2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  overheadCameraPosition: {fileID: 569928028}
 --- !u!1 &142779668
 GameObject:
   m_ObjectHideFlags: 0
@@ -5860,6 +5873,7 @@ GameObject:
   - 33: {fileID: 1037592845}
   - 23: {fileID: 1037592844}
   - 64: {fileID: 1037592843}
+  - 114: {fileID: 1037592846}
   m_Layer: 0
   m_Name: House 4
   m_TagString: Untagged
@@ -5928,6 +5942,18 @@ MeshFilter:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1037592841}
   m_Mesh: {fileID: 4300012, guid: 57188b4126fa58a4e937c2c6746ab135, type: 3}
+--- !u!114 &1037592846
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1037592841}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 62fe47c851227db42a10c625189cc2d2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  overheadCameraPosition: {fileID: 692931507}
 --- !u!1 &1042806231
 GameObject:
   m_ObjectHideFlags: 0
@@ -6604,6 +6630,7 @@ GameObject:
   - 33: {fileID: 1206153561}
   - 23: {fileID: 1206153560}
   - 64: {fileID: 1206153559}
+  - 114: {fileID: 1206153562}
   m_Layer: 0
   m_Name: Mansion
   m_TagString: Untagged
@@ -6672,6 +6699,18 @@ MeshFilter:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1206153557}
   m_Mesh: {fileID: 4300028, guid: 57188b4126fa58a4e937c2c6746ab135, type: 3}
+--- !u!114 &1206153562
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1206153557}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 62fe47c851227db42a10c625189cc2d2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  overheadCameraPosition: {fileID: 505760132}
 --- !u!1 &1234837939
 GameObject:
   m_ObjectHideFlags: 0
@@ -7038,6 +7077,7 @@ GameObject:
   - 33: {fileID: 1266214365}
   - 23: {fileID: 1266214364}
   - 64: {fileID: 1266214363}
+  - 114: {fileID: 1266214366}
   m_Layer: 0
   m_Name: House 6
   m_TagString: Untagged
@@ -7106,6 +7146,18 @@ MeshFilter:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1266214361}
   m_Mesh: {fileID: 4300024, guid: 57188b4126fa58a4e937c2c6746ab135, type: 3}
+--- !u!114 &1266214366
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1266214361}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 62fe47c851227db42a10c625189cc2d2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  overheadCameraPosition: {fileID: 863182146}
 --- !u!1 &1275667701
 GameObject:
   m_ObjectHideFlags: 0
@@ -8936,7 +8988,7 @@ MeshCollider:
   m_Enabled: 1
   serializedVersion: 2
   m_Convex: 0
-  m_Mesh: {fileID: 0}
+  m_Mesh: {fileID: 4300000, guid: 6ad45e8be37c8454ea7578fab34216ce, type: 3}
 --- !u!1 &1622533523
 GameObject:
   m_ObjectHideFlags: 0
@@ -9220,6 +9272,7 @@ GameObject:
   - 33: {fileID: 1678204707}
   - 23: {fileID: 1678204706}
   - 64: {fileID: 1678204705}
+  - 114: {fileID: 1678204708}
   m_Layer: 0
   m_Name: House 3
   m_TagString: Untagged
@@ -9288,6 +9341,18 @@ MeshFilter:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1678204703}
   m_Mesh: {fileID: 4300010, guid: 57188b4126fa58a4e937c2c6746ab135, type: 3}
+--- !u!114 &1678204708
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1678204703}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 62fe47c851227db42a10c625189cc2d2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  overheadCameraPosition: {fileID: 2077066779}
 --- !u!1 &1679943202
 GameObject:
   m_ObjectHideFlags: 0

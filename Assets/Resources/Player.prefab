@@ -440,12 +440,12 @@ Rigidbody:
   m_GameObject: {fileID: 179486}
   serializedVersion: 2
   m_Mass: 1
-  m_Drag: 100
+  m_Drag: 35
   m_AngularDrag: 100
-  m_UseGravity: 0
+  m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 84
+  m_Constraints: 80
   m_CollisionDetection: 0
 --- !u!81 &8129422
 AudioListener:
@@ -631,6 +631,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   evidenceIndictor: {fileID: 117890}
   bunnyModel: {fileID: 149654}
+  name: {fileID: 0}
+  otherPlayer: {fileID: 0}
 --- !u!114 &11479486
 MonoBehaviour:
   m_ObjectHideFlags: 1
