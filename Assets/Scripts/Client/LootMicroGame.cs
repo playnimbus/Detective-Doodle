@@ -8,6 +8,10 @@ public class LootMicroGame : MonoBehaviour {
     public Camera camera;
     public GameObject drawer;
 
+    public GameObject EvidenceGO;
+    public GameObject SpeedPowerupGO;
+
+
     Vector3 OriginalDrawerPosition;
     Vector3 AvailableOffset = new Vector3(0,0,-5);
     Vector3 OpenOffset = new Vector3(0,0,-24);
@@ -20,11 +24,17 @@ public class LootMicroGame : MonoBehaviour {
     Vector3 startPos;
     Vector3 endPos;
 
+    EvidenceStash currentStash;
+    Player currentPlayer;
+
 	// Use this for initialization
 	void Start () {
         OriginalDrawerPosition = drawer.transform.position;
-       // SwitchState(DrawerStates.available);      //uncomment to start with drawer available, good for debugging the motions and states of the drawer
-	}
+        //SwitchState(DrawerStates.available);      //uncomment to start with drawer available, good for debugging the motions and states of the drawer
+
+        EvidenceGO.SetActive(false);
+        SpeedPowerupGO.SetActive(false);
+    }
 	
 	// Update is called once per frame
 	void Update () {
@@ -37,14 +47,28 @@ public class LootMicroGame : MonoBehaviour {
         }
 	}
 
-    public void MakeDrawerAvailable()     //init microgame objects here
+    public void MakeDrawerAvailable(EvidenceStash stash, Player player)     //init microgame objects here
     {
-        SwitchState(DrawerStates.available);
+        currentStash = stash;
+        currentPlayer = player;
+
+        if (currentStash.isBeingLootedByPlayer == false)
+        {
+            SwitchState(DrawerStates.available);
+
+            EvidenceGO.SetActive(currentStash.HasEvidence);
+            SpeedPowerupGO.SetActive(currentStash.HasSpeedBoost);
+        }
     }
 
     public void MakeDrawerHidden()      //dispose of microgame objects here
     {
+        currentStash = null;
+        currentPlayer = null;
         SwitchState(DrawerStates.hidden);
+
+        EvidenceGO.SetActive(false);
+        SpeedPowerupGO.SetActive(false);
     }
 
     void SwitchState(DrawerStates newState)
@@ -78,6 +102,16 @@ public class LootMicroGame : MonoBehaviour {
 
     void UpdateHidden()
     {
+        if (currentPlayer != null)      //checks if player is already in range of stash when it becomes available
+        {
+            if (currentStash.isBeingLootedByPlayer == false)
+            {
+                SwitchState(DrawerStates.available);
+                EvidenceGO.SetActive(currentStash.HasEvidence);
+                SpeedPowerupGO.SetActive(currentStash.HasSpeedBoost);
+            }
+        }
+
         if (drawer.transform.position.z != OriginalDrawerPosition.z)
         {
             currentLerpTime += Time.deltaTime;
@@ -104,10 +138,19 @@ public class LootMicroGame : MonoBehaviour {
         startPos = drawer.transform.position;
         endPos = OriginalDrawerPosition + AvailableOffset;
         currentLerpTime = 0;
+
+        currentStash.LockStashFromOthers(false);
     }
 
     void UpdateAvailable() 
     {
+
+        //checks if another player opens stash while you are in range. closes it if they open it
+        if (currentStash.isBeingLootedByPlayer == true)
+        {
+            SwitchState(DrawerStates.hidden);
+        }
+
         if (Input.GetMouseButtonDown(0))
         {
             RaycastHit hit;
@@ -149,6 +192,7 @@ public class LootMicroGame : MonoBehaviour {
     void BeginOpening()
     {
         LootMicroGame.lootingEnabled = true;
+        currentStash.LockStashFromOthers(true);
     }
 
     void UpdateOpening()
@@ -205,6 +249,20 @@ public class LootMicroGame : MonoBehaviour {
                 if (hit.collider.tag == "LootDrawer")
                 {
                     SwitchState(DrawerStates.opening);
+                }
+                else if (hit.collider.name == EvidenceGO.name)
+                {
+                    currentPlayer.giveEvidence();
+                    EvidenceGO.SetActive(false);
+                    currentStash.GetEvidence();
+                }
+                else if (hit.collider.name == SpeedPowerupGO.name)
+                {
+                    GameObject powerup = Instantiate(Resources.Load<GameObject>("MaxSpeed")) as GameObject;
+                    powerup.transform.position = new Vector3(-1000, 1000, 1000);
+                    currentPlayer.EncounteredPowerup(powerup.GetComponent<MaxSpeed>());
+                    SpeedPowerupGO.SetActive(false);
+                    currentStash.GetEvidence();
                 }
             }
         }

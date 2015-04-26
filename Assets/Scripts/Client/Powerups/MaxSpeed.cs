@@ -20,5 +20,7 @@ public class MaxSpeed : Powerup {
         yield return new WaitForSeconds(duration);
 
         player.GetComponent<PlayerMovement>().speed = originalSpeed;
+
+        Destroy(this);
     }
 }

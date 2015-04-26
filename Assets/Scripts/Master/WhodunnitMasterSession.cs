@@ -80,19 +80,6 @@ public class WhodunnitMasterSession : Session
         PhotonPlayer detective = PhotonNetwork.otherPlayers[detectiveIndex];
         photonView.RPC("AssignDetective", detective);
 
-        // Set up stashes so only one has evidence in it at a time
-        stashes = FindObjectsOfType<EvidenceStash>();
-        foreach (EvidenceStash stash in stashes)
-            stash.evidenceLooted += StashEvidenceLooted;
-        
-        // Add in an initial amount of evidence
-        int numInitialEvidence = 2;
-        int start = UnityEngine.Random.Range(0, stashes.Length);
-        for (int i = 0; i < numInitialEvidence; i++)
-        {
-            int index = start + Mathf.FloorToInt(stashes.Length * ((float)i / (float)numInitialEvidence));
-            stashes[index % stashes.Length].photonView.RPC("SetHasEvidence", PhotonTargets.All, true);
-        }
     }
 
     void OnPhotonInstantiateGO(GameObject go)
@@ -114,21 +101,6 @@ public class WhodunnitMasterSession : Session
                 break;
             default:
                 break;
-        }
-    }
-
-    void StashEvidenceLooted(EvidenceStash stash)
-    {
-        // Linear probe from random start to find an stash with no evidence
-        int index = UnityEngine.Random.Range(0, stashes.Length);        
-        for(int i=0; i<stashes.Length; i++)
-        {
-            EvidenceStash newStash = stashes[(index + i) % stashes.Length];
-            if (!stash.HasEvidence)
-            {
-                newStash.photonView.RPC("SetHasEvidence", PhotonTargets.All, true);
-                return;
-            }
         }
     }
 

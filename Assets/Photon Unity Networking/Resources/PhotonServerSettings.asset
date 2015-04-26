@@ -46,4 +46,6 @@ MonoBehaviour:
   - RequestForPickupTimes
   - SetHasEvidence
   - SetHaveEvidence
+  - SetHasSpeedBoost
+  - setIsBeingLootedByPlayer
   DisableAutoOpenWizard: 0

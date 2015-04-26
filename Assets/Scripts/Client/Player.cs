@@ -34,7 +34,7 @@ public class Player : Photon.MonoBehaviour
 
     // New variables being added to switch over to a item-powerup scheme
     private Item item;
-    private Powerup powerup = null;
+    public Powerup powerup = null;
     private Knife knife;
     private Coroutine itemCoroutine;
     private Coroutine powerupCoroutine;
@@ -128,38 +128,7 @@ public class Player : Photon.MonoBehaviour
     {
         if (!photonView.isMine) return;
 
-        LootDrawer.MakeDrawerAvailable();
-        if(!haveEvidence)
-        {
-            if (stashSearch != null) StopCoroutine(stashSearch);
-            stashSearch = StartCoroutine(StashSearchCoroutine(stash));
-        }
-    }
-
-    IEnumerator StashSearchCoroutine(EvidenceStash stash)
-    {
-        int timesTapped = 0;
-        ui.ShowButton(0, "Tap to Search", false, () =>
-        {
-            timesTapped++;
-            camera.BringCloserToPosition(stash.transform);
-            audio.PlaySound("sfx_search");
-        });
-
-        while (timesTapped < 25)
-        {
-            yield return null;
-        }
-
-        // Tapped required amount of time
-        stash.GetEvidence((hadEvidence) =>
-        {
-            photonView.RPC("SetHaveEvidence", PhotonTargets.All, hadEvidence);
-        });
-
-        stashSearch = null;
-        ui.HideAllButtons();
-        camera.RestoreDistance();
+        LootDrawer.MakeDrawerAvailable(stash, this);
     }
 
     public void LeftStash(EvidenceStash stash)
@@ -168,9 +137,11 @@ public class Player : Photon.MonoBehaviour
 
         LootDrawer.MakeDrawerHidden();
 
-        if (stashSearch != null) StopCoroutine(stashSearch);
-        ui.HideAllButtons();
-        camera.RestoreDistance();
+    }
+
+    public void giveEvidence()
+    {
+        photonView.RPC("SetHaveEvidence", PhotonTargets.All, true);
     }
         
     void EnteredRoom(LevelRoom room)
@@ -224,7 +195,7 @@ public class Player : Photon.MonoBehaviour
         Debug.Log("Left item.", item);
     }
 
-    void EncounteredPowerup(Powerup powerup)
+    public void EncounteredPowerup(Powerup powerup)
     {
         if (!photonView.isMine) return;
 

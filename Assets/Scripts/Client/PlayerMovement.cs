@@ -10,6 +10,8 @@ public class PlayerMovement : Photon.MonoBehaviour
     private bool canMove = true;
 	public PlayerCamera playerCamera;
 
+    public GameObject playerModel;
+
     void Update()
     {
         if (Input.GetMouseButtonDown(0) && photonView.isMine && canMove)
@@ -17,7 +19,6 @@ public class PlayerMovement : Photon.MonoBehaviour
             if (moveCoroutine != null) StopCoroutine(moveCoroutine);
             moveCoroutine = StartCoroutine(MoveCoroutine());
         }
-        
     }
 
     IEnumerator MoveCoroutine()
@@ -38,6 +39,7 @@ public class PlayerMovement : Photon.MonoBehaviour
 
             Vector3 current = Input.mousePosition;
             Vector3 delta = current - startPosition;
+
             delta.z = delta.y;
             delta.y = 0;
             float length = Mathf.Min(delta.magnitude, virtualScreenPadRadius);
@@ -47,12 +49,12 @@ public class PlayerMovement : Photon.MonoBehaviour
             velocity = delta * scale;
 
             playerCamera.playerDirection = velocity;
+            playerModel.transform.LookAt(playerModel.transform.position + velocity);
 
             if (canMove)
             {
                 // Move using rigidbody to get collision benefits
                 GetComponent<Rigidbody>().MovePosition(transform.position + velocity * Time.deltaTime * speed);
-      //          gameObject.transform.LookAt(new Vector3(transform.position.x + velocity.x, transform.position.y + velocity.y, gameObject.transform.position.z));
             }
 
             yield return fixedUpdate;
