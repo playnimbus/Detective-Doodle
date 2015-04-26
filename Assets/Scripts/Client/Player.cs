@@ -136,6 +136,7 @@ public class Player : Photon.MonoBehaviour
     {
         IsMurderer = true;
         IsDetective = false;
+        haveKey = true;
         if (photonView.isMine)
         {
             ui.MarkAsMurderer();
@@ -148,8 +149,8 @@ public class Player : Photon.MonoBehaviour
     {
         IsDetective = true;
      //   GetComponent<Renderer>().material.color = Color.blue;
-        if (photonView.isMine)
-            ui.MarkAsDetective(true);
+       // if (photonView.isMine)
+            //ui.MarkAsDetective(true);
     }
 
     [RPC]
@@ -204,6 +205,10 @@ public class Player : Photon.MonoBehaviour
     public void removeKey()
     {
         photonView.RPC("SetHaveKey", PhotonTargets.All, false);
+        if (IsMurderer)
+        {
+            haveKey = true;
+        }
     }
         
     void EnteredRoom(LevelRoom room)
@@ -409,7 +414,7 @@ public class Player : Photon.MonoBehaviour
     {
         if (IsMurderer)
         {
-            GetComponent<Renderer>().material.color = new Color(1f, 0.5f, 0f);
+           // GetComponent<Renderer>().material.color = new Color(1f, 0.5f, 0f);
             GetComponent<PlayerMovement>().StopMovement(0f); // 0 = indefinitely
             if (action != null)
             {
@@ -418,7 +423,7 @@ public class Player : Photon.MonoBehaviour
         }
         else
         {
-            GetComponent<Renderer>().material.color = Color.yellow;
+          //  GetComponent<Renderer>().material.color = Color.yellow;
             GetComponent<PlayerMovement>().StopMovement(22f);
             Invoke("ResetColor", 22f);
             if (action != null)
@@ -430,7 +435,7 @@ public class Player : Photon.MonoBehaviour
 
     void ResetColor()
     {
-        GetComponent<Renderer>().material.color = IsDetective ? Color.blue : Color.white;
+       // GetComponent<Renderer>().material.color = IsDetective ? Color.blue : Color.white;
     }
 
     void ResetCanMurder()

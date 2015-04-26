@@ -13,6 +13,8 @@ public class WhodunnitMasterSession : Session
     private int deadPlayers;
     private AudioBank audio;
 
+    private bool winnerDecided = false;
+
     public override void Launch()
     {
         deadPlayers = 0;
@@ -135,10 +137,15 @@ public class WhodunnitMasterSession : Session
     [RPC]
     void BystandersWon()
     {
-        audio.PlaySound("sfx_murdererjailed");
+        if (winnerDecided == false)
+        {
+            audio.PlaySound("sfx_murdererjailed");
 
-        menu.SetHeader("The detectives have won!", true);
-        Analytics.SendGameModeEnd(true);
+            menu.SetHeader("The detectives have won!", true);
+            Analytics.SendGameModeEnd(true);
+
+            winnerDecided = true;
+        }
     }
 
     [RPC]
@@ -157,10 +164,15 @@ public class WhodunnitMasterSession : Session
     [RPC]
     void MurdererWon()
     {
-        audio.PlaySound("sfx_detectivekilled");
+        if (winnerDecided == false)
+        {
+            audio.PlaySound("sfx_detectivekilled");
 
-        menu.SetHeader("The murderer has won!", true);
-        Analytics.SendGameModeEnd(false);
+            menu.SetHeader("The murderer has won!", true);
+            Analytics.SendGameModeEnd(false);
+
+            winnerDecided = true;
+        }
     }
 
     public override void Finish()
