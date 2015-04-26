@@ -44,6 +44,8 @@ public class GameNetwork : MonoBehaviour
     public void ConnectWithIP(string ip)
     {
         PhotonNetwork.ConnectToMaster(ip, PhotonNetwork.PhotonServerSettings.ServerPort, PhotonNetwork.PhotonServerSettings.AppID, settings.version);
+        PlayerPrefs.SetString("lastIp", ip);
+        print(ip + " has been saved");
     }
 
     void OnFailedToConnectToPhoton(DisconnectCause cause)

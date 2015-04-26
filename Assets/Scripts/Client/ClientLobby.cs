@@ -20,6 +20,9 @@ public class ClientLobby : MonoBehaviour
         RefreshPlayersText();
         if (!string.IsNullOrEmpty(PhotonNetwork.player.name))
             nameField.text = PhotonNetwork.player.name;
+
+        print(PlayerPrefs.GetString("lastIp"));
+        ipField.text= PlayerPrefs.GetString("lastIp");
     }
 
     #region Photon events
@@ -29,7 +32,7 @@ public class ClientLobby : MonoBehaviour
         DisableIPUI();
         EnableRoomUI();
     }
-
+    
     void OnJoinedRoom()
     {
         field.text = "Successfully joined room.";
@@ -83,7 +86,10 @@ public class ClientLobby : MonoBehaviour
         this.network = network;
         if (network.settings.NeedIP)
         {
-            ipField.text = network.settings.localSettings.localIP;
+            if (network.settings.localSettings.connectAutomatically)
+            {
+                ipField.text = network.settings.localSettings.localIP;
+            }
             DisableRoomUI();
         }
         else
