@@ -7,6 +7,7 @@ public class Player : Photon.MonoBehaviour
 {
     public GameObject evidenceIndictor;
     public GameObject bunnyModel;
+    public GameObject wolfModel;
     public Text name;
     LootMicroGame LootDrawer;
 
@@ -54,6 +55,18 @@ public class Player : Photon.MonoBehaviour
 
         // HACK ... Kinda. Assumes we only have one text field on the player
         GetComponentInChildren<Text>().text = photonView.owner.name;
+
+        if (photonView.isMine)
+        {
+            if (UnityEngine.Random.Range(0, 2) < 1)
+            {
+                photonView.RPC("SetPlayerModel", PhotonTargets.All, "bunny");
+            }
+            else
+            {
+                photonView.RPC("SetPlayerModel", PhotonTargets.All, "wolf");
+            }
+        }
     }
 
     void InitUI()
@@ -95,9 +108,23 @@ public class Player : Photon.MonoBehaviour
     }
 
     [RPC]
+    public void SetPlayerModel(string modelName)
+    {
+        if (modelName == "bunny")
+        {
+            bunnyModel.SetActive(true);
+        }
+        else if (modelName == "wolf")
+        {
+            wolfModel.SetActive(true);
+        }
+    }
+
+    [RPC]
     public void MakeMurderer()
     {
         IsMurderer = true;
+        IsDetective = false;
         if (photonView.isMine)
         {
             ui.MarkAsMurderer();
@@ -110,8 +137,6 @@ public class Player : Photon.MonoBehaviour
     {
         IsDetective = true;
      //   GetComponent<Renderer>().material.color = Color.blue;
-        GetComponent<Renderer>().enabled = false;
-        bunnyModel.SetActive(true);
         if (photonView.isMine)
             ui.MarkAsDetective(true);
     }

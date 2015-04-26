@@ -48,4 +48,5 @@ MonoBehaviour:
   - SetHaveEvidence
   - SetHasSpeedBoost
   - setIsBeingLootedByPlayer
+  - SetPlayerModel
   DisableAutoOpenWizard: 0
