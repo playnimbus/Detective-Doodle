@@ -16,7 +16,7 @@ public class EvidenceStash : Photon.MonoBehaviour
 
     private bool hasEvidence;
     private bool hasSpeedBoost;
-    private bool hasKey;
+    public bool hasKey;
     private bool isBeingLootedByPlayer;
 
     //should switch loot type over to an enum assuming stashes will only have one type of loot at a time
@@ -103,7 +103,7 @@ public class EvidenceStash : Photon.MonoBehaviour
 
         if (isInHouse)
         {
-            if (randomNum == 2)
+            if (randomNum <= 3)
             {
                 print("stash given Evidence");
                 photonView.RPC("SetHasEvidence", PhotonTargets.All, true);
@@ -121,7 +121,7 @@ public class EvidenceStash : Photon.MonoBehaviour
         }
         else
         {
-            if (randomNum == 2)
+            if (randomNum <= 3)
             {
                 print("stash given Key");
                 photonView.RPC("SetHasKey", PhotonTargets.All, true);

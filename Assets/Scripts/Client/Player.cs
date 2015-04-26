@@ -10,7 +10,9 @@ public class Player : Photon.MonoBehaviour
     public GameObject bunnyModel;
     public GameObject wolfModel;
     public Text name;
+
     LootMicroGame LootDrawer;
+    LockedDoorUI lockedDoorUI;
 
     public static class PlayerAction
     { 
@@ -29,7 +31,7 @@ public class Player : Photon.MonoBehaviour
     private Coroutine stashSearch;
     private AudioBank audio;
     private bool haveEvidence;
-    private bool haveKey;
+    public bool haveKey;
     private bool canMurder;
 
     public AudioBank Audio { set { audio = value; } }
@@ -81,7 +83,11 @@ public class Player : Photon.MonoBehaviour
 
         GameObject LootGame = Instantiate(Resources.Load<GameObject>("LootGame")) as GameObject;
         LootGame.transform.position = new Vector3(-100, 0, 0);
+
         LootDrawer = LootGame.GetComponent<LootMicroGame>();
+        lockedDoorUI = LootGame.GetComponentInChildren<LockedDoorUI>();
+
+        print(lockedDoorUI.gameObject.name);
 
         ui.InitPowerupButton( () =>     //called when powerup button is pressed
         {
@@ -167,7 +173,21 @@ public class Player : Photon.MonoBehaviour
         if (!photonView.isMine) return;
 
         LootDrawer.MakeDrawerHidden();
+    }
 
+    public void ApproachedDoor(Door door)
+    {
+        if (!photonView.isMine) return;
+
+        lockedDoorUI.MakeDoorAvailable(door, this);
+
+    }
+
+    public void LeftDoor(Door door)
+    {
+        if (!photonView.isMine) return;
+
+        lockedDoorUI.MakeDoorHidden();
     }
 
     public void giveEvidence()
@@ -177,6 +197,10 @@ public class Player : Photon.MonoBehaviour
     public void giveKey()
     {
         photonView.RPC("SetHaveKey", PhotonTargets.All, true);
+    }
+    public void removeKey()
+    {
+        photonView.RPC("SetHaveKey", PhotonTargets.All, false);
     }
         
     void EnteredRoom(LevelRoom room)
@@ -417,7 +441,11 @@ public class Player : Photon.MonoBehaviour
         if (!IsDead)
         {
             IsDead = true;
-            GetComponent<Renderer>().material.color = Color.red;
+   //         GetComponent<Renderer>().material.color = Color.red;
+
+            bunnyModel.SetActive(false);
+            wolfModel.SetActive(false);
+
             GetComponent<PlayerMovement>().StopMovement(0f);
             CancelInvoke("ResetColor");
             if (photonView.isMine && ui != null)

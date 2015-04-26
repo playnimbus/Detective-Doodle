@@ -7,6 +7,7 @@ TagManager:
   - LootDrawer
   - RoomCover
   - LevelGeometry
+  - LockedDoor
   layers:
   - Default
   - TransparentFX

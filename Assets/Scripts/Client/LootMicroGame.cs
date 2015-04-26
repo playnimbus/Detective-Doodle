@@ -60,7 +60,7 @@ public class LootMicroGame : MonoBehaviour {
 
             EvidenceGO.SetActive(currentStash.HasEvidence);
             SpeedPowerupGO.SetActive(currentStash.HasSpeedBoost);
-            SpeedPowerupGO.SetActive(currentStash.HasKey);
+            KeyGO.SetActive(currentStash.HasKey);
         }
     }
 
@@ -268,7 +268,7 @@ public class LootMicroGame : MonoBehaviour {
                     SpeedPowerupGO.SetActive(false);
                     currentStash.GetEvidence();
                 }
-                else if (hit.collider.name == EvidenceGO.name)
+                else if (hit.collider.name == KeyGO.name)
                 {
                     currentPlayer.giveKey();
                     KeyGO.SetActive(false);
