@@ -65,6 +65,10 @@ public class EvidenceStash : Photon.MonoBehaviour
     public void LockStashFromOthers(bool isLocked)
     {
         photonView.RPC("setIsBeingLootedByPlayer", PhotonTargets.All, isLocked);
+        if (isLocked)
+        {
+            photonView.RPC("spawnPapers", PhotonTargets.All);
+        }
     }
 
     [RPC]
@@ -129,5 +133,16 @@ public class EvidenceStash : Photon.MonoBehaviour
     void setIsBeingLootedByPlayer(bool value)
     {
         isBeingLootedByPlayer = value;
+
+    }
+
+    [RPC]
+    void spawnPapers()
+    {
+        for (int i = 0; i < 3; i++)
+        {
+            GameObject paper = Instantiate(Resources.Load<GameObject>("falling_paper")) as GameObject;
+            paper.transform.position = gameObject.transform.position;
+        }
     }
 }

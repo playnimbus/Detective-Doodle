@@ -49,4 +49,5 @@ MonoBehaviour:
   - SetHasSpeedBoost
   - setIsBeingLootedByPlayer
   - SetPlayerModel
+  - spawnPapers
   DisableAutoOpenWizard: 0

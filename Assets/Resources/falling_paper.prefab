@@ -27,6 +27,7 @@ GameObject:
   - 4: {fileID: 483004}
   - 95: {fileID: 9566856}
   - 54: {fileID: 5416878}
+  - 114: {fileID: 11449756}
   m_Layer: 0
   m_Name: falling_paper
   m_TagString: Untagged
@@ -82,8 +83,8 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 171274}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -.0299999993, y: 5.86000013, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: -19.7700005, y: 7.09000015, z: 4.30000019}
+  m_LocalScale: {x: .5, y: .5, z: .5}
   m_Children:
   - {fileID: 426122}
   - {fileID: 401946}
@@ -183,6 +184,17 @@ Animator:
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
+--- !u!114 &11449756
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 171274}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8c36436e016db694cbe6331158de424c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1
