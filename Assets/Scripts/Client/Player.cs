@@ -70,6 +70,9 @@ public class Player : Photon.MonoBehaviour
             {
                 photonView.RPC("SetPlayerModel", PhotonTargets.All, "wolf");
             }
+
+            Destroy(GameObject.Find("Main Camera"));
+            Destroy(GameObject.Find("Main Camera 1"));
         }
     }
 
