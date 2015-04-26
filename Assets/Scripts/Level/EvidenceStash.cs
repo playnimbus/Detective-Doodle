@@ -11,9 +11,13 @@ public class EvidenceStash : Photon.MonoBehaviour
     private TriggerListener triggerListener;
 
     private Action<bool> evidenceRequestCallback;
-    public bool hasEvidence;
-    public bool hasSpeedBoost;
-    public bool isBeingLootedByPlayer;
+
+    public bool isInHouse;
+
+    private bool hasEvidence;
+    private bool hasSpeedBoost;
+    private bool hasKey;
+    private bool isBeingLootedByPlayer;
 
     //should switch loot type over to an enum assuming stashes will only have one type of loot at a time
  //   enum TypeOfLoot {None, Evidence, SpeedPowerUp, Money};
@@ -24,6 +28,10 @@ public class EvidenceStash : Photon.MonoBehaviour
     }
     public bool HasSpeedBoost{
         get { return hasSpeedBoost; }
+    }
+    public bool HasKey
+    {
+        get { return hasKey; }
     }
     public bool IsBeingLootedByPlayer
     {
@@ -93,19 +101,41 @@ public class EvidenceStash : Photon.MonoBehaviour
 
         int randomNum = UnityEngine.Random.Range(0, 10);
 
-        if (randomNum == 2)
+        if (isInHouse)
         {
-            print("stash given Evidence");
-            photonView.RPC("SetHasEvidence", PhotonTargets.All, true);
-        }
-        else if(randomNum >= 8){
-            print("stash given speedBoost");
-            photonView.RPC("SetHasSpeedBoost", PhotonTargets.All, true);
+            if (randomNum == 2)
+            {
+                print("stash given Evidence");
+                photonView.RPC("SetHasEvidence", PhotonTargets.All, true);
+            }
+            else if (randomNum >= 8)
+            {
+                print("stash given speedBoost");
+                photonView.RPC("SetHasSpeedBoost", PhotonTargets.All, true);
+            }
+            else
+            {
+                print("stash not given loot");
+                StartCoroutine(RestockLoot(UnityEngine.Random.Range(20, 40)));
+            }
         }
         else
         {
-            print("stash not given loot");
-            StartCoroutine(RestockLoot(UnityEngine.Random.Range(20, 40)));
+            if (randomNum == 2)
+            {
+                print("stash given Key");
+                photonView.RPC("SetHasKey", PhotonTargets.All, true);
+            }
+            else if (randomNum >= 8)
+            {
+                print("stash given speedBoost");
+                photonView.RPC("SetHasSpeedBoost", PhotonTargets.All, true);
+            }
+            else
+            {
+                print("stash not given loot");
+                StartCoroutine(RestockLoot(UnityEngine.Random.Range(20, 40)));
+            }
         }
     }
 /*
@@ -127,6 +157,12 @@ public class EvidenceStash : Photon.MonoBehaviour
     void SetHasSpeedBoost(bool value)
     {
         hasSpeedBoost = value;
+    }
+
+    [RPC]
+    void SetHasKey(bool value)
+    {
+        hasKey = value;
     }
 
     [RPC]

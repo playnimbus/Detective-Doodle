@@ -50,4 +50,6 @@ MonoBehaviour:
   - setIsBeingLootedByPlayer
   - SetPlayerModel
   - spawnPapers
+  - SetHaveKey
+  - SetHasKey
   DisableAutoOpenWizard: 0

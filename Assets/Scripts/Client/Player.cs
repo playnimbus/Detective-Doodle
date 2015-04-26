@@ -6,6 +6,7 @@ using System;
 public class Player : Photon.MonoBehaviour
 {
     public GameObject evidenceIndictor;
+    public GameObject keyIndictor;
     public GameObject bunnyModel;
     public GameObject wolfModel;
     public Text name;
@@ -28,6 +29,7 @@ public class Player : Photon.MonoBehaviour
     private Coroutine stashSearch;
     private AudioBank audio;
     private bool haveEvidence;
+    private bool haveKey;
     private bool canMurder;
 
     public AudioBank Audio { set { audio = value; } }
@@ -171,6 +173,10 @@ public class Player : Photon.MonoBehaviour
     public void giveEvidence()
     {
         photonView.RPC("SetHaveEvidence", PhotonTargets.All, true);
+    }
+    public void giveKey()
+    {
+        photonView.RPC("SetHaveKey", PhotonTargets.All, true);
     }
         
     void EnteredRoom(LevelRoom room)
@@ -428,13 +434,30 @@ public class Player : Photon.MonoBehaviour
     [RPC]
     void SetHaveEvidence(bool value)
     {
+
         haveEvidence = value;
         evidenceIndictor.SetActive(value);
+
+        haveKey = false;
+        keyIndictor.SetActive(false);
+
+/*
         if (photonView.isMine && ui != null)
         {
             string[] evidence = { "Hammer", "Knife", "Lead Pipe", "Revolver", "Rope", "Wrench" };
             ui.SetHeaderText(value ? "Evidence: " + evidence[UnityEngine.Random.Range(0, evidence.Length)] : "No Evidence");
         }
+ * */
+    }
+
+    [RPC]
+    void SetHaveKey(bool value)
+    {
+        haveKey = value;
+        keyIndictor.SetActive(value);
+
+        haveEvidence = false;
+        evidenceIndictor.SetActive(false);
     }
 
     #endregion

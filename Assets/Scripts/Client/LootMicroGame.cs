@@ -10,6 +10,7 @@ public class LootMicroGame : MonoBehaviour {
 
     public GameObject EvidenceGO;
     public GameObject SpeedPowerupGO;
+    public GameObject KeyGO;
 
 
     Vector3 OriginalDrawerPosition;
@@ -34,6 +35,7 @@ public class LootMicroGame : MonoBehaviour {
 
         EvidenceGO.SetActive(false);
         SpeedPowerupGO.SetActive(false);
+        KeyGO.SetActive(false);
     }
 	
 	// Update is called once per frame
@@ -52,12 +54,13 @@ public class LootMicroGame : MonoBehaviour {
         currentStash = stash;
         currentPlayer = player;
 
-        if (currentStash.isBeingLootedByPlayer == false)
+        if (currentStash.IsBeingLootedByPlayer == false)
         {
             SwitchState(DrawerStates.available);
 
             EvidenceGO.SetActive(currentStash.HasEvidence);
             SpeedPowerupGO.SetActive(currentStash.HasSpeedBoost);
+            SpeedPowerupGO.SetActive(currentStash.HasKey);
         }
     }
 
@@ -69,6 +72,7 @@ public class LootMicroGame : MonoBehaviour {
 
         EvidenceGO.SetActive(false);
         SpeedPowerupGO.SetActive(false);
+        KeyGO.SetActive(false);
     }
 
     void SwitchState(DrawerStates newState)
@@ -104,7 +108,7 @@ public class LootMicroGame : MonoBehaviour {
     {
         if (currentPlayer != null)      //checks if player is already in range of stash when it becomes available
         {
-            if (currentStash.isBeingLootedByPlayer == false)
+            if (currentStash.IsBeingLootedByPlayer == false)
             {
                 SwitchState(DrawerStates.available);
                 EvidenceGO.SetActive(currentStash.HasEvidence);
@@ -146,7 +150,7 @@ public class LootMicroGame : MonoBehaviour {
     {
 
         //checks if another player opens stash while you are in range. closes it if they open it
-        if (currentStash.isBeingLootedByPlayer == true)
+        if (currentStash.IsBeingLootedByPlayer == true)
         {
             SwitchState(DrawerStates.hidden);
         }
@@ -262,6 +266,12 @@ public class LootMicroGame : MonoBehaviour {
                     powerup.transform.position = new Vector3(-1000, 1000, 1000);
                     currentPlayer.EncounteredPowerup(powerup.GetComponent<MaxSpeed>());
                     SpeedPowerupGO.SetActive(false);
+                    currentStash.GetEvidence();
+                }
+                else if (hit.collider.name == EvidenceGO.name)
+                {
+                    currentPlayer.giveKey();
+                    KeyGO.SetActive(false);
                     currentStash.GetEvidence();
                 }
             }
