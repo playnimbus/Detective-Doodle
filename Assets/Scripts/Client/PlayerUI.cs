@@ -40,7 +40,8 @@ public class PlayerUI : MonoBehaviour
     }
 
     void M() { 
-        murdererIndicator.enabled = true; 
+        murdererIndicator.enabled = true;
+        detectiveIndicator.enabled = false;
         tutorialMurderer.SetActive(true);
         tutorialBystander.SetActive(false);
     }
@@ -55,6 +56,7 @@ public class PlayerUI : MonoBehaviour
     void D() 
     { 
         detectiveIndicator.enabled = true;
+        murdererIndicator.enabled = false;
         tutorialDetective.SetActive(true);
         tutorialBystander.SetActive(false);
     }

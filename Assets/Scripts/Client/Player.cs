@@ -48,6 +48,10 @@ public class Player : Photon.MonoBehaviour
         InitCamera();
         SetHaveEvidence(false);
 
+        MakeDetective();        //used for no detective game. Make everyone detective
+                                //comment out to re-enable detectives
+                                //also uncomment code from whoDunnitMasterSession
+
         // HACK ... Kinda. Assumes we only have one text field on the player
         GetComponentInChildren<Text>().text = photonView.owner.name;
     }
@@ -238,6 +242,7 @@ public class Player : Photon.MonoBehaviour
         bool interacted = false;
 
         // If it's the detective and we have evidence, we can give it to him.
+        /*
         if (otherPlayer.IsDetective && haveEvidence)
         {
             murderButton = 1; // This changes which button we use to murder though
@@ -249,6 +254,7 @@ public class Player : Photon.MonoBehaviour
             });
             interacted = true;
         }
+        */
 
         // Now our murder business
         if (canMurder)
@@ -298,6 +304,7 @@ public class Player : Photon.MonoBehaviour
             });
             return true;
         }
+        
         if (otherPlayer.IsDetective && otherPlayer.IsDead)
         {
             ui.ShowButton(0, "Become Detective", true, () =>
@@ -307,7 +314,7 @@ public class Player : Photon.MonoBehaviour
                 });
             return true;
         }
-
+        
         return false;
     }
 

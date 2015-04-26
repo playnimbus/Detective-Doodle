@@ -75,10 +75,14 @@ public class WhodunnitMasterSession : Session
         PhotonPlayer murderer = PhotonNetwork.otherPlayers[murdererIndex];
         photonView.RPC("AssignMurderer", murderer);
 
+        //uncomment to toggle detectives back on
+        //remove makeDetective from Player.OnPhotonInstantiate()
+        /*
         // Assign the detective!
         int detectiveIndex = (murdererIndex + 1) % PhotonNetwork.otherPlayers.Length;
         PhotonPlayer detective = PhotonNetwork.otherPlayers[detectiveIndex];
         photonView.RPC("AssignDetective", detective);
+         * */
 
     }
 
