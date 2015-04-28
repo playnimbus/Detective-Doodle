@@ -35,7 +35,7 @@ public class GameNetwork : MonoBehaviour
         }
 //#else
 
-       // PhotonNetwork.ConnectUsingSettings(settings.version);
+		//PhotonNetwork.ConnectUsingSettings(settings.version);
 
 //#endif
 

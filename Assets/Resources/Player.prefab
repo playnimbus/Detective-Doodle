@@ -352,7 +352,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 179486}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -13.3055334, y: 40.0501556, z: -4.75445175}
+  m_LocalPosition: {x: -5.16491413, y: 4.6563735, z: 29.8991184}
   m_LocalScale: {x: 1.70257974, y: 1.70257998, z: 1.70257998}
   m_Children:
   - {fileID: 22420528}
@@ -547,7 +547,7 @@ MeshFilter:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 117700}
-  m_Mesh: {fileID: 4300000, guid: 8de8fca6feb3d834eb85b2cc677a5f43, type: 3}
+  m_Mesh: {fileID: 4300000, guid: 7f64af6b5ade14a1ca7d10891405f9cd, type: 3}
 --- !u!33 &3379486
 MeshFilter:
   m_ObjectHideFlags: 1
@@ -883,6 +883,7 @@ MonoBehaviour:
   bunnyModel: {fileID: 149654}
   wolfModel: {fileID: 117700}
   name: {fileID: 0}
+  haveEvidence: 0
   haveKey: 0
   otherPlayer: {fileID: 0}
   powerup: {fileID: 0}

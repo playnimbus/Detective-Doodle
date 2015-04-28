@@ -465,8 +465,8 @@ public class Player : Photon.MonoBehaviour
         else
         {
           //  GetComponent<Renderer>().material.color = Color.yellow;
-            GetComponent<PlayerMovement>().StopMovement(22f);
-            Invoke("ResetColor", 22f);
+            GetComponent<PlayerMovement>().StopMovement(10f);
+            Invoke("ResetColor", 10f);
             if (action != null)
             {
                 action(PlayerAction.PlayerAccused);
