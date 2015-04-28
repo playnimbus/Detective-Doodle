@@ -49,6 +49,8 @@ public class PlayerMovement : Photon.MonoBehaviour
             Vector3 current = Input.mousePosition;
             Vector3 delta = current - startPosition;
 
+            shovedValue = Vector3.Lerp(shovedValue, Vector3.zero, 0.15f);
+
             delta.z = delta.y;
             delta.y = 0;
             float length = Mathf.Min(delta.magnitude, virtualScreenPadRadius);
@@ -97,7 +99,7 @@ public class PlayerMovement : Photon.MonoBehaviour
 
     public void recieveShove(Vector3 direction)
     {
-        shovedValue = direction * 8;
+        shovedValue = direction * 6;
 
      //   moveCoroutine = StartCoroutine(StopShoveAfterSeconds());
     }

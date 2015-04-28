@@ -136,7 +136,7 @@ public class Player : Photon.MonoBehaviour
     {
         IsMurderer = true;
         IsDetective = false;
-        haveKey = true;
+
         if (photonView.isMine)
         {
             ui.MarkAsMurderer();
