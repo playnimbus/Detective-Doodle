@@ -198,7 +198,6 @@ GameObject:
   m_Component:
   - 4: {fileID: 482956}
   - 33: {fileID: 3365368}
-  - 65: {fileID: 6531344}
   - 23: {fileID: 2362548}
   m_Layer: 0
   m_Name: FalseAccusationIndicator
@@ -371,7 +370,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 179486}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -284.082367, y: 505.975464, z: -381.713623}
+  m_LocalPosition: {x: -284.616241, y: 506.493073, z: -376.424713}
   m_LocalScale: {x: 1.70257974, y: 1.70257998, z: 1.70257998}
   m_Children:
   - {fileID: 22420528}
@@ -639,18 +638,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 80
   m_CollisionDetection: 0
---- !u!65 &6531344
-BoxCollider:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 167228}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!81 &8129422
 AudioListener:
   m_ObjectHideFlags: 1
