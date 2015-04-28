@@ -20,7 +20,7 @@ public class GameNetwork : MonoBehaviour
         PhotonNetwork.autoJoinLobby = false;
         PhotonNetwork.OnEventCall += OnCustomEvent;
 
-#if !UNITY_IPHONE
+//#if !UNITY_IPHONE
 
         if (settings.local)
         {
@@ -33,11 +33,11 @@ public class GameNetwork : MonoBehaviour
         {
             PhotonNetwork.ConnectUsingSettings(settings.version);
         }
-#else
+//#else
 
-        PhotonNetwork.ConnectUsingSettings(settings.version);
+       // PhotonNetwork.ConnectUsingSettings(settings.version);
 
-#endif
+//#endif
 
     }
 

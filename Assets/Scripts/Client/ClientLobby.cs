@@ -21,7 +21,6 @@ public class ClientLobby : MonoBehaviour
         if (!string.IsNullOrEmpty(PhotonNetwork.player.name))
             nameField.text = PhotonNetwork.player.name;
 
-        print(PlayerPrefs.GetString("lastIp"));
         ipField.text= PlayerPrefs.GetString("lastIp");
     }
 
