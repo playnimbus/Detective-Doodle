@@ -12,6 +12,15 @@ public class PlayerMovement : Photon.MonoBehaviour
 
     public GameObject playerModel;
 
+    Vector3 shovedValue = new Vector3(0,0,0);
+
+    void Start()
+    {
+        //quick way to solve glitch with shoving a player who hasn't moved yet
+        if (moveCoroutine != null) StopCoroutine(moveCoroutine);
+        moveCoroutine = StartCoroutine(MoveCoroutine());
+    }
+
     void Update()
     {
         if (Input.GetMouseButtonDown(0) && photonView.isMine && canMove)
@@ -54,7 +63,7 @@ public class PlayerMovement : Photon.MonoBehaviour
             if (canMove)
             {
                 // Move using rigidbody to get collision benefits
-                GetComponent<Rigidbody>().MovePosition(transform.position + velocity * Time.deltaTime * speed);
+                GetComponent<Rigidbody>().MovePosition(transform.position + (velocity + shovedValue) * Time.deltaTime * speed);
             }
 
             yield return fixedUpdate;
@@ -64,13 +73,14 @@ public class PlayerMovement : Photon.MonoBehaviour
         while (true)
         {
             velocity = Vector3.Lerp(velocity, Vector3.zero, 0.15f);
+            shovedValue = Vector3.Lerp(shovedValue, Vector3.zero, 0.15f);
 
             playerCamera.playerDirection = velocity;
 
             if (canMove)
             {
                 // Move using rigidbody to get collision benefits
-                GetComponent<Rigidbody>().MovePosition(transform.position + velocity * Time.deltaTime * speed);
+                GetComponent<Rigidbody>().MovePosition(transform.position + (velocity  + shovedValue) * Time.deltaTime * speed);
             }
 
             yield return fixedUpdate;
@@ -84,6 +94,22 @@ public class PlayerMovement : Photon.MonoBehaviour
         t -= 2;
         return c / 2 * (t * t * t + 2) + b;
     }
+
+    public void recieveShove(Vector3 direction)
+    {
+        shovedValue = direction * 8;
+
+     //   moveCoroutine = StartCoroutine(StopShoveAfterSeconds());
+    }
+    IEnumerator StopShoveAfterSeconds()
+    {
+        shovedValue = new Vector3(0, 0, 2);
+
+        yield return new WaitForSeconds(0.25f);
+
+        shovedValue = new Vector3(0, 0, 0);
+    }
+
 
     public void StopMovement(float seconds)
     {

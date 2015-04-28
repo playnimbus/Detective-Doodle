@@ -123,6 +123,11 @@ public class LockedDoorUI : MonoBehaviour {
                         currentDoor.openDoor();
                         SwitchState(DoorStates.hidden);
                     }
+                    else if (currentPlayer.IsMurderer)
+                    {
+                        currentDoor.openDoor();
+                        SwitchState(DoorStates.hidden);
+                    }
                 }
             }
         }

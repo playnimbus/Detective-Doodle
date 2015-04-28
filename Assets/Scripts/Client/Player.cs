@@ -30,7 +30,7 @@ public class Player : Photon.MonoBehaviour
     private PlayerUI ui;
     private Coroutine stashSearch;
     private AudioBank audio;
-    private bool haveEvidence;
+    public bool haveEvidence;
     public bool haveKey;
     private bool canMurder;
 
@@ -196,19 +196,32 @@ public class Player : Photon.MonoBehaviour
 
     public void giveEvidence()
     {
+        if (haveKey)
+        {
+            GameObject playerGO = PhotonNetwork.Instantiate("keyPickup", gameObject.transform.position, Quaternion.identity, 0);
+            removeKey();
+        }
+
         photonView.RPC("SetHaveEvidence", PhotonTargets.All, true);
     }
     public void giveKey()
     {
+        if (haveEvidence)
+        {
+            GameObject playerGO = PhotonNetwork.Instantiate("evidencePickup", gameObject.transform.position + new Vector3(0, 23, 0), Quaternion.identity, 0);
+            removeEvidence();
+        }
+
         photonView.RPC("SetHaveKey", PhotonTargets.All, true);
     }
     public void removeKey()
     {
         photonView.RPC("SetHaveKey", PhotonTargets.All, false);
-        if (IsMurderer)
-        {
-            haveKey = true;
-        }
+    }
+
+    public void removeEvidence()
+    {
+        photonView.RPC("SetHaveEvidence", PhotonTargets.All, false);
     }
         
     void EnteredRoom(LevelRoom room)
@@ -280,7 +293,7 @@ public class Player : Photon.MonoBehaviour
         otherPlayer = collision.gameObject.GetComponent<Player>();
         if (otherPlayer == null) return;
         if (IsDead) return;
-        
+
         // return when you do an action!
         if (IsMurderer)
         {
@@ -298,6 +311,7 @@ public class Player : Photon.MonoBehaviour
         // All players can loot dead 
         if (LootingInteraction()) return;
     }
+
 
     bool MurdererInteraction()
     {
@@ -319,10 +333,19 @@ public class Player : Photon.MonoBehaviour
         }
         */
 
+        ui.ShowButton(0, "Shove", true, () =>
+        {
+            murderButton = 1;
+            print("I shoved");
+
+            otherPlayer.photonView.RPC("recieveShove", PhotonTargets.All, gameObject.transform.position);
+            //photonView.RPC("SetHaveEvidence", PhotonTargets.All, false);
+        });
+
         // Now our murder business
         if (canMurder)
         {
-            ui.ShowButton(murderButton, "Murder", true, () =>
+            ui.ShowButton(1, "Murder", true, () =>
             {
                 otherPlayer.photonView.RPC("Kill", PhotonTargets.All);
                 canMurder = false;
@@ -333,15 +356,20 @@ public class Player : Photon.MonoBehaviour
             interacted = true;
         }
 
+
+
         return interacted;
     }
 
     bool DetectiveInteraction()
     {
+        int detectiveButton = 0;
+
         if (haveEvidence)
         {
             ui.ShowButton(0, "Accuse", true, () =>
             {
+                detectiveButton = 1;
                 otherPlayer.photonView.RPC("Accuse", PhotonTargets.All);
                 photonView.RPC("SetHaveEvidence", PhotonTargets.All, false);
                 
@@ -350,8 +378,21 @@ public class Player : Photon.MonoBehaviour
 
                 Analytics.PlayerAccused(otherPlayer.IsMurderer);
             });
+
+            ui.ShowButton(1, "Shove", true, () =>
+            {
+                otherPlayer.photonView.RPC("recieveShove", PhotonTargets.All, gameObject.transform.position);
+            });
+
             return true;
         }
+
+        ui.ShowButton(0, "Shove", true, () =>
+        {
+            otherPlayer.photonView.RPC("recieveShove", PhotonTargets.All, gameObject.transform.position);
+        });
+
+
 
         return false;
     }
@@ -474,6 +515,7 @@ public class Player : Photon.MonoBehaviour
         haveEvidence = value;
         evidenceIndictor.SetActive(value);
 
+
         haveKey = false;
         keyIndictor.SetActive(false);
 
@@ -494,6 +536,27 @@ public class Player : Photon.MonoBehaviour
 
         haveEvidence = false;
         evidenceIndictor.SetActive(false);
+    }
+
+    [RPC]
+    void recieveShove(Vector3 otherPlayerPostion)
+    {
+        if (!photonView.isMine) return;
+        print("I have been shoved");
+
+        if (haveEvidence)
+        {
+            GameObject playerGO = PhotonNetwork.Instantiate("evidencePickup", gameObject.transform.position + new Vector3(0,23,0), Quaternion.identity, 0);
+            removeEvidence();
+        }
+        if (haveKey)
+        {
+            GameObject playerGO = PhotonNetwork.Instantiate("keyPickup", gameObject.transform.position, Quaternion.identity, 0);
+            removeKey();
+        }
+
+        gameObject.GetComponent<PlayerMovement>().recieveShove((gameObject.transform.position - otherPlayerPostion));
+        
     }
 
     #endregion
