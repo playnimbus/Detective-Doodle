@@ -7,6 +7,7 @@ public class Player : Photon.MonoBehaviour
 {
     public GameObject evidenceIndictor;
     public GameObject keyIndictor;
+    public GameObject falseAccusationIndicator;
     public GameObject bunnyModel;
     public GameObject wolfModel;
     public Text name;
@@ -336,7 +337,6 @@ public class Player : Photon.MonoBehaviour
         ui.ShowButton(0, "Shove", true, () =>
         {
             murderButton = 1;
-            print("I shoved");
 
             otherPlayer.photonView.RPC("recieveShove", PhotonTargets.All, gameObject.transform.position);
             //photonView.RPC("SetHaveEvidence", PhotonTargets.All, false);
@@ -465,6 +465,7 @@ public class Player : Photon.MonoBehaviour
         else
         {
           //  GetComponent<Renderer>().material.color = Color.yellow;
+            falseAccusationIndicator.SetActive(true);
             GetComponent<PlayerMovement>().StopMovement(10f);
             Invoke("ResetColor", 10f);
             if (action != null)
@@ -477,6 +478,7 @@ public class Player : Photon.MonoBehaviour
     void ResetColor()
     {
        // GetComponent<Renderer>().material.color = IsDetective ? Color.blue : Color.white;
+        falseAccusationIndicator.SetActive(false);
     }
 
     void ResetCanMurder()
