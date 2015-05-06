@@ -117,9 +117,9 @@ public class LockedDoorUI : MonoBehaviour {
             {
                 if (hit.collider.tag == "LockedDoor")
                 {
-                    if (currentPlayer.haveKey)
+                    if (currentPlayer.inventory.ItemInHand == ItemPickups.Key)
                     {
-                        currentPlayer.removeKey();
+                        currentPlayer.inventory.removeItem();
                         currentDoor.openDoor();
                         SwitchState(DoorStates.hidden);
                     }

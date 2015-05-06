@@ -15,7 +15,6 @@ public class keyPickup : Photon.MonoBehaviour
     void Update()
     {
         activateTimer -= Time.deltaTime;
-
     }
 
     void OnTriggerEnter(Collider collider)
@@ -24,27 +23,19 @@ public class keyPickup : Photon.MonoBehaviour
         {
             if (collider.gameObject.CompareTag(Tags.Player))
             {
-                if (collider.gameObject.GetComponent<Player>().haveKey == false)
+                if (collider.gameObject.GetComponent<PlayerInventory>().ItemInHand != ItemPickups.Key)
                 {
-                    collider.SendMessage("giveKey", this, SendMessageOptions.DontRequireReceiver);
+                    collider.gameObject.GetComponent<PlayerInventory>().recieveItem(ItemPickups.Key);
                     photonView.RPC("destroyPickup", PhotonTargets.All);
                 }
-
             }
-
-
         }
     }
-    /*
-    void OnTriggerExit(Collider collider)
-    {
-        if (collider.gameObject.CompareTag(Tags.Player)) collider.SendMessage("LeftDoor", this, SendMessageOptions.DontRequireReceiver);
-    }
-     * */
 
     [RPC]
     void destroyPickup()
     {
+        print(gameObject.name + " destroyed");
         Destroy(gameObject);
     }
 }

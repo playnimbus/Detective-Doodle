@@ -236,6 +236,7 @@ GameObject:
   - 114: {fileID: 11486586}
   - 114: {fileID: 11476896}
   - 54: {fileID: 5493126}
+  - 114: {fileID: 11433096}
   m_Layer: 9
   m_Name: Player
   m_TagString: Player
@@ -370,7 +371,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 179486}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -284.616241, y: 506.493073, z: -376.424713}
+  m_LocalPosition: {x: -287.100525, y: 505.248596, z: -378.877563}
   m_LocalScale: {x: 1.70257974, y: 1.70257998, z: 1.70257998}
   m_Children:
   - {fileID: 22420528}
@@ -808,6 +809,21 @@ MonoBehaviour:
   viewIdField: 0
   instantiationId: -1
   isRuntimeInstantiated: 0
+--- !u!114 &11433096
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 179486}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 750e29a04f17a47448a7fbc0b2926a6a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  evidenceIndictor: {fileID: 117890}
+  keyIndictor: {fileID: 124352}
+  powerup: {fileID: 0}
+  ItemInHand: 0
 --- !u!114 &11472480
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -939,16 +955,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f6b2dd10da7664e43b613d48517af1bf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  evidenceIndictor: {fileID: 117890}
-  keyIndictor: {fileID: 124352}
   falseAccusationIndicator: {fileID: 167228}
   bunnyModel: {fileID: 149654}
   wolfModel: {fileID: 117700}
   name: {fileID: 0}
-  haveEvidence: 0
-  haveKey: 0
+  inventory: {fileID: 0}
   otherPlayer: {fileID: 0}
-  powerup: {fileID: 0}
 --- !u!114 &11479486
 MonoBehaviour:
   m_ObjectHideFlags: 1

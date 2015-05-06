@@ -23,20 +23,14 @@ public class evidencePickup : Photon.MonoBehaviour
 
             if (collider.gameObject.CompareTag(Tags.Player))
             {
-                if (collider.gameObject.GetComponent<Player>().haveEvidence == false)
+                if (collider.gameObject.GetComponent<PlayerInventory>().ItemInHand != ItemPickups.Evidence)
                 {
-                    collider.SendMessage("giveEvidence", this, SendMessageOptions.DontRequireReceiver);
+                    collider.gameObject.GetComponent<PlayerInventory>().recieveItem(ItemPickups.Evidence);
                     photonView.RPC("destroyPickup", PhotonTargets.All);
                 }
             }
         }
     }
-    /*
-    void OnTriggerExit(Collider collider)
-    {
-        if (collider.gameObject.CompareTag(Tags.Player)) collider.SendMessage("LeftDoor", this, SendMessageOptions.DontRequireReceiver);
-    }
-     * */
 
     [RPC]
     void destroyPickup()

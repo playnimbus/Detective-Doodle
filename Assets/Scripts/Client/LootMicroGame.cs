@@ -256,7 +256,7 @@ public class LootMicroGame : MonoBehaviour {
                 }
                 else if (hit.collider.name == EvidenceGO.name)
                 {
-                    currentPlayer.giveEvidence();
+                    currentPlayer.inventory.recieveItem(ItemPickups.Evidence);
                     EvidenceGO.SetActive(false);
                     currentStash.GetEvidence();
                 }
@@ -264,13 +264,13 @@ public class LootMicroGame : MonoBehaviour {
                 {
                     GameObject powerup = Instantiate(Resources.Load<GameObject>("MaxSpeed")) as GameObject;
                     powerup.transform.position = new Vector3(-1000, 1000, 1000);
-                    currentPlayer.EncounteredPowerup(powerup.GetComponent<MaxSpeed>());
+                    currentPlayer.inventory.EncounteredPowerup(powerup.GetComponent<MaxSpeed>());
                     SpeedPowerupGO.SetActive(false);
                     currentStash.GetEvidence();
                 }
                 else if (hit.collider.name == KeyGO.name)
                 {
-                    currentPlayer.giveKey();
+                    currentPlayer.inventory.recieveItem(ItemPickups.Key);
                     KeyGO.SetActive(false);
                     currentStash.GetEvidence();
                 }

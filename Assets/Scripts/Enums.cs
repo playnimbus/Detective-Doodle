@@ -1,6 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+public enum ItemPickups : byte { Nothing = 0, Evidence, Key };
+
 // Enmuerate all different game types here so the info can be sent via RPC
 public static class SessionType
 {

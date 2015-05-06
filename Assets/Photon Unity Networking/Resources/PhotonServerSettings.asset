@@ -54,4 +54,6 @@ MonoBehaviour:
   - SetHasKey
   - recieveShove
   - destroyPickup
+  - giveItem
+  - removeItemRPC
   DisableAutoOpenWizard: 0

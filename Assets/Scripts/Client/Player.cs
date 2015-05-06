@@ -5,8 +5,7 @@ using System;
 
 public class Player : Photon.MonoBehaviour
 {
-    public GameObject evidenceIndictor;
-    public GameObject keyIndictor;
+
     public GameObject falseAccusationIndicator;
     public GameObject bunnyModel;
     public GameObject wolfModel;
@@ -28,22 +27,15 @@ public class Player : Photon.MonoBehaviour
     public bool IsDead { get; private set; }
 
     private new PlayerCamera camera;
-    private PlayerUI ui;
+    public PlayerUI ui;
+    public PlayerInventory inventory;
     private Coroutine stashSearch;
     private AudioBank audio;
-    public bool haveEvidence;
-    public bool haveKey;
+
     private bool canMurder;
 
     public AudioBank Audio { set { audio = value; } }
     public Player otherPlayer;
-
-    // New variables being added to switch over to a item-powerup scheme
-    private Item item;
-    public Powerup powerup = null;
-    private Knife knife;
-    private Coroutine itemCoroutine;
-    private Coroutine powerupCoroutine;
 
     #region Initialization
 
@@ -52,11 +44,11 @@ public class Player : Photon.MonoBehaviour
     {
         InitUI();
         InitCamera();
-        SetHaveEvidence(false);
-
         MakeDetective();        //used for no detective game. Make everyone detective
                                 //comment out to re-enable detectives
                                 //also uncomment code from whoDunnitMasterSession
+
+        inventory = gameObject.GetComponent<PlayerInventory>();
 
         // HACK ... Kinda. Assumes we only have one text field on the player
         GetComponentInChildren<Text>().text = photonView.owner.name;
@@ -83,7 +75,6 @@ public class Player : Photon.MonoBehaviour
         
         GameObject menuGO = Instantiate(Resources.Load<GameObject>("ClientMenu")) as GameObject;
         ui = menuGO.GetComponent<PlayerUI>();
-        ui.SetHeaderText("No Evidence");
 
         GameObject LootGame = Instantiate(Resources.Load<GameObject>("LootGame")) as GameObject;
         LootGame.transform.position = new Vector3(-100, 0, 0);
@@ -91,11 +82,10 @@ public class Player : Photon.MonoBehaviour
         LootDrawer = LootGame.GetComponent<LootMicroGame>();
         lockedDoorUI = LootGame.GetComponentInChildren<LockedDoorUI>();
 
-        print(lockedDoorUI.gameObject.name);
-
-        ui.InitPowerupButton( () =>     //called when powerup button is pressed
+        ui.InitPowerupButton(() =>     //called when powerup button is pressed
         {
-            if(powerup!=null)
+            Powerup powerup = gameObject.GetComponent<PlayerInventory>().powerup;
+            if (powerup != null)
             {
                 if (powerup.Apply(this))    //reutrns false if powerup does not execute     ex: if you try to uniform swap and no one is in range
                 {
@@ -104,6 +94,7 @@ public class Player : Photon.MonoBehaviour
                 }
             }
         });
+        
     }
     
     void InitCamera()
@@ -195,36 +186,6 @@ public class Player : Photon.MonoBehaviour
         lockedDoorUI.MakeDoorHidden();
     }
 
-    public void giveEvidence()
-    {
-        if (haveKey)
-        {
-            GameObject playerGO = PhotonNetwork.Instantiate("keyPickup", gameObject.transform.position, Quaternion.identity, 0);
-            removeKey();
-        }
-
-        photonView.RPC("SetHaveEvidence", PhotonTargets.All, true);
-    }
-    public void giveKey()
-    {
-        if (haveEvidence)
-        {
-            GameObject playerGO = PhotonNetwork.Instantiate("evidencePickup", gameObject.transform.position + new Vector3(0, 23, 0), Quaternion.identity, 0);
-            removeEvidence();
-        }
-
-        photonView.RPC("SetHaveKey", PhotonTargets.All, true);
-    }
-    public void removeKey()
-    {
-        photonView.RPC("SetHaveKey", PhotonTargets.All, false);
-    }
-
-    public void removeEvidence()
-    {
-        photonView.RPC("SetHaveEvidence", PhotonTargets.All, false);
-    }
-        
     void EnteredRoom(LevelRoom room)
     {
         if (!photonView.isMine) return;
@@ -239,49 +200,6 @@ public class Player : Photon.MonoBehaviour
 
         // camera.ResumeFollow();
         room.Conceal();
-    }
-
-    void EncounteredItem(Item item)
-    {
-        if (!photonView.isMine) return;
-        
-        if (itemCoroutine != null) StopCoroutine(itemCoroutine);
-
-        ui.SetHeaderText("Pickup " + item.Name);
-        itemCoroutine = StartCoroutine(ItemPickupCoroutine(item));
-
-        Debug.Log("Encountered item.", item);
-    }
-
-    IEnumerator ItemPickupCoroutine(Item item)
-    {
-        while (true)
-        {
-            // Detect input to pickup here
-            yield return null;
-        }
-    }
-
-    void LeftItem(Item item)
-    {
-        if (!photonView.isMine) return;
-
-        ui.SetHeaderText(string.Empty);
-        if (itemCoroutine != null)
-        {
-            StopCoroutine(itemCoroutine);
-            itemCoroutine = null;
-        }
-
-        Debug.Log("Left item.", item);
-    }
-
-    public void EncounteredPowerup(Powerup powerup)
-    {
-        if (!photonView.isMine) return;
-
-        this.powerup = powerup;
-        ui.SetPowerupIcon(powerup.Icon);
     }
 
     #endregion
@@ -365,13 +283,13 @@ public class Player : Photon.MonoBehaviour
     {
         int detectiveButton = 0;
 
-        if (haveEvidence)
+        if (inventory.ItemInHand == ItemPickups.Evidence)
         {
             ui.ShowButton(0, "Accuse", true, () =>
             {
                 detectiveButton = 1;
                 otherPlayer.photonView.RPC("Accuse", PhotonTargets.All);
-                photonView.RPC("SetHaveEvidence", PhotonTargets.All, false);
+                inventory.removeItem();
                 
                 // If we're wrong we also are punished!
                 if (!otherPlayer.IsMurderer) photonView.RPC("Accuse", PhotonTargets.All);
@@ -399,12 +317,12 @@ public class Player : Photon.MonoBehaviour
 
     bool BystanderInteraction()
     {
-        if (otherPlayer.IsDetective && haveEvidence && !otherPlayer.haveEvidence && !otherPlayer.IsDead)
+        if (otherPlayer.IsDetective && !otherPlayer.IsDead)
         {
             ui.ShowButton(0, "Give Evidence", true, () =>
             {
-                otherPlayer.photonView.RPC("SetHaveEvidence", PhotonTargets.All, true);
-                photonView.RPC("SetHaveEvidence", PhotonTargets.All, false);
+                otherPlayer.inventory.recieveItem(ItemPickups.Evidence);
+                inventory.removeItem();
             });
             return true;
         }
@@ -424,12 +342,12 @@ public class Player : Photon.MonoBehaviour
 
     bool LootingInteraction()
     {
-        if (otherPlayer.IsDead && otherPlayer.haveEvidence)
+        if (otherPlayer.IsDead && otherPlayer.inventory.ItemInHand == ItemPickups.Evidence)
         {
             ui.ShowButton(0, "Take Evidence", true, () =>
             {
-                otherPlayer.photonView.RPC("SetHaveEvidence", PhotonTargets.All, false);
-                photonView.RPC("SetHaveEvidence", PhotonTargets.All, true);
+                otherPlayer.inventory.removeItem();
+                inventory.recieveItem(ItemPickups.Evidence);
             });
             return true;
         }
@@ -511,52 +429,11 @@ public class Player : Photon.MonoBehaviour
     }
 
     [RPC]
-    void SetHaveEvidence(bool value)
-    {
-
-        haveEvidence = value;
-        evidenceIndictor.SetActive(value);
-
-
-        haveKey = false;
-        keyIndictor.SetActive(false);
-
-/*
-        if (photonView.isMine && ui != null)
-        {
-            string[] evidence = { "Hammer", "Knife", "Lead Pipe", "Revolver", "Rope", "Wrench" };
-            ui.SetHeaderText(value ? "Evidence: " + evidence[UnityEngine.Random.Range(0, evidence.Length)] : "No Evidence");
-        }
- * */
-    }
-
-    [RPC]
-    void SetHaveKey(bool value)
-    {
-        haveKey = value;
-        keyIndictor.SetActive(value);
-
-        haveEvidence = false;
-        evidenceIndictor.SetActive(false);
-    }
-
-    [RPC]
     void recieveShove(Vector3 otherPlayerPostion)
     {
         if (!photonView.isMine) return;
-        print("I have been shoved");
 
-        if (haveEvidence)
-        {
-            GameObject playerGO = PhotonNetwork.Instantiate("evidencePickup", gameObject.transform.position + new Vector3(0,23,0), Quaternion.identity, 0);
-            removeEvidence();
-        }
-        if (haveKey)
-        {
-            GameObject playerGO = PhotonNetwork.Instantiate("keyPickup", gameObject.transform.position, Quaternion.identity, 0);
-            removeKey();
-        }
-
+        inventory.recieveItem(ItemPickups.Nothing);
         gameObject.GetComponent<PlayerMovement>().recieveShove((gameObject.transform.position - otherPlayerPostion));
         
     }
