@@ -221,6 +221,23 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!1 &173822
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 483152}
+  - 136: {fileID: 13651188}
+  - 114: {fileID: 11457592}
+  m_Layer: 9
+  m_Name: InteractionTrigger
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
 --- !u!1 &179486
 GameObject:
   m_ObjectHideFlags: 0
@@ -371,12 +388,13 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 179486}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -287.100525, y: 505.248596, z: -378.877563}
+  m_LocalPosition: {x: 343.195221, y: 10.1733704, z: -658.6875}
   m_LocalScale: {x: 1.70257974, y: 1.70257998, z: 1.70257998}
   m_Children:
   - {fileID: 22420528}
   - {fileID: 429422}
   - {fileID: 459384}
+  - {fileID: 483152}
   m_Father: {fileID: 0}
   m_RootOrder: 0
 --- !u!4 &480664
@@ -404,6 +422,18 @@ Transform:
   m_Children: []
   m_Father: {fileID: 459384}
   m_RootOrder: 4
+--- !u!4 &483152
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 173822}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 479486}
+  m_RootOrder: 3
 --- !u!4 &484118
 Transform:
   m_ObjectHideFlags: 1
@@ -824,6 +854,17 @@ MonoBehaviour:
   keyIndictor: {fileID: 124352}
   powerup: {fileID: 0}
   ItemInHand: 0
+--- !u!114 &11457592
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 173822}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 487bc527a87e213478dc0d4f062e3392, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &11472480
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -959,8 +1000,10 @@ MonoBehaviour:
   bunnyModel: {fileID: 149654}
   wolfModel: {fileID: 117700}
   name: {fileID: 0}
+  ui: {fileID: 0}
   inventory: {fileID: 0}
-  otherPlayer: {fileID: 0}
+  interactionTrigger: {fileID: 11457592}
+  interactionTarget: {fileID: 0}
 --- !u!114 &11479486
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1021,6 +1064,19 @@ Behaviour:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 129422}
   m_Enabled: 1
+--- !u!136 &13651188
+CapsuleCollider:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 173822}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  m_Radius: 1.5
+  m_Height: 2
+  m_Direction: 1
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!136 &13679486
 CapsuleCollider:
   m_ObjectHideFlags: 1

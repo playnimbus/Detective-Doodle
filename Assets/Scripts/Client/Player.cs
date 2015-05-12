@@ -31,11 +31,14 @@ public class Player : Photon.MonoBehaviour
     public PlayerInventory inventory;
     private Coroutine stashSearch;
     private AudioBank audio;
+    public TriggerListener interactionTrigger;
 
     private bool canMurder;
 
     public AudioBank Audio { set { audio = value; } }
-    public Player otherPlayer;
+
+    [HideInInspector]
+    public Player interactionTarget;
 
     #region Initialization
 
@@ -52,6 +55,10 @@ public class Player : Photon.MonoBehaviour
 
         // HACK ... Kinda. Assumes we only have one text field on the player
         GetComponentInChildren<Text>().text = photonView.owner.name;
+
+        // Listen to trigger for player-player interactions
+        interactionTrigger.onTriggerEntered += OnInteractionEnter;
+        interactionTrigger.onTriggerExited += OnInteractionExit;
 
         if (photonView.isMine)
         {
@@ -205,33 +212,35 @@ public class Player : Photon.MonoBehaviour
 
     #region Player-Player Interaction
 
-    void OnCollisionEnter(Collision collision)
+    void OnInteractionEnter(Collider other)
     {
         if (!photonView.isMine) return;
-        otherPlayer = collision.gameObject.GetComponent<Player>();
+        Player otherPlayer = other.gameObject.GetComponent<Player>();
         if (otherPlayer == null) return;
         if (IsDead) return;
+
+        interactionTarget = otherPlayer;
 
         // return when you do an action!
         if (IsMurderer)
         {
-            if (MurdererInteraction()) return;
+            if (MurdererInteraction(otherPlayer)) return;
         }
         else if (IsDetective)
         {
-            if (DetectiveInteraction()) return;
+            if (DetectiveInteraction(otherPlayer)) return;
         }
         else // Is bystander
         {
-            if (BystanderInteraction()) return;
+            if (BystanderInteraction(otherPlayer)) return;
         }
 
         // All players can loot dead 
-        if (LootingInteraction()) return;
+        if (LootingInteraction(otherPlayer)) return;
     }
 
 
-    bool MurdererInteraction()
+    bool MurdererInteraction(Player otherPlayer)
     {
         int murderButton = 0;
         bool interacted = false;
@@ -278,7 +287,7 @@ public class Player : Photon.MonoBehaviour
         return interacted;
     }
 
-    bool DetectiveInteraction()
+    bool DetectiveInteraction(Player otherPlayer)
     {
         int detectiveButton = 0;
 
@@ -301,13 +310,6 @@ public class Player : Photon.MonoBehaviour
                 otherPlayer.photonView.RPC("recieveShove", PhotonTargets.All, gameObject.transform.position);
             });
 
-            /*
-            ui.ShowButton(1, "Shove", true, () =>
-            {
-                otherPlayer.photonView.RPC("recieveShove", PhotonTargets.All, gameObject.transform.position);
-            });
-            */
-
             return true;
         }
 
@@ -316,18 +318,11 @@ public class Player : Photon.MonoBehaviour
             otherPlayer.photonView.RPC("recieveShove", PhotonTargets.All, gameObject.transform.position);
         });
 
-        /*
-        ui.ShowButton(0, "Shove", true, () =>
-        {
-            otherPlayer.photonView.RPC("recieveShove", PhotonTargets.All, gameObject.transform.position);
-        });
-        */
-
 
         return false;
     }
 
-    bool BystanderInteraction()
+    bool BystanderInteraction(Player otherPlayer)
     {
         if (otherPlayer.IsDetective && !otherPlayer.IsDead)
         {
@@ -352,7 +347,7 @@ public class Player : Photon.MonoBehaviour
         return false;
     }
 
-    bool LootingInteraction()
+    bool LootingInteraction(Player otherPlayer)
     {
         if (otherPlayer.IsDead && otherPlayer.inventory.ItemInHand == ItemPickups.Evidence)
         {
@@ -366,15 +361,17 @@ public class Player : Photon.MonoBehaviour
         return false;
     }
 
-    void OnCollisionExit(Collision collision)
+    void OnInteractionExit(Collider other)
     {
         if (!photonView.isMine) return;
-        Player other = collision.gameObject.GetComponent<Player>();
+        Player otherPlayer = other.gameObject.GetComponent<Player>();
         ui.RemoveTapAction();
-        if(other != null)
+        if (otherPlayer != null)
         {
             ui.HideAllButtons();
         }
+
+        interactionTarget = null;
     }
 
     #endregion

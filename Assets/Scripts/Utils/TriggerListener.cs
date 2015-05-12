@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System;
 
 // Either manages children collision to make them act as one collider
-// or is a leaf collider
+// or is a leaf collider, allowing you to make a tree
 public class TriggerListener : MonoBehaviour
 {
     public Action<Collider> onTriggerEntered;

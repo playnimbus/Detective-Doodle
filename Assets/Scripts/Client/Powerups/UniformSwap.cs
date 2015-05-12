@@ -10,14 +10,14 @@ public class UniformSwap : Powerup
 
     public override bool Apply(Player player)
     {
-        if (player.otherPlayer != null)
+        if (player.interactionTarget != null)
         {
             //need to make it so player models switch also
             //player prefab needs to be setup for this to work smoothly.
 
             string tempName = player.name.text;
-            player.name.text = player.otherPlayer.name.text;
-            player.otherPlayer.name.text = tempName;
+            player.name.text = player.interactionTarget.name.text;
+            player.interactionTarget.name.text = tempName;
             return true;
         }
         return false;
