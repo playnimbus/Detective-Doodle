@@ -25,6 +25,11 @@ public class PlayerUI : MonoBehaviour
     public GameObject tutorialBystander;
     public GameObject tutorialDetective;
 
+    // Tap interaction vars
+    private Coroutine tapCoroutine;
+
+    #region Initialization
+
     void Start()
     {
         murdererIndicator.enabled = false;
@@ -61,6 +66,10 @@ public class PlayerUI : MonoBehaviour
         tutorialBystander.SetActive(false);
     }
 
+    #endregion
+
+    #region Buttons
+
     public void ShowButton(int num, string text, bool hideOnPressed, Action callback)
     {
         buttons[num].button.gameObject.SetActive(true);
@@ -96,6 +105,10 @@ public class PlayerUI : MonoBehaviour
     {
         headerText.text = s;
     }
+
+    #endregion
+
+    #region Icons
 
     public void SetPowerupIcon(Sprite powerupIcon)
     {
@@ -136,4 +149,69 @@ public class PlayerUI : MonoBehaviour
         }
     }
 
+    #endregion
+
+    #region New Tap Interaction
+
+    public void SetTapAction(string message, Action callback)
+    {
+        if (callback == null) Debug.LogError("[PlayerUI.RegisterTapAction] Passed in null callback", this);
+
+        SetHeaderText(message);
+        tapCoroutine = StartCoroutine(TapListenerCoroutine(callback));
+    }
+
+    public void RemoveTapAction()
+    {
+        SetHeaderText("");
+
+        if (tapCoroutine != null) 
+            StopCoroutine(tapCoroutine);
+    }
+
+    // Listen for double tap
+    private IEnumerator TapListenerCoroutine(Action callback)
+    {
+        while (true)
+        {
+            // Listen for tap one
+            yield return StartCoroutine(WaitForTapLength(0.25f));
+            
+            // Note completion time
+            float firstTapTime = Time.time;
+
+            // Listen for tap two
+            yield return StartCoroutine(WaitForTapLength(0.25f));
+
+            // See if time between tap finishes was quick enough
+            if (Time.time < firstTapTime + 0.5f)
+            {
+                // If so, callback and return
+                callback();
+                yield break;
+            }
+        }
+    }
+
+    // Waits for a tap that is at most length seconds long
+    private IEnumerator WaitForTapLength(float length)
+    {
+        while (true)
+        {
+            if (Input.GetMouseButtonDown(0))
+            {
+                float downTime = Time.time;
+
+                while (Input.GetMouseButton(0))
+                    yield return null;
+
+                if (Time.time < downTime + length)
+                    yield break;
+            }
+            
+            yield return null;
+        }
+    }
+    
+    #endregion
 }

@@ -176,7 +176,6 @@ public class Player : Photon.MonoBehaviour
         if (!photonView.isMine) return;
 
         lockedDoorUI.MakeDoorAvailable(door, this);
-
     }
 
     public void LeftDoor(Door door)
@@ -297,13 +296,25 @@ public class Player : Photon.MonoBehaviour
                 Analytics.PlayerAccused(otherPlayer.IsMurderer);
             });
 
-            ui.ShowButton(1, "Shove", true, () =>
+            ui.SetTapAction("Shove", () =>
             {
                 otherPlayer.photonView.RPC("recieveShove", PhotonTargets.All, gameObject.transform.position);
             });
 
+            /*
+            ui.ShowButton(1, "Shove", true, () =>
+            {
+                otherPlayer.photonView.RPC("recieveShove", PhotonTargets.All, gameObject.transform.position);
+            });
+            */
+
             return true;
         }
+
+        ui.SetTapAction("Shove", () =>
+        {
+            otherPlayer.photonView.RPC("recieveShove", PhotonTargets.All, gameObject.transform.position);
+        });
 
         ui.ShowButton(0, "Shove", true, () =>
         {
@@ -358,6 +369,7 @@ public class Player : Photon.MonoBehaviour
     {
         if (!photonView.isMine) return;
         Player other = collision.gameObject.GetComponent<Player>();
+        ui.RemoveTapAction();
         if(other != null)
         {
             ui.HideAllButtons();
