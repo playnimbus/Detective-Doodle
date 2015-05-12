@@ -316,11 +316,12 @@ public class Player : Photon.MonoBehaviour
             otherPlayer.photonView.RPC("recieveShove", PhotonTargets.All, gameObject.transform.position);
         });
 
+        /*
         ui.ShowButton(0, "Shove", true, () =>
         {
             otherPlayer.photonView.RPC("recieveShove", PhotonTargets.All, gameObject.transform.position);
         });
-
+        */
 
 
         return false;

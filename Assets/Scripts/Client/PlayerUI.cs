@@ -27,11 +27,14 @@ public class PlayerUI : MonoBehaviour
 
     // Tap interaction vars
     private Coroutine tapCoroutine;
+    public GameObject tapInfoPanel;
+    public Text tapInfoText;
 
     #region Initialization
 
     void Start()
     {
+        tapInfoPanel.SetActive(false);
         murdererIndicator.enabled = false;
         detectiveIndicator.enabled = false;
         foreach (PlayerButton button in buttons)
@@ -101,9 +104,13 @@ public class PlayerUI : MonoBehaviour
     {
         powerupUpButton.callback();
     }
+
     public void SetHeaderText(string s)
     {
-        headerText.text = s;
+        if (headerText != null)
+            headerText.text = s;
+        else
+            Debug.LogWarning("[PlayerUI] headerText not set.", this);
     }
 
     #endregion
@@ -157,13 +164,14 @@ public class PlayerUI : MonoBehaviour
     {
         if (callback == null) Debug.LogError("[PlayerUI.RegisterTapAction] Passed in null callback", this);
 
-        SetHeaderText(message);
+        tapInfoPanel.SetActive(true);
+        tapInfoText.text = message;
         tapCoroutine = StartCoroutine(TapListenerCoroutine(callback));
     }
 
     public void RemoveTapAction()
     {
-        SetHeaderText("");
+        tapInfoPanel.SetActive(false);
 
         if (tapCoroutine != null) 
             StopCoroutine(tapCoroutine);

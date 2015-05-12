@@ -113,12 +113,12 @@ GameObject:
   - 222: {fileID: 22225760}
   - 114: {fileID: 11425760}
   m_Layer: 5
-  m_Name: Panel
+  m_Name: TapInfoPanel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!1 &125762
 GameObject:
   m_ObjectHideFlags: 0
@@ -598,7 +598,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   murdererIndicator: {fileID: 11435260}
   detectiveIndicator: {fileID: 11425764}
-  headerText: {fileID: 11425758}
+  headerText: {fileID: 0}
   buttons:
   - button: {fileID: 11408474}
     text: {fileID: 11465378}
@@ -616,6 +616,8 @@ MonoBehaviour:
   tutorialMurderer: {fileID: 187010}
   tutorialBystander: {fileID: 154186}
   tutorialDetective: {fileID: 129184}
+  tapInfoPanel: {fileID: 125760}
+  tapInfoText: {fileID: 11425758}
 --- !u!114 &11425764
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1518,7 +1520,7 @@ RectTransform:
   - {fileID: 22468320}
   - {fileID: 22450966}
   m_Father: {fileID: 22425768}
-  m_RootOrder: 6
+  m_RootOrder: 5
   m_AnchorMin: {x: .800000012, y: .879999995}
   m_AnchorMax: {x: .970000029, y: .970000029}
   m_AnchoredPosition: {x: -16.8350029, y: .5}
@@ -1604,11 +1606,11 @@ RectTransform:
   m_Children:
   - {fileID: 22425758}
   m_Father: {fileID: 22425768}
-  m_RootOrder: 5
-  m_AnchorMin: {x: .151250005, y: .885833383}
-  m_AnchorMax: {x: .850000024, y: .970000029}
-  m_AnchoredPosition: {x: -.5, y: .5}
-  m_SizeDelta: {x: -2, y: 0}
+  m_RootOrder: 6
+  m_AnchorMin: {x: .151250005, y: .0325054601}
+  m_AnchorMax: {x: .852500021, y: .114329696}
+  m_AnchoredPosition: {x: -4.5, y: -.800048828}
+  m_SizeDelta: {x: -4, y: 3}
   m_Pivot: {x: .5, y: .5}
 --- !u!224 &22425762
 RectTransform:
@@ -1677,8 +1679,8 @@ RectTransform:
   - {fileID: 22425766}
   - {fileID: 22449896}
   - {fileID: 22425762}
-  - {fileID: 22425760}
   - {fileID: 22412574}
+  - {fileID: 22425760}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_AnchorMin: {x: 0, y: 0}
