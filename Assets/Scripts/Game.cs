@@ -6,10 +6,22 @@ using System.Collections;
 [RequireComponent(typeof(PhotonView))]
 public abstract class Game : Photon.MonoBehaviour
 {
+    // Only one Game script should exist so this will hold it, check it to delete duplicates    
+    protected static Game game;
+
     // Common fields
     private GameNetwork networkField;
     protected GameNetwork network { get { return networkField; } }
     protected Session session;
+
+    void Awake()
+    {
+        // Check for duplicates of this GO
+        if (game != null)
+            DestroyImmediate(this.gameObject);
+        else
+            game = this;
+    }
     
     protected void Start()
     {
