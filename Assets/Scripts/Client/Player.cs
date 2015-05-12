@@ -242,31 +242,7 @@ public class Player : Photon.MonoBehaviour
 
     bool MurdererInteraction(Player otherPlayer)
     {
-        int murderButton = 0;
         bool interacted = false;
-
-        // If it's the detective and we have evidence, we can give it to him.
-        /*
-        if (otherPlayer.IsDetective && haveEvidence)
-        {
-            murderButton = 1; // This changes which button we use to murder though
-            ui.ShowButton(0, "Give Evidence", true, () =>
-            {
-                otherPlayer.photonView.RPC("SetHaveEvidence", PhotonTargets.All, true);
-                photonView.RPC("SetHaveEvidence", PhotonTargets.All, false);
-                ui.HideAllButtons();
-            });
-            interacted = true;
-        }
-        */
-
-        ui.ShowButton(0, "Shove", true, () =>
-        {
-            murderButton = 1;
-
-            otherPlayer.photonView.RPC("recieveShove", PhotonTargets.All, gameObject.transform.position);
-            //photonView.RPC("SetHaveEvidence", PhotonTargets.All, false);
-        });
 
         // Now our murder business
         if (canMurder)
@@ -277,51 +253,59 @@ public class Player : Photon.MonoBehaviour
                 canMurder = false;
                 Invoke("ResetCanMurder", 15f);
                 ui.FadeInMurderIcon(15f);
-                ui.HideAllButtons();
             });
             interacted = true;
+
+            ui.ShowButton(0, "Shove", true, () =>
+            {
+                otherPlayer.photonView.RPC("recieveShove", PhotonTargets.All, gameObject.transform.position);
+            });
         }
-
-
+        else
+        {
+            ui.SetTapAction("Shove", () =>
+            {
+                otherPlayer.photonView.RPC("recieveShove", PhotonTargets.All, gameObject.transform.position);
+            });
+        }
 
         return interacted;
     }
 
     bool DetectiveInteraction(Player otherPlayer)
     {
-        int detectiveButton = 0;
-
         if (inventory.ItemInHand == ItemPickups.Evidence)
         {
             ui.ShowButton(0, "Accuse", true, () =>
             {
-                detectiveButton = 1;
                 otherPlayer.photonView.RPC("Accuse", PhotonTargets.All);
                 inventory.removeItem();
-                
+
                 // If we're wrong we also are punished!
                 if (!otherPlayer.IsMurderer) photonView.RPC("Accuse", PhotonTargets.All);
 
                 Analytics.PlayerAccused(otherPlayer.IsMurderer);
             });
 
-            ui.SetTapAction("Shove", () =>
+            ui.ShowButton(1, "Shove", true, () =>
             {
                 otherPlayer.photonView.RPC("recieveShove", PhotonTargets.All, gameObject.transform.position);
             });
 
             return true;
         }
-
-        ui.SetTapAction("Shove", () =>
+        else
         {
-            otherPlayer.photonView.RPC("recieveShove", PhotonTargets.All, gameObject.transform.position);
-        });
-
+            ui.SetTapAction("Shove", () =>
+            {
+                otherPlayer.photonView.RPC("recieveShove", PhotonTargets.All, gameObject.transform.position);
+            });
+        }
 
         return false;
     }
 
+    // Not used currently
     bool BystanderInteraction(Player otherPlayer)
     {
         if (otherPlayer.IsDetective && !otherPlayer.IsDead)
@@ -351,7 +335,7 @@ public class Player : Photon.MonoBehaviour
     {
         if (otherPlayer.IsDead && otherPlayer.inventory.ItemInHand == ItemPickups.Evidence)
         {
-            ui.ShowButton(0, "Take Evidence", true, () =>
+            ui.SetTapAction("Take Evidence", () =>
             {
                 otherPlayer.inventory.removeItem();
                 inventory.recieveItem(ItemPickups.Evidence);
@@ -367,9 +351,7 @@ public class Player : Photon.MonoBehaviour
         Player otherPlayer = other.gameObject.GetComponent<Player>();
         ui.RemoveTapAction();
         if (otherPlayer != null)
-        {
-            ui.HideAllButtons();
-        }
+            ui.RemoveTapAction();
 
         interactionTarget = null;
     }

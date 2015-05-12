@@ -196,6 +196,10 @@ public class PlayerUI : MonoBehaviour
             {
                 // If so, callback and return
                 callback();
+
+                // One action?
+                RemoveTapAction();
+
                 yield break;
             }
         }
