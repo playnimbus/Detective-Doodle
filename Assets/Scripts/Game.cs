@@ -17,7 +17,7 @@ public abstract class Game : Photon.MonoBehaviour
     void Awake()
     {
         // Check for duplicates of this GO
-        if (game != null)
+        if (game != null && game != this)
             DestroyImmediate(this.gameObject);
         else
             game = this;

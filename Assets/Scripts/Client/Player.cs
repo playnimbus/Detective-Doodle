@@ -349,11 +349,12 @@ public class Player : Photon.MonoBehaviour
     {
         if (!photonView.isMine) return;
         Player otherPlayer = other.gameObject.GetComponent<Player>();
-        ui.RemoveTapAction();
         if (otherPlayer != null)
+        {
             ui.RemoveTapAction();
-
-        interactionTarget = null;
+            ui.HideAllButtons();
+            interactionTarget = null;
+        }
     }
 
     #endregion
