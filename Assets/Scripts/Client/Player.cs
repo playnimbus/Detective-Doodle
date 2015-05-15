@@ -40,6 +40,8 @@ public class Player : Photon.MonoBehaviour
     [HideInInspector]
     public Player interactionTarget;
 
+    private PlayerUI.TapAction evidenceAction;
+
     #region Initialization
 
     // Acts as a Start() for network instantiated objects
@@ -56,9 +58,7 @@ public class Player : Photon.MonoBehaviour
         // HACK ... Kinda. Assumes we only have one text field on the player
         GetComponentInChildren<Text>().text = photonView.owner.name;
 
-        // Listen to trigger for player-player interactions
-        interactionTrigger.onTriggerEntered += OnInteractionEnter;
-        interactionTrigger.onTriggerExited += OnInteractionExit;
+        InitInteractions();
 
         if (photonView.isMine)
         {
@@ -117,6 +117,22 @@ public class Player : Photon.MonoBehaviour
         else Destroy(camera.gameObject);
     }
 
+    void InitInteractions()
+    {
+        // Listen to trigger for player-player interactions
+        interactionTrigger.onTriggerEntered += OnInteractionEnter;
+        interactionTrigger.onTriggerExited += OnInteractionExit;
+
+        if (photonView.isMine)
+        {
+            // Shove interaction for all
+            ui.AddTapAction("Shove", () =>
+            {
+                interactionTarget.photonView.RPC("recieveShove", PhotonTargets.All, gameObject.transform.position);
+            });
+        }
+    }
+
     [RPC]
     public void SetPlayerModel(string modelName)
     {
@@ -140,6 +156,15 @@ public class Player : Photon.MonoBehaviour
         {
             ui.MarkAsMurderer();
             canMurder = true;
+
+            // Murder action
+            ui.AddTapAction("Murder", () =>
+            {
+                interactionTarget.photonView.RPC("Kill", PhotonTargets.All);
+                canMurder = false;
+                Invoke("ResetCanMurder", 15f);
+                ui.FadeInMurderIcon(15f);
+            });
         }
     }
 
@@ -147,8 +172,8 @@ public class Player : Photon.MonoBehaviour
     public void MakeDetective()
     {
         IsDetective = true;
-     //   GetComponent<Renderer>().material.color = Color.blue;
-       // if (photonView.isMine)
+        // GetComponent<Renderer>().material.color = Color.blue;
+        // if (photonView.isMine)
             //ui.MarkAsDetective(true);
     }
 
@@ -221,6 +246,12 @@ public class Player : Photon.MonoBehaviour
 
         interactionTarget = otherPlayer;
 
+        ui.StartTapActionListening();
+
+        // Registering every time should be removed with the new scheme
+        
+        /*
+
         // return when you do an action!
         if (IsMurderer)
         {
@@ -237,6 +268,9 @@ public class Player : Photon.MonoBehaviour
 
         // All players can loot dead 
         if (LootingInteraction(otherPlayer)) return;
+        
+         
+         */
     }
 
 
@@ -351,7 +385,7 @@ public class Player : Photon.MonoBehaviour
         Player otherPlayer = other.gameObject.GetComponent<Player>();
         if (otherPlayer != null)
         {
-            ui.RemoveTapAction();
+            ui.StopTapActionListening();
             ui.HideAllButtons();
             interactionTarget = null;
         }
@@ -431,7 +465,30 @@ public class Player : Photon.MonoBehaviour
         
     }
 
+    // Call to add accusation item from tap actions
+    public void RecievedEvidence()
+    {
+        evidenceAction = ui.AddTapAction("Accuse", () =>
+        {
+            interactionTarget.photonView.RPC("Accuse", PhotonTargets.All);
+            inventory.removeItem();
+
+            // If we're wrong we also are punished!
+            if (!interactionTarget.IsMurderer) photonView.RPC("Accuse", PhotonTargets.All);
+
+            Analytics.PlayerAccused(interactionTarget.IsMurderer);
+        });
+    }
+
+    // Call to remove accusation item from tap actions
+    public void DroppedEvidence()
+    {
+        ui.RemoveTapAction(evidenceAction);
+        evidenceAction = null;
+    }
+
     #endregion
+
 
     public void BystandersWon()
     {

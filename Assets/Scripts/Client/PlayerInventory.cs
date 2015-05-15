@@ -57,6 +57,9 @@ public class PlayerInventory : Photon.MonoBehaviour{
 
         ItemInHand = (ItemPickups) newItem;
         setIndicator((ItemPickups)newItem, true);
+
+        if (photonView.isMine && ItemInHand == ItemPickups.Evidence)
+            gameObject.GetComponent<Player>().RecievedEvidence();
     }
 
     void dropItem(ItemPickups itemToDrop)
@@ -70,6 +73,7 @@ public class PlayerInventory : Photon.MonoBehaviour{
                     break;
                 case ItemPickups.Evidence:
                     PhotonNetwork.Instantiate("evidencePickup", gameObject.transform.position + new Vector3(0, 23, 0), Quaternion.identity, 0);
+                    gameObject.GetComponent<Player>().DroppedEvidence();
                     break;
             }
         }

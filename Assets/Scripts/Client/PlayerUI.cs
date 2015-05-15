@@ -28,14 +28,15 @@ public class PlayerUI : MonoBehaviour
 
     // Tap interaction vars
     private Coroutine tapCoroutine;
-    public GameObject tapInfoPanel;
+    public Image tapInfoPanel;
     public Text tapInfoText;
+    private Color transparent = new Color(1, 1, 1, 0.5f);
 
     #region Initialization
 
     void Start()
     {
-        tapInfoPanel.SetActive(false);
+        tapInfoPanel.color = transparent;
         murdererIndicator.enabled = false;
         detectiveIndicator.enabled = false;
         foreach (PlayerButton button in buttons)
@@ -160,8 +161,7 @@ public class PlayerUI : MonoBehaviour
     #endregion
 
     #region New Tap Interaction
-
-    // Waka waka coding at 11:49 pm
+    
     public class TapAction
     {
         public string message;
@@ -188,8 +188,12 @@ public class PlayerUI : MonoBehaviour
     public void RemoveTapAction(TapAction action)
     {
         registeredActions.Remove(action);
-        if (registeredActions.Count == 0) currentAction = -1;
-        else currentAction = Mathf.Clamp(currentAction, 0, registeredActions.Count - 1);
+
+        // Make sure index is correct
+        if (registeredActions.Count == 0)
+            currentAction = -1;
+        else 
+            currentAction = Mathf.Clamp(currentAction, 0, registeredActions.Count - 1);
     }
 
     // Start listening for taps to perform action
@@ -198,10 +202,10 @@ public class PlayerUI : MonoBehaviour
         if(registeredActions.Count == 0) return;
 
         TapAction action = registeredActions[currentAction];
-
-        tapInfoPanel.SetActive(true);
         tapInfoText.text = action.message;
         tapCoroutine = StartCoroutine(TapListenerCoroutine());
+
+        tapInfoPanel.color = Color.white;
     }
 
     // Stop listening for taps to perform action
@@ -209,9 +213,13 @@ public class PlayerUI : MonoBehaviour
     {
         if (registeredActions.Count == 0) return;
 
-        tapInfoPanel.SetActive(false);
+        tapInfoPanel.color = transparent;
+
         if (tapCoroutine != null)
+        {
             StopCoroutine(tapCoroutine);
+            tapCoroutine = null;
+        }
     }
 
     // Button press listener to change active action
@@ -244,8 +252,7 @@ public class PlayerUI : MonoBehaviour
                 // If so, callback and return
                 if (registeredActions.Count == 0) yield break;
                 TapAction action = registeredActions[currentAction];
-                action.callback();
-                
+                action.callback();                
                 yield break;
             }
         }
