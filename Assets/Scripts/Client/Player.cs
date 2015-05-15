@@ -263,7 +263,7 @@ public class Player : Photon.MonoBehaviour
         }
         else
         {
-            ui.SetTapAction("Shove", () =>
+            ui.AddTapAction("Shove", () =>
             {
                 otherPlayer.photonView.RPC("recieveShove", PhotonTargets.All, gameObject.transform.position);
             });
@@ -296,7 +296,7 @@ public class Player : Photon.MonoBehaviour
         }
         else
         {
-            ui.SetTapAction("Shove", () =>
+            ui.AddTapAction("Shove", () =>
             {
                 otherPlayer.photonView.RPC("recieveShove", PhotonTargets.All, gameObject.transform.position);
             });
@@ -335,7 +335,7 @@ public class Player : Photon.MonoBehaviour
     {
         if (otherPlayer.IsDead && otherPlayer.inventory.ItemInHand == ItemPickups.Evidence)
         {
-            ui.SetTapAction("Take Evidence", () =>
+            ui.AddTapAction("Take Evidence", () =>
             {
                 otherPlayer.inventory.removeItem();
                 inventory.recieveItem(ItemPickups.Evidence);

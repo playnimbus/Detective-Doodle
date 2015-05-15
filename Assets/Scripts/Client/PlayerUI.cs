@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
+using System.Collections.Generic;
 using System;
 
 // Displays what a player has gathered.
@@ -160,25 +161,71 @@ public class PlayerUI : MonoBehaviour
 
     #region New Tap Interaction
 
-    public void SetTapAction(string message, Action callback)
+    // Waka waka coding at 11:49 pm
+    public class TapAction
     {
-        if (callback == null) Debug.LogError("[PlayerUI.RegisterTapAction] Passed in null callback", this);
-
-        tapInfoPanel.SetActive(true);
-        tapInfoText.text = message;
-        tapCoroutine = StartCoroutine(TapListenerCoroutine(callback));
+        public string message;
+        public Action callback;
     }
 
-    public void RemoveTapAction()
-    {
-        tapInfoPanel.SetActive(false);
+    private List<TapAction> registeredActions = new List<TapAction>();
+    int currentAction = -1;
 
-        if (tapCoroutine != null) 
+    // Returns a TapAction object which can be used to remove/modify an action
+    public TapAction AddTapAction(string message, Action callback)
+    {
+        if (callback == null) Debug.LogError("[PlayerUI.AddTapAction] Passed in null callback", this);
+
+        TapAction action = new TapAction() { message = message, callback = callback };
+        registeredActions.Add(action);
+
+        if (currentAction < 0)
+            currentAction = 0;
+
+        return action;
+    }
+
+    public void RemoveTapAction(TapAction action)
+    {
+        registeredActions.Remove(action);
+        if (registeredActions.Count == 0) currentAction = -1;
+        else currentAction = Mathf.Clamp(currentAction, 0, registeredActions.Count - 1);
+    }
+
+    // Start listening for taps to perform action
+    public void StartTapActionListening()
+    {
+        if(registeredActions.Count == 0) return;
+
+        TapAction action = registeredActions[currentAction];
+
+        tapInfoPanel.SetActive(true);
+        tapInfoText.text = action.message;
+        tapCoroutine = StartCoroutine(TapListenerCoroutine());
+    }
+
+    // Stop listening for taps to perform action
+    public void StopTapActionListening()
+    {
+        if (registeredActions.Count == 0) return;
+
+        tapInfoPanel.SetActive(false);
+        if (tapCoroutine != null)
             StopCoroutine(tapCoroutine);
     }
 
+    // Button press listener to change active action
+    public void SwitchTapAction()
+    {
+        if (registeredActions.Count == 0) return;
+        currentAction = (currentAction + 1) % registeredActions.Count;
+
+        TapAction action = registeredActions[currentAction];
+        tapInfoText.text = action.message;
+    }
+
     // Listen for double tap
-    private IEnumerator TapListenerCoroutine(Action callback)
+    private IEnumerator TapListenerCoroutine()
     {
         while (true)
         {
@@ -195,11 +242,10 @@ public class PlayerUI : MonoBehaviour
             if (Time.time < firstTapTime + 0.5f)
             {
                 // If so, callback and return
-                callback();
-
-                // One action?
-                RemoveTapAction();
-
+                if (registeredActions.Count == 0) yield break;
+                TapAction action = registeredActions[currentAction];
+                action.callback();
+                
                 yield break;
             }
         }
@@ -224,6 +270,7 @@ public class PlayerUI : MonoBehaviour
             yield return null;
         }
     }
-    
+
+
     #endregion
 }
