@@ -7,6 +7,7 @@ public enum ItemPickups : byte { Nothing = 0, Evidence, Key };
 public static class SessionType
 {
     public const byte Whodunnit = 0;
+    public const byte CookieThief = 1;
 }
 
 // Defines custom events that don't rely on a specific PhotonView but use PhotonNetwork.RaiseEvent instead

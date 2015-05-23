@@ -371,7 +371,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 179486}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -287.100525, y: 505.248596, z: -378.877563}
+  m_LocalPosition: {x: 14.3353701, y: 21.6599197, z: 1.86312485}
   m_LocalScale: {x: 1.70257974, y: 1.70257998, z: 1.70257998}
   m_Children:
   - {fileID: 22420528}
@@ -495,7 +495,7 @@ MeshRenderer:
   m_ReceiveShadows: 1
   m_Materials:
   - {fileID: 2100000, guid: d4d2557bb122919469c3b6ad9f465c0c, type: 2}
-  - {fileID: 2100000, guid: d4d2557bb122919469c3b6ad9f465c0c, type: 2}
+  - {fileID: 2100000, guid: 5ee62abd9d1be81458458f7e1f4bca5f, type: 2}
   m_SubsetIndices: 
   m_StaticBatchRoot: {fileID: 0}
   m_UseLightProbes: 1
@@ -519,8 +519,8 @@ MeshRenderer:
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_Materials:
+  - {fileID: 2100000, guid: 9e10d42c938023c4da5528d2edc427c1, type: 2}
   - {fileID: 2100000, guid: 5ee62abd9d1be81458458f7e1f4bca5f, type: 2}
-  - {fileID: 2100000, guid: c5fbca927cc52874185da7662d975600, type: 2}
   m_SubsetIndices: 
   m_StaticBatchRoot: {fileID: 0}
   m_UseLightProbes: 1
@@ -959,6 +959,7 @@ MonoBehaviour:
   bunnyModel: {fileID: 149654}
   wolfModel: {fileID: 117700}
   name: {fileID: 0}
+  ui: {fileID: 0}
   inventory: {fileID: 0}
   otherPlayer: {fileID: 0}
 --- !u!114 &11479486

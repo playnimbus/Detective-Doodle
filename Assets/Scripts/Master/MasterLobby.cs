@@ -49,9 +49,19 @@ public class MasterLobby : MonoBehaviour
 
     // Launch Button function
 
-    public void LaunchSession()
+    public void LaunchSession(int sessionNum)
     {
-        if (onLaunchSession != null) onLaunchSession(SessionType.Whodunnit);
+        if (onLaunchSession != null)
+        {
+            if (sessionNum == 0)
+            {
+                onLaunchSession(SessionType.Whodunnit);
+            }
+            else if (sessionNum == 1)
+            {
+                onLaunchSession(SessionType.CookieThief);
+            }
+        }
     }
 
     public void SetRoomName(string name)

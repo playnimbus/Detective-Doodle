@@ -61,8 +61,11 @@ public class MasterGame : Game
         switch (type)
         {
             case SessionType.Whodunnit:
-            default:
                 session = gameObject.AddComponent<WhodunnitMasterSession>();
+                break;
+
+            case SessionType.CookieThief:
+                session = gameObject.AddComponent<CookieThiefMasterSession>();
                 break;
         }
 

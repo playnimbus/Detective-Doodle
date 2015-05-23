@@ -105,17 +105,17 @@ public class EvidenceStash : Photon.MonoBehaviour
         {
             if (randomNum <= 3)
             {
-                print("stash given Evidence");
+       //         print("stash given Evidence");
                 photonView.RPC("SetHasEvidence", PhotonTargets.All, true);
             }
             else if (randomNum >= 8)
             {
-                print("stash given speedBoost");
+        //        print("stash given speedBoost");
                 photonView.RPC("SetHasSpeedBoost", PhotonTargets.All, true);
             }
             else
             {
-                print("stash not given loot");
+      //          print("stash not given loot");
                 StartCoroutine(RestockLoot(UnityEngine.Random.Range(20, 40)));
             }
         }
@@ -123,17 +123,17 @@ public class EvidenceStash : Photon.MonoBehaviour
         {
             if (randomNum <= 3)
             {
-                print("stash given Key");
+       //         print("stash given Key");
                 photonView.RPC("SetHasKey", PhotonTargets.All, true);
             }
             else if (randomNum >= 8)
             {
-                print("stash given speedBoost");
+         //       print("stash given speedBoost");
                 photonView.RPC("SetHasSpeedBoost", PhotonTargets.All, true);
             }
             else
             {
-                print("stash not given loot");
+        //        print("stash not given loot");
                 StartCoroutine(RestockLoot(UnityEngine.Random.Range(20, 40)));
             }
         }
