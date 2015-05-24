@@ -4,7 +4,7 @@ using System.Collections;
 public class CookieThiefClientSession : Session
 {
     private Level level;
-    private Player player;
+    private PlayerCookieThief player;
     private AudioBank audio;
 
     public override void Launch()
@@ -29,8 +29,8 @@ public class CookieThiefClientSession : Session
     [RPC]
     void CreatePlayer(Vector3 location)
     {
-        GameObject playerGO = PhotonNetwork.Instantiate("Player", location, Quaternion.identity, 0);
-        player = playerGO.GetComponent<Player>();
+        GameObject playerGO = PhotonNetwork.Instantiate("PlayerCookieThief", location, Quaternion.identity, 0);
+        player = playerGO.GetComponent<PlayerCookieThief>();
         player.action += OnPlayerAction;
         player.Audio = audio;
     }
@@ -65,13 +65,13 @@ public class CookieThiefClientSession : Session
     [RPC]
     void BystandersWon()
     {
-        player.BystandersWon();
+      //  player.BystandersWon();
     }
 
     [RPC]
     void MurdererWon()
     {
-        player.MurdererWon();
+   //     player.MurdererWon();
     }
 
     public override void Finish()

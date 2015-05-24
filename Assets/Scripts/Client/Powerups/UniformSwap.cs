@@ -8,8 +8,10 @@ public class UniformSwap : Powerup
        not needed until other game types
      * */
 
+    
     public override bool Apply(Player player)
     {
+        /*
         if (player.otherPlayer != null)
         {
             //need to make it so player models switch also
@@ -20,6 +22,8 @@ public class UniformSwap : Powerup
             player.otherPlayer.name.text = tempName;
             return true;
         }
+     *  * */
         return false;
     }
+    
 }

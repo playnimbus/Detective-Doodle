@@ -3,6 +3,10 @@ using System.Collections;
 
 public enum ItemPickups : byte { Nothing = 0, Evidence, Key };
 
+public enum ShirtColors : byte { blue = 0, green = 1, red = 2 };
+public enum HatColors : byte { blue = 0, orange = 1, red = 2 };
+public enum GloveColors : byte { blue = 0, green = 1, red = 2 };
+
 // Enmuerate all different game types here so the info can be sent via RPC
 public static class SessionType
 {

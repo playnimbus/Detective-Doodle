@@ -56,4 +56,7 @@ MonoBehaviour:
   - destroyPickup
   - giveItem
   - removeItemRPC
+  - setGlove
+  - setHat
+  - setShirt
   DisableAutoOpenWizard: 0

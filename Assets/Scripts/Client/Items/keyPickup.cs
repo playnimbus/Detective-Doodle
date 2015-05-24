@@ -35,7 +35,6 @@ public class keyPickup : Photon.MonoBehaviour
     [RPC]
     void destroyPickup()
     {
-        print(gameObject.name + " destroyed");
         Destroy(gameObject);
     }
 }
