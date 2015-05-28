@@ -23,11 +23,13 @@ public class keyPickup : Photon.MonoBehaviour
         {
             if (collider.gameObject.CompareTag(Tags.Player))
             {
+                /*
                 if (collider.gameObject.GetComponent<PlayerInventory>().ItemInHand != ItemPickups.Key)
                 {
                     collider.gameObject.GetComponent<PlayerInventory>().recieveItem(ItemPickups.Key);
                     photonView.RPC("destroyPickup", PhotonTargets.All);
                 }
+                 */
             }
         }
     }

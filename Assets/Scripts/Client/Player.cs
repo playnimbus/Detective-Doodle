@@ -169,7 +169,6 @@ public class Player : Photon.MonoBehaviour
 
     public virtual void OnCollisionEnter(Collision collision)
     {
-        
         if (!photonView.isMine) return;
         otherPlayer = collision.gameObject.GetComponent<Player>();
         if (otherPlayer == null) return;
@@ -180,8 +179,6 @@ public class Player : Photon.MonoBehaviour
 
     public virtual void OnCollisionExit(Collision collision)
     {
-        
-
         if (!photonView.isMine) return;
         Player other = collision.gameObject.GetComponent<Player>();
         if (other != null)
@@ -192,6 +189,7 @@ public class Player : Photon.MonoBehaviour
 
     bool LootingInteraction()
     {
+        /*
         if (otherPlayer.IsDead && otherPlayer.inventory.ItemInHand != ItemPickups.Nothing)
         {
             ui.ShowButton(0, "Take Item", true, () =>
@@ -200,8 +198,9 @@ public class Player : Photon.MonoBehaviour
                 otherPlayer.inventory.removeItem();
             });
             return true;
-        }
+        } */
         return false;
+        
     }
 
     #endregion

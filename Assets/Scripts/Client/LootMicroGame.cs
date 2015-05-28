@@ -256,7 +256,7 @@ public class LootMicroGame : MonoBehaviour {
                 }
                 else if (hit.collider.name == EvidenceGO.name)
                 {
-                    currentPlayer.inventory.recieveItem(ItemPickups.Evidence);
+                    currentPlayer.inventory.recieveItem("Evidence");    //should add a click listener to Evidence and add it to drawer
                     EvidenceGO.SetActive(false);
                     currentStash.GetEvidence();
                 }
@@ -270,7 +270,7 @@ public class LootMicroGame : MonoBehaviour {
                 }
                 else if (hit.collider.name == KeyGO.name)
                 {
-                    currentPlayer.inventory.recieveItem(ItemPickups.Key);
+                    currentPlayer.inventory.recieveItem("Key");     //should add a click listener to Key and add it to drawer
                     KeyGO.SetActive(false);
                     currentStash.GetEvidence();
                 }

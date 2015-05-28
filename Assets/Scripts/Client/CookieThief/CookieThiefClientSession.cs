@@ -36,15 +36,9 @@ public class CookieThiefClientSession : Session
     }
 
     [RPC]
-    void AssignMurderer()
+    void AssignCookieThief()
     {
-        player.photonView.RPC("MakeMurderer", PhotonTargets.All);
-    }
-
-    [RPC]
-    void AssignDetective()
-    {
-        player.photonView.RPC("MakeDetective", PhotonTargets.All);
+        player.photonView.RPC("MakeCookieThief", PhotonTargets.All);
     }
 
     void OnPlayerAction(byte action)

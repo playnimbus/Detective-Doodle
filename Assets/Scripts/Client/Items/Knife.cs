@@ -8,9 +8,15 @@ public class Knife : Item
         target.photonView.RPC("Kill", PhotonTargets.All);
     }
 
-    public override string Name
+    public override string ItemName
     {
         get { return "Knife"; }
     }
+
+    public override string ResourceName
+    {
+        get { return ""; }
+    }
+
 
 }

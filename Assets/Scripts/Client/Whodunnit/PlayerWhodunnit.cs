@@ -55,7 +55,6 @@ public class PlayerWhodunnit : Player
 
     public override void OnCollisionEnter(Collision collision)
     {
-        
         base.OnCollisionEnter(collision);
 
         if (!photonView.isMine) return;
@@ -134,9 +133,6 @@ public class PlayerWhodunnit : Player
             });
             interacted = true;
         }
-
-
-
         return interacted;
     }
 
@@ -144,8 +140,8 @@ public class PlayerWhodunnit : Player
     {
         int detectiveButton = 0;
 
-        if (inventory.ItemInHand == ItemPickups.Evidence)
-        {
+ //       if (inventory.ItemInHand == ItemPickups.Evidence)
+   //     {
             ui.ShowButton(0, "Accuse", true, () =>
             {
                 detectiveButton = 1;
@@ -164,7 +160,7 @@ public class PlayerWhodunnit : Player
             });
 
             return true;
-        }
+    //    }
 
         ui.ShowButton(0, "Shove", true, () =>
         {
@@ -182,7 +178,7 @@ public class PlayerWhodunnit : Player
         {
             ui.ShowButton(0, "Give Evidence", true, () =>
             {
-                otherPlayerWhodunnit.inventory.recieveItem(ItemPickups.Evidence);
+                otherPlayerWhodunnit.inventory.recieveItem("Evidence");
                 inventory.removeItem();
             });
             return true;
@@ -267,7 +263,7 @@ public class PlayerWhodunnit : Player
     {
         if (!photonView.isMine) return;
 
-        inventory.recieveItem(ItemPickups.Nothing);
+        inventory.recieveItem((GameObject)null);
         gameObject.GetComponent<PlayerMovement>().recieveShove((gameObject.transform.position - otherPlayerPostion));
 
     }

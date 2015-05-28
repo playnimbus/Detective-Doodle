@@ -23,11 +23,13 @@ public class evidencePickup : Photon.MonoBehaviour
 
             if (collider.gameObject.CompareTag(Tags.Player))
             {
+                /*
                 if (collider.gameObject.GetComponent<PlayerInventory>().ItemInHand != ItemPickups.Evidence)
                 {
                     collider.gameObject.GetComponent<PlayerInventory>().recieveItem(ItemPickups.Evidence);
                     photonView.RPC("destroyPickup", PhotonTargets.All);
                 }
+                 * */
             }
         }
     }

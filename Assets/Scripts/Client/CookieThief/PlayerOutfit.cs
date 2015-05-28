@@ -39,9 +39,9 @@ public class PlayerOutfit : Photon.MonoBehaviour{
     /// </summary>
     public void setOutfit()
     {
-        photonView.RPC("setShirt", PhotonTargets.All, Random.Range(0, 2));
-        photonView.RPC("setHat", PhotonTargets.All, Random.Range(0, 2));
-        photonView.RPC("setGlove", PhotonTargets.All, Random.Range(0, 2));
+        photonView.RPC("setShirt", PhotonTargets.All, (byte)Random.Range(0, 3));
+        photonView.RPC("setHat", PhotonTargets.All, (byte)Random.Range(0, 3));
+        photonView.RPC("setGlove", PhotonTargets.All, (byte)Random.Range(0, 3));
     }
 
     /// <summary>
@@ -55,36 +55,36 @@ public class PlayerOutfit : Photon.MonoBehaviour{
     }
 
     [RPC]
-    void setHat(HatColors hat) 
+    void setHat(byte hat) 
     {
-        currentHat = hat;
+        currentHat = (HatColors)hat;
         switch (hat)
         {
-            case HatColors.blue: hatIcon.sprite = blueHat; break;
-            case HatColors.orange: hatIcon.sprite = orangeHat; break;
-            case HatColors.red: hatIcon.sprite = redHat; break;
+            case (byte)HatColors.blue: hatIcon.sprite = blueHat; break;
+            case (byte)HatColors.orange: hatIcon.sprite = orangeHat; break;
+            case (byte)HatColors.red: hatIcon.sprite = redHat; break;
         }
     }
     [RPC]
-    void setShirt(ShirtColors shirt)
+    void setShirt(byte shirt)
     {
-        currentShirt = shirt;
+        currentShirt = (ShirtColors)shirt;
         switch (shirt)
         {
-            case ShirtColors.blue: shirtIcon.sprite = blueShirt; break;
-            case ShirtColors.green: shirtIcon.sprite = greenShirt; break;
-            case ShirtColors.red: shirtIcon.sprite = redShirt; break;
+            case (byte)ShirtColors.blue: shirtIcon.sprite = blueShirt; break;
+            case (byte)ShirtColors.green: shirtIcon.sprite = greenShirt; break;
+            case (byte)ShirtColors.red: shirtIcon.sprite = redShirt; break;
         }
     }
     [RPC]
-    void setGlove(GloveColors glove) 
+    void setGlove(byte glove) 
     {
-        currentGlove = glove;
+        currentGlove = (GloveColors)glove;
         switch (glove)
         {
-            case GloveColors.blue: gloveIcon.sprite = blueGlove; break;
-            case GloveColors.green: gloveIcon.sprite = greenGlove; break;
-            case GloveColors.red: gloveIcon.sprite = redGlove; break;
+            case (byte)GloveColors.blue: gloveIcon.sprite = blueGlove; break;
+            case (byte)GloveColors.green: gloveIcon.sprite = greenGlove; break;
+            case (byte)GloveColors.red: gloveIcon.sprite = redGlove; break;
         }
     }
 }

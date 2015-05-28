@@ -9,7 +9,7 @@ public class Build
 
     static string[] masterScenes = { "MasterLobby.unity" };
     static string[] clientScenes = { "ClientLobby.unity" };
-    static string[] sharedScenes = { "Whodunnit.unity" };
+    static string[] sharedScenes = { "Whodunnit.unity","CookieThief.unity","Monster.unity" };
 
     [MenuItem("Build / Master PC")]
     private static void BuildMasterPC()

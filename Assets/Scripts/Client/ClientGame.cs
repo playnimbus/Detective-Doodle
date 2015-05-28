@@ -27,9 +27,10 @@ public class ClientGame : Game
     {
         switch(type)
         {
-            case SessionType.Whodunnit:
-            default:
-                return gameObject.AddComponent<WhodunnitClientSession>();
+            case SessionType.Whodunnit: return gameObject.AddComponent<WhodunnitClientSession>();
+            case SessionType.CookieThief: return gameObject.AddComponent<CookieThiefClientSession>();
+            case SessionType.Monster: return gameObject.AddComponent<MonsterClientSession>();
+            default: return gameObject.AddComponent<WhodunnitClientSession>();
         }
     }
 

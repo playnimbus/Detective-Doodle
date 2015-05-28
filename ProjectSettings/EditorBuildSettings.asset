@@ -17,3 +17,5 @@ EditorBuildSettings:
     path: Assets/Scenes/Whodunnit.unity
   - enabled: 1
     path: Assets/Scenes/CookieThief.unity
+  - enabled: 1
+    path: Assets/Scenes/Monster.unity

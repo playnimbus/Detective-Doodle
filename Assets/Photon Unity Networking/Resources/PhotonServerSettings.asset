@@ -59,4 +59,8 @@ MonoBehaviour:
   - setGlove
   - setHat
   - setShirt
+  - MakeCookieThief
+  - AssignCookieThief
+  - AssignMonster
+  - MakeMonster
   DisableAutoOpenWizard: 0

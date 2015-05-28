@@ -88,9 +88,9 @@ GameObject:
   - 95: {fileID: 9542718}
   - 65: {fileID: 6586620}
   - 114: {fileID: 11425148}
-  - 114: {fileID: 11437090}
+  - 114: {fileID: 11405406}
   m_Layer: 0
-  m_Name: evidencePickup
+  m_Name: Evidence
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -233,6 +233,17 @@ Animator:
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
+--- !u!114 &11405406
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 199680}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fa1762bacf405f1469aef117db1f2710, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &11425148
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -258,17 +269,6 @@ MonoBehaviour:
   viewIdField: 0
   instantiationId: -1
   isRuntimeInstantiated: 0
---- !u!114 &11437090
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 199680}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6dad811618479164aafd23ab6f4fa45a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1

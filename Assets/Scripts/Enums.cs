@@ -11,7 +11,8 @@ public enum GloveColors : byte { blue = 0, green = 1, red = 2 };
 public static class SessionType
 {
     public const byte Whodunnit = 0;
-    public const byte CookieThief = 1;
+    public const byte Monster = 1;
+    public const byte CookieThief = 2;
 }
 
 // Defines custom events that don't rely on a specific PhotonView but use PhotonNetwork.RaiseEvent instead

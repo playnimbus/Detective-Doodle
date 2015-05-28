@@ -1,21 +1,21 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-// A piece of evidence
-public class Evidence : Item
+public class Key : Item
 {
     public override void Use(Player target)
     {
-        // target.photonView.RPC("Kill", PhotonTargets.All);
+       // target.photonView.RPC("Kill", PhotonTargets.All);
     }
 
     public override string ItemName
     {
-        get { return "Evidence"; }
+        get { return "Key"; }
     }
 
     public override string ResourceName
     {
-        get { return "Evidence"; }
+        get { return "Key"; }
     }
+
 }

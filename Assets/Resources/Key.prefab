@@ -13,7 +13,7 @@ GameObject:
   - 114: {fileID: 11422198}
   - 114: {fileID: 11482280}
   m_Layer: 0
-  m_Name: keyPickup
+  m_Name: Key
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -56,7 +56,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 109570}
   m_LocalRotation: {x: .707079947, y: -.00617059367, z: .00617059274, w: .707079828}
-  m_LocalPosition: {x: 26.1089783, y: 4.53176403, z: 20.8990097}
+  m_LocalPosition: {x: 9.75844574, y: 4.5, z: 25.1855431}
   m_LocalScale: {x: 10, y: 10, z: 10}
   m_Children:
   - {fileID: 438938}
@@ -157,7 +157,7 @@ MonoBehaviour:
   synchronization: 3
   onSerializeTransformOption: 3
   onSerializeRigidBodyOption: 2
-  ownershipTransfer: 0
+  ownershipTransfer: 1
   ObservedComponents:
   - {fileID: 492154}
   ObservedComponentsFoldoutOpen: 1
@@ -172,7 +172,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 109570}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d4371593985d59e428c842127cd6780c, type: 3}
+  m_Script: {fileID: 11500000, guid: bd3d0a891b91f414eaa9d1edb226ac18, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1001 &100100000

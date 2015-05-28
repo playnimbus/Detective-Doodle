@@ -67,6 +67,10 @@ public class MasterGame : Game
             case SessionType.CookieThief:
                 session = gameObject.AddComponent<CookieThiefMasterSession>();
                 break;
+
+            case SessionType.Monster:
+                session = gameObject.AddComponent<MonsterMasterSession>();
+                break;
         }
 
         session.onFinished += RequestSessionFinish;

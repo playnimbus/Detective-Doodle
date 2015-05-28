@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Collections;
 using System;
 
-public class CookieThiefMasterSession : Session
+public class MonsterMasterSession : Session
 {
     private SessionMenu menu;
     private int numPendingPlayers;
@@ -20,7 +20,7 @@ public class CookieThiefMasterSession : Session
         deadPlayers = 0;
         totalPlayers = PhotonNetwork.otherPlayers.Length;
         numPendingPlayers = totalPlayers;
-        this.LoadLevel("CookieThief", LevelLoaded);
+        this.LoadLevel("Monster", LevelLoaded);
         
         Analytics.Initialize(Analytics.GameModes.Detective, numPendingPlayers);
     }
@@ -34,7 +34,6 @@ public class CookieThiefMasterSession : Session
     {
         StartCoroutine(WaitForPlayers());
         level = FindObjectOfType<Level>();
-        print(level.name);
         InitAudio();
         audio.PlaySound("mus_privateeyesgame", true);
     }
@@ -71,7 +70,7 @@ public class CookieThiefMasterSession : Session
         SpawnPoint[] spawnPoints = level.GetSpawnPointsShuffled();
         for (int i = 0; i < PhotonNetwork.otherPlayers.Length; i++)
         {
-            if (i > spawnPoints.Length) Debug.LogError("[CookieThiefMasterSession] More players than available spawn points.");
+            if (i > spawnPoints.Length) Debug.LogError("[MonsterMasterSession] More players than available spawn points.");
             
             PhotonPlayer p = PhotonNetwork.otherPlayers[i];
             Vector3 position = spawnPoints[i].transform.position;
@@ -81,7 +80,7 @@ public class CookieThiefMasterSession : Session
         // Assign the murderer!
         int murdererIndex = UnityEngine.Random.Range(0, PhotonNetwork.otherPlayers.Length);
         PhotonPlayer murderer = PhotonNetwork.otherPlayers[murdererIndex];
-        photonView.RPC("AssignCookieThief", murderer);
+        photonView.RPC("AssignMonster", murderer);
 
         //uncomment to toggle detectives back on
         //remove makeDetective from Player.OnPhotonInstantiate()

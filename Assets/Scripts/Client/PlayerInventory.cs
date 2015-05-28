@@ -4,9 +4,12 @@ using UnityEngine.UI;
 
 public class PlayerInventory : Photon.MonoBehaviour{
 
-    public GameObject evidenceIndictor;
-    public GameObject keyIndictor;
+    public Vector3 indicatorLocation;
+    public GameObject itemIndicator;
+
     public Powerup powerup = null;
+
+    public GameObject Key;
 
     //   private Item item;   
     //   private Knife knife;
@@ -14,16 +17,22 @@ public class PlayerInventory : Photon.MonoBehaviour{
 
 
     //Murders knife would not be an ItemInHand as of now.
-    public ItemPickups ItemInHand = ItemPickups.Nothing;
-    
+ //   public ItemPickups ItemInHand = ItemPickups.Nothing;
+
+    GameObject ItemInHand = null;
 
     /// <summary>
     /// recieves an item and drops item in hand if player is carrying one
     /// </summary>
     /// <param name="newItem"></param>
-    public void recieveItem(ItemPickups newItem)    
+    public void recieveItem(GameObject newItem)    
     {
-        photonView.RPC("giveItem", PhotonTargets.All, (byte)newItem);
+        photonView.RPC("giveItem", PhotonTargets.All, newItem.GetComponent<Item>().ItemName);
+    }
+
+    public void recieveItem(string newItem)
+    {
+        photonView.RPC("giveItem", PhotonTargets.All, newItem);
     }
 
     /// <summary>
@@ -38,55 +47,61 @@ public class PlayerInventory : Photon.MonoBehaviour{
     [RPC] 
     void removeItemRPC()
     {
-     //   setIndicator(ItemInHand, false);
-
-        evidenceIndictor.SetActive(false);
-        keyIndictor.SetActive(false);
-
-        ItemInHand = ItemPickups.Nothing;
+        print("remove item " + ItemInHand.GetComponent<Item>().ItemName);
+        setIndicator(ItemInHand.GetComponent<Item>(), false);
     }
 
 
     [RPC] 
-    void giveItem(byte newItem) //photon RPCs don't like enums apparently :/ but converting them to byte works when sending through RPC
+    void giveItem(string newItemName)  //Can't send GameObjects over RPC :(
     {
-        if (ItemInHand != ItemPickups.Nothing)
+
+        if (ItemInHand != null)
         {
-            dropItem(ItemInHand);
+            print("Item inhand before drop " + ItemInHand.GetComponent<Item>().ItemName);
+            dropItem(ItemInHand.GetComponent<Item>());
         }
 
-        ItemInHand = (ItemPickups) newItem;
-        setIndicator((ItemPickups)newItem, true);
+        switch (newItemName)
+        {
+      //      case "Evidence": ItemInHand = new Evidence(); break;
+     //       case "Knife": ItemInHand = new Knife(); break;
+            case "Key": ItemInHand = Key; break;
+
+            default: ItemInHand = Key; break;
+        }
+
+        print("item in hand set to" + ItemInHand.GetComponent<Item>().ItemName);
+        setIndicator(ItemInHand.GetComponent<Item>(), true);
     }
 
-    void dropItem(ItemPickups itemToDrop)
+    void dropItem(Item itemToDrop)
     {
         if (photonView.isMine)
         {
-            switch (itemToDrop)
-            {
-                case ItemPickups.Key:
-                    PhotonNetwork.Instantiate("keyPickup", gameObject.transform.position, Quaternion.identity, 0);
-                    break;
-                case ItemPickups.Evidence:
-                    PhotonNetwork.Instantiate("evidencePickup", gameObject.transform.position + new Vector3(0, 23, 0), Quaternion.identity, 0);
-                    break;
-            }
+            print("dropping item in hand" + itemToDrop.name);
+            PhotonNetwork.Instantiate(itemToDrop.ResourceName, gameObject.transform.position, Quaternion.identity, 0);
         }
 
         setIndicator(itemToDrop, false);
     }
 
-    void setIndicator(ItemPickups itemToSet, bool isVisible)
+    void setIndicator(Item newItem, bool isVisible)
     {
-        switch (itemToSet)
+        if (isVisible)
         {
-            case ItemPickups.Key: keyIndictor.SetActive(isVisible); break;
-            case ItemPickups.Evidence: evidenceIndictor.SetActive(isVisible); break;
+            print("setting item indicator " + newItem.ItemName); 
+            itemIndicator = Instantiate(Resources.Load(newItem.ResourceName, typeof(GameObject))) as GameObject;
+            itemIndicator.GetComponent<BoxCollider>().enabled = false;
+            itemIndicator.transform.position = gameObject.transform.position + indicatorLocation;
+            itemIndicator.transform.parent = gameObject.transform;
+        }
+        else
+        {
+            print("destroying item indicator"); 
+            GameObject.Destroy(itemIndicator);
         }
     }
-
-
 
     public void EncounteredPowerup(Powerup powerup)
     {
@@ -97,18 +112,17 @@ public class PlayerInventory : Photon.MonoBehaviour{
     }
 
 
-        /*
-
-    void EncounteredItem(Item item)
+    void EncounteredItem(GameObject item)
     {
         if (!photonView.isMine) return;
-        
-        if (itemCoroutine != null) StopCoroutine(itemCoroutine);
 
-        ui.SetHeaderText("Pickup " + item.Name);
-        itemCoroutine = StartCoroutine(ItemPickupCoroutine(item));
+        recieveItem(item);
+   //     if (itemCoroutine != null) StopCoroutine(itemCoroutine);
 
-        Debug.Log("Encountered item.", item);
+   //     ui.SetHeaderText("Pickup " + item.Name);
+   //     itemCoroutine = StartCoroutine(ItemPickupCoroutine(item));
+
+        Debug.Log("Encountered item." + item.GetComponent<Item>().ItemName);
     }
 
     IEnumerator ItemPickupCoroutine(Item item)
@@ -120,19 +134,19 @@ public class PlayerInventory : Photon.MonoBehaviour{
         }
     }
 
-    void LeftItem(Item item)
+    void LeftItem(GameObject item)
     {
         if (!photonView.isMine) return;
 
-        ui.SetHeaderText(string.Empty);
-        if (itemCoroutine != null)
-        {
-            StopCoroutine(itemCoroutine);
-            itemCoroutine = null;
-        }
+  //      ui.SetHeaderText(string.Empty);
+ //       if (itemCoroutine != null)
+  //      {
+  //          StopCoroutine(itemCoroutine);
+   //         itemCoroutine = null;
+  //      }
 
-        Debug.Log("Left item.", item);
+        Debug.Log("Left item." + item.GetComponent<Item>().ItemName);
     }
-    */
+    
 
 }

@@ -59,6 +59,10 @@ public class MasterLobby : MonoBehaviour
             }
             else if (sessionNum == 1)
             {
+                onLaunchSession(SessionType.Monster);
+            }
+            else if (sessionNum == 2)
+            {
                 onLaunchSession(SessionType.CookieThief);
             }
         }
