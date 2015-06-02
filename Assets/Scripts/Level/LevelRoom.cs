@@ -9,7 +9,8 @@ public class LevelRoom : MonoBehaviour
 
     // Fades the cover for a room
     private Fade roomCoverFade;
-    
+    private Door[] doors;
+
     void Start()
     {
         roomCoverFade = GetComponentInChildren<Fade>();
@@ -29,7 +30,15 @@ public class LevelRoom : MonoBehaviour
         if (coll.gameObject.CompareTag(Tags.Player)) coll.SendMessage("ExitedRoom", this, SendMessageOptions.DontRequireReceiver);
     }
 
-    public void Reveal() { roomCoverFade.FadeOut(); }
+    public void Reveal() { 
+        roomCoverFade.FadeOut();
+
+        doors = GetComponentsInChildren<Door>();
+        for (int i = 0; i < doors.Length; i++)
+        {
+            doors[i].openDoor();
+        }
+    }
     public void Conceal() { roomCoverFade.FadeIn(); }
 
 }

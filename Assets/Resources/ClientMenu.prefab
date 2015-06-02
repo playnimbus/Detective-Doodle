@@ -226,6 +226,40 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!1 &141984
+GameObject:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 4
+  m_Component:
+  - 224: {fileID: 22470250}
+  - 222: {fileID: 22278086}
+  - 114: {fileID: 11477168}
+  m_Layer: 5
+  m_Name: Panel
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!1 &142980
+GameObject:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 4
+  m_Component:
+  - 224: {fileID: 22473474}
+  - 222: {fileID: 22274308}
+  - 114: {fileID: 11437672}
+  m_Layer: 5
+  m_Name: Text
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
 --- !u!1 &143194
 GameObject:
   m_ObjectHideFlags: 0
@@ -241,10 +275,10 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!1 &154186
 GameObject:
-  m_ObjectHideFlags: 1
+  m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   serializedVersion: 4
@@ -254,12 +288,12 @@ GameObject:
   - 114: {fileID: 11499776}
   - 114: {fileID: 11468450}
   m_Layer: 5
-  m_Name: TutorialBystanderCanvas
+  m_Name: GameEndText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!1 &155518
 GameObject:
   m_ObjectHideFlags: 0
@@ -450,6 +484,24 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!1 &198260
+GameObject:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 4
+  m_Component:
+  - 224: {fileID: 22438142}
+  - 223: {fileID: 22383536}
+  - 114: {fileID: 11438334}
+  - 114: {fileID: 11427972}
+  m_Layer: 5
+  m_Name: TutorialBystanderCanvas
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
 --- !u!4 &417422
 Transform:
   m_ObjectHideFlags: 1
@@ -461,10 +513,10 @@ Transform:
   m_LocalScale: {x: 1.8058691, y: 1.8058691, z: 1.8058691}
   m_Children:
   - {fileID: 22455628}
-  - {fileID: 22451320}
+  - {fileID: 22438142}
   - {fileID: 22496088}
   m_Father: {fileID: 22425768}
-  m_RootOrder: 0
+  m_RootOrder: 1
 --- !u!114 &11408474
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -564,7 +616,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'Evidence Found  '
+  m_Text: 'Current Action: Shove'
 --- !u!114 &11425760
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -600,6 +652,8 @@ MonoBehaviour:
   murdererIndicator: {fileID: 11435260}
   detectiveIndicator: {fileID: 11425764}
   headerText: {fileID: 0}
+  gameEndGameObject: {fileID: 154186}
+  gameEndText: {fileID: 11493278}
   buttons:
   - button: {fileID: 11408474}
     text: {fileID: 11465378}
@@ -615,7 +669,7 @@ MonoBehaviour:
     Icon: {fileID: 11487936}
     hideOnPressed: 0
   tutorialMurderer: {fileID: 187010}
-  tutorialBystander: {fileID: 154186}
+  tutorialBystander: {fileID: 198260}
   tutorialDetective: {fileID: 129184}
   tapInfoPanel: {fileID: 11425760}
   tapInfoText: {fileID: 11425758}
@@ -777,6 +831,22 @@ MonoBehaviour:
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 1
+--- !u!114 &11427972
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 198260}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 1301386320, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_IgnoreReversedGraphics: 1
+  m_BlockingObjects: 0
+  m_BlockingMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
 --- !u!114 &11429204
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -856,6 +926,53 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
+--- !u!114 &11437672
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 142980}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 708705254, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_FontData:
+    m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
+    m_FontSize: 30
+    m_FontStyle: 0
+    m_BestFit: 0
+    m_MinSize: 10
+    m_MaxSize: 40
+    m_Alignment: 1
+    m_RichText: 1
+    m_HorizontalOverflow: 0
+    m_VerticalOverflow: 0
+    m_LineSpacing: 1
+  m_Text: "You Are The\r\nBystander\r\n\r\n\n\n\n\n\n\n\n\n\n\n\n\n\n\rTAP TO CLOSE\n"
+--- !u!114 &11438334
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 198260}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 1980459831, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_UiScaleMode: 0
+  m_ReferencePixelsPerUnit: 100
+  m_ScaleFactor: 1
+  m_ReferenceResolution: {x: 800, y: 600}
+  m_ScreenMatchMode: 0
+  m_MatchWidthOrHeight: 0
+  m_PhysicalUnit: 3
+  m_FallbackScreenDPI: 96
+  m_DefaultSpriteDPI: 96
+  m_DynamicPixelsPerUnit: 1
 --- !u!114 &11439900
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1040,6 +1157,27 @@ MonoBehaviour:
     m_VerticalOverflow: 0
     m_LineSpacing: 1
   m_Text: "You Are The\r\nDetective\r\n\r\n\n\n\n\n\n\n\n\n\n\n\n\n\n\rTAP TO CLOSE\n"
+--- !u!114 &11477168
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 141984}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -765806418, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 0, g: 0, b: 0, a: .866666675}
+  m_Sprite: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
+  m_Type: 1
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
 --- !u!114 &11478486
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1278,7 +1416,7 @@ MonoBehaviour:
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FontData:
     m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
-    m_FontSize: 30
+    m_FontSize: 45
     m_FontStyle: 0
     m_BestFit: 0
     m_MinSize: 10
@@ -1288,7 +1426,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "You Are The\r\nBystander\r\n\r\n\n\n\n\n\n\n\n\n\n\n\n\n\n\rTAP TO CLOSE\n"
+  m_Text: Bystanders Win!
 --- !u!114 &11493504
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1314,8 +1452,8 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "\n\n\n\n\r\nThe bystander must collect\r evidence around the house.\r\n\r\nGive
-    your evidence to\r detective to allow them\r to accuse someone \ras the murderer.\r\n\r\nBe
+  m_Text: "\n\n\n\n\r\nThe bystander must find keys and collect\r evidence around
+    the town.\r\n\r\nUse the evidence to accuse one of your friends of being the murderer.\n\nBe
     social and communicate\r with your party!"
 --- !u!114 &11495372
 MonoBehaviour:
@@ -1342,9 +1480,9 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "\n\n\n\n\r\nThe murder must kill\r everyone else without\r getting caught.\r\n\r\nAvoid
-    the detective\r and don\u2019t get accused.\r\n\r\nYou must wait 15 seconds between
-    murders.\r\n\r\nTry and blend in."
+  m_Text: "\n\n\n\n\r\nThe murderer must eliminate\r everyone else without\r getting
+    caught.\r\n\r\nAvoid being accused by your friends.\r\n\r\nYou must wait 15 seconds
+    between murders.\r\n\r\nYou don't need keys to open doors but try and blend in!"
 --- !u!114 &11499776
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1474,12 +1612,24 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 174030}
+--- !u!222 &22274308
+CanvasRenderer:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 142980}
 --- !u!222 &22275868
 CanvasRenderer:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 197748}
+--- !u!222 &22278086
+CanvasRenderer:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 141984}
 --- !u!222 &22279966
 CanvasRenderer:
   m_ObjectHideFlags: 1
@@ -1560,6 +1710,23 @@ Canvas:
   m_OverridePixelPerfect: 0
   m_SortingLayerID: 0
   m_SortingOrder: 0
+--- !u!223 &22383536
+Canvas:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 198260}
+  m_Enabled: 1
+  serializedVersion: 2
+  m_RenderMode: 0
+  m_Camera: {fileID: 0}
+  m_PlaneDistance: 100
+  m_PixelPerfect: 0
+  m_ReceivesEvents: 1
+  m_OverrideSorting: 0
+  m_OverridePixelPerfect: 0
+  m_SortingLayerID: 0
+  m_SortingOrder: 0
 --- !u!224 &22412574
 RectTransform:
   m_ObjectHideFlags: 1
@@ -1574,7 +1741,7 @@ RectTransform:
   - {fileID: 22468320}
   - {fileID: 22450966}
   m_Father: {fileID: 22425768}
-  m_RootOrder: 5
+  m_RootOrder: 6
   m_AnchorMin: {x: .800000012, y: .879999995}
   m_AnchorMax: {x: .970000029, y: .970000029}
   m_AnchoredPosition: {x: -16.8350029, y: .5}
@@ -1621,15 +1788,15 @@ RectTransform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 106356}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1.5, y: -1.5, z: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 321.202698}
+  m_LocalScale: {x: 1.89277685, y: -1.89277685, z: 1.26185119}
   m_Children: []
   m_Father: {fileID: 22451320}
   m_RootOrder: 0
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchoredPosition: {x: -2.72666073, y: 242.735199}
+  m_SizeDelta: {x: 42.4000244, y: 516.099854}
   m_Pivot: {x: .5, y: .5}
 --- !u!224 &22425758
 RectTransform:
@@ -1660,7 +1827,7 @@ RectTransform:
   m_Children:
   - {fileID: 22425758}
   m_Father: {fileID: 22425768}
-  m_RootOrder: 6
+  m_RootOrder: 7
   m_AnchorMin: {x: .151250005, y: .0325054601}
   m_AnchorMax: {x: .852500021, y: .114329696}
   m_AnchoredPosition: {x: -4.5, y: -.800048828}
@@ -1677,7 +1844,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 22425768}
-  m_RootOrder: 4
+  m_RootOrder: 5
   m_AnchorMin: {x: .0287500005, y: .899166703}
   m_AnchorMax: {x: .128749996, y: .967500031}
   m_AnchoredPosition: {x: .299987793, y: -.199966431}
@@ -1712,7 +1879,7 @@ RectTransform:
   m_Children:
   - {fileID: 22425764}
   m_Father: {fileID: 22425768}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_AnchorMin: {x: .147500008, y: .135329708}
   m_AnchorMax: {x: .852500021, y: .214329705}
   m_AnchoredPosition: {x: -1.52587891e-05, y: .5}
@@ -1728,6 +1895,7 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0, y: 0, z: 0}
   m_Children:
+  - {fileID: 22451320}
   - {fileID: 417422}
   - {fileID: 22427520}
   - {fileID: 22425766}
@@ -1754,11 +1922,31 @@ RectTransform:
   m_Children:
   - {fileID: 22414180}
   m_Father: {fileID: 22425768}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_AnchorMin: {x: .153750002, y: .0325054601}
   m_AnchorMax: {x: .852500021, y: .114329696}
   m_AnchoredPosition: {x: .5, y: 0}
   m_SizeDelta: {x: 4, y: 1}
+  m_Pivot: {x: .5, y: .5}
+--- !u!224 &22438142
+RectTransform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 198260}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 171.562347}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 22470250}
+  - {fileID: 22473474}
+  - {fileID: 22498364}
+  m_Father: {fileID: 417422}
+  m_RootOrder: 1
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 280.100006, y: 435.023132}
+  m_SizeDelta: {x: 542.400024, y: 1016.09998}
   m_Pivot: {x: .5, y: .5}
 --- !u!224 &22441444
 RectTransform:
@@ -1789,10 +1977,10 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 22496088}
   m_RootOrder: 2
-  m_AnchorMin: {x: .5, y: 0}
-  m_AnchorMax: {x: .5, y: 0}
-  m_AnchoredPosition: {x: -.100000001, y: 274}
-  m_SizeDelta: {x: 386.5, y: 774}
+  m_AnchorMin: {x: .104687326, y: .0800000057}
+  m_AnchorMax: {x: .857843697, y: .495000035}
+  m_AnchoredPosition: {x: 9.8999939, y: -18}
+  m_SizeDelta: {x: -21.5, y: 352}
   m_Pivot: {x: .5, y: .5}
 --- !u!224 &22447532
 RectTransform:
@@ -1806,10 +1994,10 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 22496088}
   m_RootOrder: 1
-  m_AnchorMin: {x: .5, y: 1}
-  m_AnchorMax: {x: .5, y: 1}
-  m_AnchoredPosition: {x: -18.1000004, y: -722.700012}
-  m_SizeDelta: {x: 541.599976, y: 597.699951}
+  m_AnchorMin: {x: .302218318, y: .51700002}
+  m_AnchorMax: {x: .636000037, y: .596000016}
+  m_AnchoredPosition: {x: -1.59999847, y: -271.700012}
+  m_SizeDelta: {x: 360.599976, y: 517.699951}
   m_Pivot: {x: .5, y: .5}
 --- !u!224 &22448338
 RectTransform:
@@ -1839,7 +2027,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 22425768}
-  m_RootOrder: 3
+  m_RootOrder: 4
   m_AnchorMin: {x: .0425000004, y: .890833378}
   m_AnchorMax: {x: .117500007, y: .975000024}
   m_AnchoredPosition: {x: -.700000763, y: .300003052}
@@ -1869,18 +2057,17 @@ RectTransform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 154186}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 171.562347}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1.43112695, y: 1.43112695, z: 1.43112695}
   m_Children:
   - {fileID: 22424908}
   - {fileID: 22473502}
-  - {fileID: 22498364}
-  m_Father: {fileID: 417422}
-  m_RootOrder: 1
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 280.100006, y: 435.023132}
-  m_SizeDelta: {x: 542.400024, y: 1016.09998}
+  m_Father: {fileID: 22425768}
+  m_RootOrder: 0
+  m_AnchorMin: {x: .5, y: .5}
+  m_AnchorMax: {x: .5, y: .5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 500, y: 500}
   m_Pivot: {x: .5, y: .5}
 --- !u!224 &22453502
 RectTransform:
@@ -1953,6 +2140,40 @@ RectTransform:
   m_AnchoredPosition: {x: 6.10351562e-05, y: 6.10351562e-05}
   m_SizeDelta: {x: 127, y: 120.099998}
   m_Pivot: {x: .5, y: .5}
+--- !u!224 &22470250
+RectTransform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 141984}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1.5, y: -1.5, z: 1}
+  m_Children: []
+  m_Father: {fileID: 22438142}
+  m_RootOrder: 0
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
+  m_Pivot: {x: .5, y: .5}
+--- !u!224 &22473474
+RectTransform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 142980}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 22438142}
+  m_RootOrder: 1
+  m_AnchorMin: {x: .304843664, y: .509000003}
+  m_AnchorMax: {x: .623625517, y: .582000017}
+  m_AnchoredPosition: {x: 1.40000153, y: -261.700012}
+  m_SizeDelta: {x: 368.599976, y: 523.699951}
+  m_Pivot: {x: .5, y: .5}
 --- !u!224 &22473502
 RectTransform:
   m_ObjectHideFlags: 1
@@ -1965,10 +2186,10 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 22451320}
   m_RootOrder: 1
-  m_AnchorMin: {x: .5, y: 1}
-  m_AnchorMax: {x: .5, y: 1}
-  m_AnchoredPosition: {x: -18.1000004, y: -722.700012}
-  m_SizeDelta: {x: 541.599976, y: 597.699951}
+  m_AnchorMin: {x: .220688805, y: .478000015}
+  m_AnchorMax: {x: .905000031, y: .577000022}
+  m_AnchoredPosition: {x: -30.2800484, y: -115.425018}
+  m_SizeDelta: {x: 322.559906, y: 237.149963}
   m_Pivot: {x: .5, y: .5}
 --- !u!224 &22496088
 RectTransform:
@@ -2000,12 +2221,12 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 22451320}
+  m_Father: {fileID: 22438142}
   m_RootOrder: 2
-  m_AnchorMin: {x: .5, y: 0}
-  m_AnchorMax: {x: .5, y: 0}
-  m_AnchoredPosition: {x: -.100000001, y: 274}
-  m_SizeDelta: {x: 386.5, y: 774}
+  m_AnchorMin: {x: .145000011, y: .154000014}
+  m_AnchorMax: {x: .870312691, y: .486000031}
+  m_AnchoredPosition: {x: -4.09999847, y: -50.5}
+  m_SizeDelta: {x: -7.5, y: 437}
   m_Pivot: {x: .5, y: .5}
 --- !u!1001 &100100000
 Prefab:

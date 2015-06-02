@@ -20,6 +20,8 @@ public class PlayerUI : MonoBehaviour
     public Image murdererIndicator;
     public Image detectiveIndicator;
     public Text headerText;
+    public GameObject gameEndGameObject;
+    public Text gameEndText;
     public PlayerButton[] buttons;
     public PlayerButton powerupUpButton;
     public GameObject tutorialMurderer;
@@ -115,6 +117,15 @@ public class PlayerUI : MonoBehaviour
             Debug.LogWarning("[PlayerUI] headerText not set.", this);
     }
 
+    public void SetGameEndText(String s)
+    {
+        if (gameEndGameObject != null)
+        {
+            gameEndGameObject.SetActive(true);
+            gameEndText.text = s;
+        }
+    }
+
     #endregion
 
     #region Icons
@@ -202,7 +213,7 @@ public class PlayerUI : MonoBehaviour
         if(registeredActions.Count == 0) return;
 
         TapAction action = registeredActions[currentAction];
-        tapInfoText.text = action.message;
+        tapInfoText.text = "Current Action: " + action.message;
         tapCoroutine = StartCoroutine(TapListenerCoroutine());
 
         tapInfoPanel.color = Color.white;
@@ -229,7 +240,7 @@ public class PlayerUI : MonoBehaviour
         currentAction = (currentAction + 1) % registeredActions.Count;
 
         TapAction action = registeredActions[currentAction];
-        tapInfoText.text = action.message;
+        tapInfoText.text = "Current Action: " + action.message;
     }
 
     // Listen for double tap

@@ -492,26 +492,12 @@ public class Player : Photon.MonoBehaviour
 
     public void BystandersWon()
     {
-        if (IsMurderer)
-        {
-            ui.SetHeaderText("You have been caught!");
-        }
-        else
-        {
-            ui.SetHeaderText("You have won!");
-        }
+        ui.SetGameEndText("Bystanders Win!");
     }
 
     public void MurdererWon()
     {
-        if (IsMurderer)
-        {
-            ui.SetHeaderText("You have won!");
-        }
-        else
-        {
-            ui.SetHeaderText("Everyone has been murdered!");
-        }
+        ui.SetGameEndText("Murderer Wins!");
     }
 
 }
