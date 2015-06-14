@@ -120,14 +120,17 @@ public class LockedDoorUI : MonoBehaviour {
                     //in whodunnit murder can always open door regardless of key. this should be moved
                     //into whodunnitPlayer at some point.
                     PlayerWhodunnit whodunnitPlayer = currentPlayer.GetComponent<PlayerWhodunnit>();
-/*
-                    if (currentPlayer.inventory.ItemInHand == ItemPickups.Key)
+
+                    if (currentPlayer.inventory.ItemInHand.GetComponent<Item>().ItemName != null)
                     {
-                        currentPlayer.inventory.removeItem();
-                        currentDoor.openDoor();
-                        SwitchState(DoorStates.hidden);
+                        if (currentPlayer.inventory.ItemInHand.GetComponent<Item>().ItemName == "Key")
+                        {
+                            currentPlayer.inventory.removeItem();
+                            currentDoor.openDoor();
+                            SwitchState(DoorStates.hidden);
+                        }
                     }
- * */
+ 
                     //else if
                      if (whodunnitPlayer != null){  //above comment applies here too
                         if (whodunnitPlayer.IsMurderer)

@@ -10,6 +10,8 @@ public abstract class Item : Photon.MonoBehaviour
     // Name of the object
     public abstract string ItemName { get; }
     public abstract string ResourceName { get; }
+    public abstract Vector3 LocalPositionOnPlayer { get; }
+    public abstract Vector3 LocalRotationOnPlayer { get; }
 
     #region Unity events
 
