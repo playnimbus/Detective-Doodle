@@ -204,7 +204,7 @@ public class GA {
 			
 			if (GA.SettingsGA.Logo == null)
 			{
-				GA.SettingsGA.Logo = (Texture2D)Resources.LoadAssetAtPath("Assets/Gizmos/gaLogo.png", typeof(Texture2D));
+				GA.SettingsGA.Logo = (Texture2D)AssetDatabase.LoadAssetAtPath("Assets/Gizmos/gaLogo.png", typeof(Texture2D));
 			}
 			
 			Graphics.DrawTexture(new Rect(GUILayoutUtility.GetLastRect().width - selectionRect.height - 5 - addX, selectionRect.y, selectionRect.height, selectionRect.height), GA.SettingsGA.Logo);

@@ -34,7 +34,7 @@ public class TriggerListener : MonoBehaviour
     {
         if (!colliderContactCount.ContainsKey(other))
         {
-            if (onTriggerEntered != null) onTriggerEntered(other);
+            if (onTriggerEntered != null) Debug.Log("collision"); onTriggerEntered(other);
             colliderContactCount.Add(other, 1);
         }
         else
